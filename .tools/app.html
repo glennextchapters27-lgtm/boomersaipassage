@@ -276,6 +276,10 @@ ol.steps{margin:0;padding-left:1.3em;display:grid;gap:6px}
 }
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
 
+.tile-more{text-decoration:none;background:var(--navy);color:#fff;border-color:var(--navy)}
+.tile-more small{color:#c8d2e2}
+.tile-more .lvtag{color:var(--gold-2)!important}
+.tile-more::after{color:var(--gold-2)}
 /* Accessibility pass (crew review) */
 .eyebrow,.lvtag,.lv .n,.starter .what,.news-item .date{color:#8a5d10;font-size:.9rem}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .eyebrow,:root:not([data-theme="light"]) .lvtag,:root:not([data-theme="light"]) .lv .n,:root:not([data-theme="light"]) .starter .what,:root:not([data-theme="light"]) .news-item .date{color:var(--gold-2)}}
@@ -297,15 +301,17 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
 <header class="topbar"><div class="inner">
   <a class="logo" href="/"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span>The Boomer's <b>AI Passage</b></span></a>
   <nav class="mainnav" aria-label="Main">
-    <a href="#step0">Start here</a>
-    <a href="#find">Find help</a>
-    <a href="#picks">Our picks</a>
-    <a href="#agents">Agents</a>
-    <a href="#words">Word list</a>
+    <a href="/start/">Start here</a>
+    <a href="/#find">Find help</a>
+    <a href="/picks/">Our picks</a>
+    <a href="/agents/">Agents</a>
+    <a href="/words/">Word list</a>
+    <a href="/news/">What's new</a>
   </nav>
-  <a class="btn btn-gold topcta" href="#buy"><span class="hide-sm">Get the&nbsp;</span>Handbook</a>
+  <a class="btn btn-gold topcta" href="/#buy"><span class="hide-sm">Get the&nbsp;</span>Handbook</a>
 </div></header>
 <main id="main">
+<!--P:home-->
 <section class="hero" aria-labelledby="hero-h"><div class="inner hero-grid">
   <div>
     <p class="eyebrow">AI for people 60 and up · Plain English</p>
@@ -349,13 +355,17 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
 <g transform="translate(14 300)"><rect width="122" height="40" rx="20" fill="#e3b35a"/><text x="18" y="25" font-family="Atkinson Hyperlegible, Arial" font-weight="700" font-size="13" fill="#1a1206">★ Free to start</text></g>
 </svg></div>
 </div></section>
+<!--/P:home-->
+<!--P:home-->
 <section class="band tight" aria-label="Three ways to begin"><div class="inner">
   <div class="paths">
-    <a class="path" href="#step0"><span class="num">1</span><h3>Brand new to AI?</h3><p>Five minutes. What it is, what you need, and your very first question.</p><span class="more">Start here →</span></a>
+    <a class="path" href="/start/"><span class="num">1</span><h3>Brand new to AI?</h3><p>Five minutes. What it is, what you need, and your very first question.</p><span class="more">Start here →</span></a>
     <a class="path" href="#find"><span class="num">2</span><h3>Have a job for AI?</h3><p>Pick an everyday problem. Get the best 3 tools, ranked, with the words to type.</p><span class="more">Find help →</span></a>
     <a class="path" href="#buy"><span class="num">3</span><h3>Want it on paper?</h3><p>The handbook: 100 things to ask AI, in big easy-to-read type. A great gift.</p><span class="more">See the handbook →</span></a>
   </div>
 </div></section>
+<!--/P:home-->
+<!--P:home-->
 <section class="band alt" id="find" aria-labelledby="lv-h"><div class="inner">
   <div class="section-head"><span class="eyebrow">Find help</span><h2 id="lv-h">Pick a problem. Get the right AI.</h2>
   <p class="note">Asking AI for reservations or egg timers? That's Step 1. Start there, then move up when you're ready.</p></div>
@@ -365,6 +375,8 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
   <div class="tiles" id="tiles"></div>
   <section id="answer" aria-live="polite"></section>
 </div></section>
+<!--/P:home-->
+<!--P:start-->
 <div class="band"><div class="inner">
 <section class="step0" id="step0" aria-labelledby="s0-h">
   <span class="lvtag">Step 0 · 5 minutes</span>
@@ -386,9 +398,11 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
   <h3>Not sure what to ask? Try one of these</h3>
   <p class="note">Tap "Copy," then paste it into the AI. There are no wrong questions.</p>
   <div class="starters" id="starters"></div>
-  <p class="note">That's it. You've used AI. Next, <a href="#find">pick a problem</a>.</p>
+  <p class="note">That's it. You've used AI. Next, <a href="/#find">pick a problem</a>.</p>
 </section>
 </div></div>
+<!--/P:start-->
+<!--P:start-->
 <div class="band alt"><div class="inner">
 <section class="needs" id="needs" aria-labelledby="needs-h">
   <span class="lvtag">Step 0, part 2 · No spooky stuff</span>
@@ -425,6 +439,8 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
   </div>
 </section>
 </div></div>
+<!--/P:start-->
+<!--P:picks-->
 <section class="band " id="picks" aria-labelledby="picks-h"><div class="inner">
   <span class="eyebrow">Our picks</span>
   <h2 id="picks-h">Our picks: which AI for which job</h2>
@@ -448,6 +464,8 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
     <p>See our <a href="#agents-h">Agents report card</a> below: which ones are ready for you, which need a helper, and which to skip for now.</p>
   </div>
 </div></section>
+<!--/P:picks-->
+<!--P:agents-->
 <section class="band alt" id="agents" aria-labelledby="agents-h"><div class="inner">
   <span class="eyebrow">Report card</span>
   <h2 id="agents-h">Agents report card</h2>
@@ -466,6 +484,8 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
   </div>
   <p class="note">Checked November 2026. We update this report card every week as agents get easier and safer.</p>
 </div></section>
+<!--/P:agents-->
+<!--P:home-->
 <div class="band"><div class="inner">
 <section class="season" aria-labelledby="season-h">
   <span class="lvtag" id="seasonTag"></span>
@@ -474,6 +494,8 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
   <div class="starters" id="seasonList"></div>
 </section>
 </div></div>
+<!--/P:home-->
+<!--P:all-->
 <section class="band navyband" id="buy" aria-labelledby="buy-h"><div class="inner">
 <div class="buy">
   <div class="buytext">
@@ -495,12 +517,16 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
   </div>
 </div>
 </div></section>
+<!--/P:all-->
+<!--P:news-->
 <section class="band alt" aria-labelledby="news-h"><div class="inner">
   <span class="eyebrow">What's new</span>
   <h2 id="news-h">New in AI this month</h2>
   <p class="note">What changed lately, and whether you need to care. Checked November 2026.</p>
   <div class="news" id="news"></div>
 </div></section>
+<!--/P:news-->
+<!--P:words-->
 <section id="words" class="band " aria-labelledby="gloss-h"><div class="inner">
   <span class="eyebrow">Plain English</span>
   <h2 id="gloss-h">Word list</h2>
@@ -508,6 +534,8 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
   <input type="text" id="gq" class="gsearch" placeholder="Look up a word, like agent" autocomplete="off" aria-label="Look up a word">
   <dl class="gloss" id="gloss"></dl>
 </div></section>
+<!--/P:words-->
+<!--P:start-->
 <div class="band"><div class="inner">
 <section class="safety" aria-labelledby="safe-h">
   <h2 id="safe-h">Five safety rules before you start</h2>
@@ -520,19 +548,21 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
   </ul>
 </section>
 </div></div>
+<!--/P:start-->
 </main>
 <!--GUIDES-->
 <footer class="sitefoot"><div class="inner">
   <a class="logo" href="/"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span>The Boomer's <b>AI Passage</b></span></a>
   <p>From Curious to Confident. No hype. No jargon. Just what it can do for you.</p>
   <nav class="footlinks" aria-label="Footer">
-    <a href="#step0">Start here</a><a href="/problems/">Every problem</a><a href="/words/">Word list</a><a href="#agents">Agents report card</a><a href="/share/">Share your story</a><a href="https://theboomersaipassage.gumroad.com/l/wpfolg">The Handbook</a>
+    <a href="/start/">Start here</a><a href="/problems/">Every problem</a><a href="/picks/">Our picks</a><a href="/agents/">Agents report card</a><a href="/words/">Word list</a><a href="/news/">What's new</a><a href="/share/">Share your story</a><a href="https://theboomersaipassage.gumroad.com/l/wpfolg">The Handbook</a>
   </nav>
   <p class="fine">Prices are US list prices checked in November 2026 and change often. Confirm on the tool's own site before you pay. No company can pay for a higher ranking. If we ever earn a fee from a link, we say so, and it never changes the order.</p>
 </div></footer>
 <div class="tip" id="tip" role="dialog" aria-live="polite"><b id="tipT"></b><span id="tipD"></span><span id="tipL" class="note"></span><button type="button" id="tipX">Got it</button></div>
 
 <script>
+const $id = id => document.getElementById(id) || document.createElement("div");
 const T = {
   chatgpt:{name:"ChatGPT", maker:"OpenAI", cost:"Free version. Paid plans from about $8 a month; Plus about $20.", url:"https://chatgpt.com"},
   claude:{name:"Claude", maker:"Anthropic", cost:"Free version. Pro about $20 a month.", url:"https://claude.ai"},
@@ -819,7 +849,7 @@ const PICKS_SPEC = [["otter","Remember what was said","Records a doctor visit an
  ["canva","Cards and invites","Ready-made designs you change."],
  ["lovable","Build a website","Builds a real website from your description."]];
 function renderPicks(id, list){
-  document.getElementById(id).innerHTML = list.map(([k,b,w]) => { const t = T[k];
+  $id(id).innerHTML = list.map(([k,b,w]) => { const t = T[k];
     return `<article class="pick"><span class="badge">${b}</span><h4>${t.name}</h4><p>${w}</p>${rateHTML(k)}<p class="cost">${t.cost}</p><a href="${t.url}" target="_blank" rel="noopener">Open ${t.name}</a></article>`; }).join("");
 }
 const SEASON = {
@@ -863,7 +893,7 @@ function linkTerms(text){
 }
 function renderGloss(q){
   const s = (q||"").toLowerCase().trim();
-  document.getElementById("gloss").innerHTML = [...GLOSS].sort((a,b)=>a[0].localeCompare(b[0]))
+  $id("gloss").innerHTML = [...GLOSS].sort((a,b)=>a[0].localeCompare(b[0]))
     .filter(g => !s || g[0].toLowerCase().includes(s) || g[1].toLowerCase().includes(s))
     .map(g => `<div id="g-${g[0].toLowerCase().replace(/[^a-z]+/g,"-")}"><dt>${g[0]}</dt><dd>${esc(g[1])}</dd><dd class="like">${esc(g[2])}</dd></div>`).join("")
     || `<p class="note">No match yet. Try a shorter word.</p>`;
@@ -881,13 +911,14 @@ const LV = {letter:1, meals:1, trip:1, identify:1, language:1,
             grandkids:4, memoir:4, build:5};
 P.forEach(p => p.level = LV[p.id]);
 
-const tilesEl = document.getElementById("tiles");
-const answerEl = document.getElementById("answer");
-const levelsEl = document.getElementById("levels");
+const tilesEl = $id("tiles");
+const answerEl = $id("answer");
+const levelsEl = $id("levels");
 
 function renderTiles(level){
   tilesEl.innerHTML = "";
-  P.filter(p => !level || p.level === level).forEach(p => {
+  const list = P.filter(p => !level || p.level === level);
+  (level ? list : list.slice(0, 8)).forEach(p => {
     const b = document.createElement("button");
     b.className = "tile"; b.type = "button"; b.id = "tile-" + p.id;
     b.setAttribute("aria-pressed","false");
@@ -895,6 +926,12 @@ function renderTiles(level){
     b.addEventListener("click", () => show(p));
     tilesEl.appendChild(b);
   });
+  if (!level && list.length > 8) {
+    const a = document.createElement("a");
+    a.className = "tile tile-more"; a.href = "/problems/";
+    a.innerHTML = `<span class="lvtag">All guides</span><span>See all ${list.length} problems</span><small>Or tap a step above to narrow it down</small>`;
+    tilesEl.appendChild(a);
+  }
 }
 LEVELS.forEach(l => {
   const b = document.createElement("button");
@@ -910,7 +947,7 @@ LEVELS.forEach(l => {
 });
 renderTiles(0);
 
-document.getElementById("news").innerHTML = NEWS.map(n =>
+$id("news").innerHTML = NEWS.map(n =>
   `<article class="news-item"><span class="date">${n.date}</span><h3>${n.title}</h3><p>${n.body}</p></article>`).join("");
 
 function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));}
@@ -918,8 +955,8 @@ function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;
 function show(p, typed){
   document.querySelectorAll(".tile").forEach(t => t.setAttribute("aria-pressed", t.id === "tile-"+p.id ? "true":"false"));
   const head = typed
-    ? `<div class="answer-head"><h2>For “${esc(typed)}”</h2><p class="note">Closest match: ${p.title} (Step ${p.level}). Ranked best first for this job. <a href="#picks-h">How we rank</a></p></div>`
-    : `<div class="answer-head"><h2>${p.title}</h2><p class="note">Step ${p.level}. Ranked best first for this job. <a href="#picks-h">How we rank</a></p></div>`;
+    ? `<div class="answer-head"><h2>For “${esc(typed)}”</h2><p class="note">Closest match: ${p.title} (Step ${p.level}). Ranked best first for this job. <a href="/picks/">How we rank</a></p></div>`
+    : `<div class="answer-head"><h2>${p.title}</h2><p class="note">Step ${p.level}. Ranked best first for this job. <a href="/picks/">How we rank</a></p></div>`;
   answerEl.innerHTML = head + p.picks.map((k,i) => {
     const t = T[k.t];
     return `<article class="card ${i===0?"top":""}">
@@ -959,10 +996,10 @@ function match(q){
   return best;
 }
 
-document.getElementById("askForm").addEventListener("submit", e => {
+$id("askForm").addEventListener("submit", e => {
   e.preventDefault();
-  const q = document.getElementById("q").value.trim();
-  if (!q) { document.getElementById("q").focus(); return; }
+  const q = $id("q").value.trim();
+  if (!q) { $id("q").focus(); return; }
   const p = match(q);
   p ? show(p, q) : general(q);
 });
@@ -978,32 +1015,31 @@ document.addEventListener("click", async e => {
   if (t) {
     const g = GMAP[t.dataset.t];
     if (!g) return;
-    document.getElementById("tipT").textContent = g[0];
-    document.getElementById("tipD").textContent = g[1];
-    document.getElementById("tipL").textContent = g[2];
-    document.getElementById("tip").classList.add("on");
-    document.getElementById("tipX").focus();
+    $id("tipT").textContent = g[0];
+    $id("tipD").textContent = g[1];
+    $id("tipL").textContent = g[2];
+    $id("tip").classList.add("on");
+    $id("tipX").focus();
   }
 });
-document.getElementById("tipX").addEventListener("click", () => document.getElementById("tip").classList.remove("on"));
-document.addEventListener("keydown", e => { if (e.key === "Escape") document.getElementById("tip").classList.remove("on"); });
-document.getElementById("gq").addEventListener("input", e => renderGloss(e.target.value));
+$id("tipX").addEventListener("click", () => $id("tip").classList.remove("on"));
+document.addEventListener("keydown", e => { if (e.key === "Escape") $id("tip").classList.remove("on"); });
+$id("gq").addEventListener("input", e => renderGloss(e.target.value));
 renderGloss("");
 renderPicks("picksMain", PICKS_MAIN);
 renderPicks("picksSpec", PICKS_SPEC);
 const SLAB = {g:"Ready for you", y:"Try with a helper", r:"Not yet"};
-document.getElementById("agentCards").innerHTML = AGENTS.map(a =>
+$id("agentCards").innerHTML = AGENTS.map(a =>
   `<article class="pick agentcard ${a.s}"><span class="tag ${a.s}" style="justify-self:start">${SLAB[a.s]}</span><h4>${esc(a.name)}</h4><p class="note">by ${esc(a.maker)}</p><p>${esc(a.what)}</p><p class="cost">${esc(a.cost)}</p><p><b>Our take:</b> ${esc(a.note)}</p><a href="${a.url}" target="_blank" rel="noopener">${a.s==="r"?"Learn more about":"Open"} ${esc(a.name)}</a></article>`).join("");
-document.getElementById("seasonTag").textContent = SEASON.tag;
-document.getElementById("season-h").textContent = SEASON.title;
-document.getElementById("seasonIntro").textContent = SEASON.intro;
-document.getElementById("seasonList").innerHTML = SEASON.items.map(s =>
+$id("seasonTag").textContent = SEASON.tag;
+$id("season-h").textContent = SEASON.title;
+$id("seasonIntro").textContent = SEASON.intro;
+$id("seasonList").innerHTML = SEASON.items.map(s =>
   `<div class="starter"><span class="what">${esc(s[0])}</span><span>${esc(s[1])}</span><button class="copy" type="button" data-say="${esc(s[1])}">Copy</button></div>`).join("");
-document.getElementById("starters").innerHTML = STARTERS.map(s =>
+$id("starters").innerHTML = STARTERS.map(s =>
   `<div class="starter"><span class="what">${s[0]}</span><span>${esc(s[1])}</span><button class="copy" type="button" data-say="${esc(s[1])}">Copy</button></div>`).join("");
 
-show(P[1]);
-window.scrollTo(0,0);
+
 </script>
 </body>
 </html>

@@ -266,6 +266,10 @@ ol.steps{margin:0;padding-left:1.3em;display:grid;gap:6px}
 }
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
 
+.tile-more{text-decoration:none;background:var(--navy);color:#fff;border-color:var(--navy)}
+.tile-more small{color:#c8d2e2}
+.tile-more .lvtag{color:var(--gold-2)!important}
+.tile-more::after{color:var(--gold-2)}
 /* Accessibility pass (crew review) */
 .eyebrow,.lvtag,.lv .n,.starter .what,.news-item .date{color:#8a5d10;font-size:.9rem}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .eyebrow,:root:not([data-theme="light"]) .lvtag,:root:not([data-theme="light"]) .lv .n,:root:not([data-theme="light"]) .starter .what,:root:not([data-theme="light"]) .news-item .date{color:var(--gold-2)}}

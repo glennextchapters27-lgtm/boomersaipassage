@@ -175,21 +175,43 @@ fs.writeFileSync(path.join(OUT, "share", "index.html"),
 <p class="answer">Story sharing opens soon. Check back, or get the weekly tip so you hear first.</p>
 <p class="note">We only share stories with permission, and only your first name and town.</p></section>` + foot);
 
-// Home page: the full app, plus SEO head tags and plain links crawlers can follow
-let home = html
-  .replace("<title>The Boomer's AI Passage</title>", `<title>The Boomer's AI Passage: AI for Boomers, From Curious to Confident</title>
-<meta name="description" content="Plain-English help choosing and using AI, written for people over 60. Pick an everyday problem and get the right AI tool, what it costs, and the exact words to type.">
-<link rel="canonical" href="${DOMAIN}/">
-<meta property="og:title" content="The Boomer's AI Passage: From Curious to Confident">
-<meta property="og:description" content="No hype. No jargon. Just what AI can do for you.">
-<meta property="og:url" content="${DOMAIN}/">
-<meta property="og:type" content="website">`)
-  .replace("<!--GUIDES-->", `<section class="band alt" aria-label="All guides"><div class="inner guides">
-  <span class="eyebrow">Every guide</span><h2>Browse every guide</h2>
-  <ul class="linklist">${P.map(p => `<li><a href="/problems/${p.id}/">${esc(p.title)}</a></li>`).join("")}</ul>
-  <p><a href="/words/">The full AI word list</a> · <a href="/share/">Share your story</a></p>
-</div></section>`);
+// App pages: one short page per section, all built from the same app file
+function keepOnly(src, keep) {
+  return src.replace(/<!--P:(\w+)-->([\s\S]*?)<!--\/P:\1-->\n?/g, (m, name, body) => keep.includes(name) ? body : "");
+}
+function seoHead(title, desc, url) {
+  return `<title>${esc(title)}</title>
+<meta name="description" content="${esc(desc)}">
+<link rel="canonical" href="${url}">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:url" content="${url}">
+<meta property="og:type" content="website">`;
+}
+let home = keepOnly(html, ["home", "all"])
+  .replace("<title>The Boomer's AI Passage</title>", seoHead("The Boomer's AI Passage: AI for Boomers, From Curious to Confident", "Plain-English help choosing and using AI, written for people over 60. Pick an everyday problem and get the right AI tool, what it costs, and the exact words to type.", DOMAIN + "/"))
+  .replace("<!--GUIDES-->", "");
 fs.writeFileSync(path.join(OUT, "index.html"), home);
+
+const SUBPAGES = [
+  { slug: "start", keep: "start", eyebrow: "Start here", h1: "New to AI? Start here.", lede: "Five minutes: what AI is, what you need (and don't), your first questions, and five safety rules.", title: "New to AI? Start Here | The Boomer's AI Passage", desc: "What AI is in plain English, what you need to use it, your first questions to try, and five safety rules. Written for people over 60." },
+  { slug: "picks", keep: "picks", eyebrow: "Our picks", h1: "The AI tools we recommend.", lede: "Our top all-purpose helpers and the best tool for each special job, with how we rank them.", title: "Best AI Tools for Seniors, Ranked | The Boomer's AI Passage", desc: "The AI tools we recommend for people over 60, ranked on how well they do the job, ease of use, value and trust. Rankings are never for sale." },
+  { slug: "agents", keep: "agents", eyebrow: "Report card", h1: "AI agents: which are ready for you?", lede: "Agents do errands for you. Here's an honest look at which ones are ready, which need a helper, and which to skip for now.", title: "AI Agents Report Card for Seniors | The Boomer's AI Passage", desc: "An honest, plain-English report card on AI agents like Alexa+, ChatGPT agent mode and Claude in Chrome: ready, try with a helper, or not yet." },
+  { slug: "news", keep: "news", eyebrow: "What's new", h1: "New in AI this month.", lede: "What changed lately, in plain words, and whether you need to care.", title: "AI News for Seniors, in Plain English | The Boomer's AI Passage", desc: "What changed in AI this month, explained in plain English for people over 60, and whether you need to care." },
+];
+for (const sp of SUBPAGES) {
+  const url = `${DOMAIN}/${sp.slug}/`;
+  const ph = `<section class="pagehead"><div class="inner"><p class="crumb"><a href="/">Home</a> › ${esc(sp.eyebrow)}</p><h1>${esc(sp.h1)}</h1><p class="lede">${esc(sp.lede)}</p></div></section>`;
+  const buyBand = (html.match(/<!--P:all-->([\s\S]*?)<!--\/P:all-->/) || ["", ""])[1];
+  let pg = keepOnly(html, [sp.keep])
+    .replace("</main>", buyBand + "\n</main>")
+    .replace("<title>The Boomer's AI Passage</title>", seoHead(sp.title, sp.desc, url))
+    .replace('<main id="main">', '<main id="main">\n' + ph)
+    .replace("<!--GUIDES-->", "");
+  fs.mkdirSync(path.join(OUT, sp.slug), { recursive: true });
+  fs.writeFileSync(path.join(OUT, sp.slug, "index.html"), pg);
+  urls.push(url);
+}
 
 // 404, robots, sitemap, llms.txt, CNAME
 fs.writeFileSync(path.join(OUT, "404.html"), head("Page not found | The Boomer's AI Passage", "Page not found.", DOMAIN + "/") +
