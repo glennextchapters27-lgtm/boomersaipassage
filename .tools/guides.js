@@ -4,6 +4,38 @@ const say = (label, text) => `<div class="say"><b>${label}</b><span>${text}</spa
 
 module.exports = (GUMROAD) => [
 {
+  slug: "set-up-ai-for-parents",
+  title: "Set Up AI for Your Parents This Christmas: 5 Easy Steps | The Boomer's AI Passage",
+  desc: "Home for the holidays? Spend 20 minutes setting up a free AI helper on your parents' phone: the right app, voice mode, bigger text, a scam-check habit, and a printed guide.",
+  eyebrow: "For grown kids, home for the holidays",
+  h1: "Set up AI for Mom and Dad in 20 minutes.",
+  lede: "You're home for the holidays and they're curious. Here's exactly what to set up, so it still works after you leave.",
+  answer: "Install one official AI app (ChatGPT, Claude or Gemini) on their phone, show them the microphone button, make the text bigger, save a scam-check request in their notes, and leave them a printed guide.",
+  body: () => `
+<h2>The 5 steps</h2>
+<ol class="steps">
+<li><b>Install one official app.</b> ChatGPT (by OpenAI), Claude (by Anthropic) or Gemini (by Google). Pick one, not three. Check the maker's name; copycat apps exist. Put it on their home screen.</li>
+<li><b>Show them the microphone.</b> Most people over 60 find talking easier than typing. Have them ask one real question out loud while you watch.</li>
+<li><b>Make the text bigger.</b> iPhone: Settings, then Display &amp; Brightness, then Text Size. Android: Settings, then Display, then Font size.</li>
+<li><b>Save a scam-check habit.</b> Put the request below in their Notes app, so they can paste any suspicious text into the AI before they click.</li>
+<li><b>Leave something on paper.</b> Print our <a href="/start/">Start here page</a> (free) or give <a href="/gift/">the handbook</a>.</li>
+</ol>
+${say("Save this in their Notes", "Is this a scam? What are the warning signs? [paste the message here, but don't click any link in it]")}
+<h2>Their first three questions</h2>
+${say("Something useful today", "I'm new to AI. In simple words, what are 5 useful things you could help me with this week?")}
+${say("Something fun", "Who won the World Series in 1969? Tell me one fun fact about that team.")}
+${say("Something personal", "Help me write a short note to my granddaughter for her birthday. She loves horses and just started 5th grade.")}
+<h2>Before you leave, agree on two rules</h2>
+<ul>
+<li>Never type in passwords, Social Security, bank or card numbers.</li>
+<li>Double-check health, money and legal answers with a real person.</li>
+</ul>`,
+  faq: [
+    ["Which AI app is best for older parents?", "Any of the big three works. Pick the one you use, so you can help them later. ChatGPT, Claude and Gemini all have free versions and voice mode."],
+    ["Does it cost anything?", "No. The free versions are plenty to start. Don't add a paid plan until they've used it for a few weeks."],
+    ["How do I keep them safe from AI scams?", "Agree on the two rules above, and save a scam-check request in their Notes so they ask the AI before clicking any link."]]
+},
+{
   slug: "thanksgiving",
   title: "How to Use AI for Thanksgiving: 10 Things to Ask (Exact Words) | The Boomer's AI Passage",
   desc: "Ten easy ways to let a free AI helper handle Thanksgiving busywork: recipe cards, a cooking timeline, a grace or toast, games for the grandkids. Copy the exact words.",
