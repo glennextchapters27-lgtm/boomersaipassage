@@ -8,167 +8,353 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Literata:opsz,wght@7..72,600;7..72,700&display=swap" rel="stylesheet">
 <style>
-/* Layout idea: one calm column. Pick a problem (big tiles) or type your own -> ranked answer cards below. Large type for older readers. */
+/* The Boomer's AI Passage: design system v2 (navy + gold, warm cream, large type). */
 :root{
-  --bg:#f4f6f8;
-  --surface:#ffffff;
-  --ink:#16222e;
-  --muted:#4a5866;
-  --accent:#0b5e6b;
-  --accent-soft:#dcedef;
-  --gold:#b7791f;
-  --line:#cfd8df;
+  --navy:#0f2240; --navy-2:#173462; --navy-3:#21477f;
+  --gold:#c08a26; --gold-2:#e3b35a; --gold-soft:#f6ead2;
+  --bg:#faf6ee; --bg-alt:#f2ece0; --surface:#ffffff;
+  --ink:#17202d; --muted:#4f5b6b; --line:#e2dacb;
+  --accent:#1d4e89; --accent-soft:#e7eef8;
+  --ok:#2f7d3a; --warn:#a86f00; --bad:#a33a2c;
   --display:"Literata", Georgia, serif;
   --body:"Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
-  color-scheme: light;
+  --radius:18px;
+  --shadow:0 1px 2px rgba(15,34,64,.06),0 10px 30px -14px rgba(15,34,64,.22);
+  --shadow-lg:0 2px 4px rgba(15,34,64,.08),0 24px 50px -20px rgba(15,34,64,.35);
+  --max:1160px;
+  color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0f171e; --surface:#17222c; --ink:#eef3f6; --muted:#a9b8c4;
-    --accent:#5cc3cf; --accent-soft:#163a40; --gold:#e3b25c; --line:#2c3b48;
-    color-scheme: dark;
+    --bg:#0c1525; --bg-alt:#101c31; --surface:#15233d;
+    --ink:#eef2f8; --muted:#aab6c8; --line:#26385a;
+    --accent:#8db4ec; --accent-soft:#1a2c4c; --gold-soft:#3a2f18;
+    color-scheme:dark;
   }
 }
-:root[data-theme="dark"]{
-  --bg:#0f171e; --surface:#17222c; --ink:#eef3f6; --muted:#a9b8c4;
-  --accent:#5cc3cf; --accent-soft:#163a40; --gold:#e3b25c; --line:#2c3b48;
-  color-scheme: dark;
-}
 *{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:21px;line-height:1.6}
-.wrap{max-width:900px;margin:0 auto;padding:32px 20px 64px;display:grid;gap:36px}
-header{display:grid;gap:10px}
-.brand{font-family:var(--display);font-weight:700;font-size:1rem;color:var(--accent);letter-spacing:.02em}
-h1{font-family:var(--display);font-size:2.3rem;line-height:1.15;margin:0;text-wrap:balance}
-h2{font-family:var(--display);font-size:1.5rem;margin:0;text-wrap:balance}
-h3{font-family:var(--display);font-size:1.25rem;margin:0}
-p{margin:0;max-width:65ch}
-.lede{color:var(--muted);font-size:1.1rem}
-.ask{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:14px}
-label{font-weight:700;font-size:1.1rem}
-.row{display:flex;gap:10px;flex-wrap:wrap}
-input[type=text]{flex:1 1 320px;font:inherit;font-size:1.1rem;padding:14px 16px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
-button{font:inherit;font-weight:700;cursor:pointer;border-radius:10px}
-.go{background:var(--accent);color:var(--surface);border:none;padding:14px 26px;font-size:1.1rem}
-:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
-.tile{background:var(--surface);color:var(--ink);border:2px solid var(--line);padding:16px;text-align:left;font-size:1.02rem;line-height:1.35;display:grid;gap:4px}
-.tile small{font-weight:400;color:var(--muted);font-size:.85rem}
-.tile:hover{border-color:var(--accent)}
-.tile[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
-.section-head{display:grid;gap:6px}
-#answer{display:grid;gap:16px;scroll-margin-top:16px}
-.answer-head{display:grid;gap:6px;border-left:6px solid var(--accent);padding-left:16px}
-.card{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:12px}
-.card.top{border-color:var(--accent)}
-.card-head{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
-.rank{font-family:var(--display);font-weight:700;font-size:1.6rem;color:var(--accent);min-width:1.6em}
-.pill{display:inline-block;font-size:.85rem;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
-.pill.best{background:var(--gold);color:#fff}
-.cost{color:var(--muted);font-size:.95rem}
-ol.steps{margin:0;padding-left:1.3em;display:grid;gap:4px}
-.say{background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:8px}
-.say b{font-size:.9rem;color:var(--muted)}
-.copy{justify-self:start;background:transparent;border:2px solid var(--accent);color:var(--accent);padding:6px 14px;font-size:.9rem}
-a{color:var(--accent);font-weight:700}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:20px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+p{margin:0;max-width:66ch}
+h1,h2,h3,h4{font-family:var(--display);margin:0;text-wrap:balance;line-height:1.15;letter-spacing:-.01em}
+h2{font-size:clamp(1.8rem,3.2vw,2.5rem);font-weight:700}
+h3{font-size:1.3rem;font-weight:700}
+a{color:var(--accent);font-weight:700;text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--gold-2);outline-offset:3px;border-radius:6px}
+button{font:inherit;font-weight:700;cursor:pointer;border-radius:12px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--gold);color:#fff;padding:10px 16px;border-radius:10px;z-index:50}
+.skip:focus{left:12px}
+
+/* Layout */
+.inner{max-width:var(--max);margin:0 auto;padding:0 24px}
+.band{padding:clamp(56px,8vw,96px) 0}
+.band>.inner{display:grid;gap:28px}
+.band.alt{background:var(--bg-alt)}
+.band.tight{padding-top:0}
+.section-head{display:grid;gap:10px;max-width:760px}
+.eyebrow,.lvtag{font-family:var(--body);font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.lede{color:var(--muted);font-size:1.15rem}
 .note{color:var(--muted);font-size:.95rem}
-.news{display:grid;gap:12px}
-.news-item{background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:4px}
-.news-item .date{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
-.safety{background:var(--accent-soft);border-radius:14px;padding:22px;display:grid;gap:10px}
-.safety ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
-.levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.lv{background:var(--surface);color:var(--ink);border:2px solid var(--line);padding:12px 14px;text-align:left;display:grid;gap:2px;font-size:1rem;line-height:1.3}
-.lv .n{font-family:var(--display);color:var(--accent);font-size:.9rem}
-.lv small{font-weight:400;color:var(--muted);font-size:.82rem}
-.lv[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
-.tile .lvtag{font-size:.78rem;font-weight:700;color:var(--accent)}
-.picks{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.pick{background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:6px;align-content:start}
-.pick .badge{justify-self:start;background:var(--accent);color:var(--surface);font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.02em}
-.pick h4{margin:0;font-family:var(--display);font-size:1.25rem}
-.pick .cost{font-size:.9rem}
-.needs{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:24px;display:grid;gap:14px;scroll-margin-top:16px}
-.needs .lvtag{font-weight:700;color:var(--accent);font-size:.9rem}
-.needs .big{font-size:1.15rem}
-.needgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
-.need{border-radius:12px;padding:16px 18px;display:grid;gap:6px}
-.need ul{margin:0;padding-left:1.1em;display:grid;gap:8px}
-.need.yes{background:var(--accent-soft)}
-.need.no{background:var(--bg);border:2px dashed var(--line)}
-.myths{display:grid;gap:10px}
-.myths p{margin:0}
-.legend{display:flex;gap:10px;flex-wrap:wrap}
-.tag{font-size:.85rem;font-weight:700;padding:4px 12px;border-radius:999px;color:#fff}
-.tag.g{background:#2f7d3a}.tag.y{background:#a86f00}.tag.r{background:#a33a2c}
-.agentcard{border-left:8px solid var(--line)}
-.agentcard.g{border-left-color:#2f7d3a}.agentcard.y{border-left-color:#a86f00}.agentcard.r{border-left-color:#a33a2c}
-.agents ol{margin:0;padding-left:1.3em;display:grid;gap:4px}
-.howrank{background:var(--surface);border:2px solid var(--gold);border-radius:12px;padding:18px;display:grid;gap:8px}
-.howrank ol{margin:0;padding-left:1.3em;display:grid;gap:4px}
+
+/* Top bar */
+.topbar{position:sticky;top:0;z-index:20;background:rgba(15,34,64,.96);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid rgba(255,255,255,.08)}
+.topbar .inner{display:flex;align-items:center;gap:20px;min-height:76px}
+.logo{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;font-family:var(--display);font-weight:700;font-size:1.15rem;line-height:1.1;white-space:nowrap}
+.logo b{color:var(--gold-2)}
+.logo svg{width:40px;height:40px;flex:none}
+.mainnav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.mainnav a{color:#dfe6f2;text-decoration:none;font-weight:700;font-size:1rem;padding:10px 14px;border-radius:10px}
+.mainnav a:hover{background:rgba(255,255,255,.08);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:700;border-radius:12px;padding:14px 24px;font-size:1.05rem;line-height:1.2;border:2px solid transparent;transition:transform .15s,box-shadow .15s,background .15s}
+.btn-gold{background:linear-gradient(180deg,var(--gold-2),var(--gold));color:#1a1206;box-shadow:0 6px 18px -8px rgba(192,138,38,.8)}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 10px 24px -8px rgba(192,138,38,.9)}
+.btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
+.btn-ghost:hover{background:rgba(255,255,255,.08)}
+.topcta{padding:10px 18px;font-size:1rem;white-space:nowrap;gap:0}
+@media (max-width:1020px){.mainnav{display:none}.topcta{margin-left:auto}}
+@media (max-width:520px){.hide-sm{display:none}.logo span{font-size:1rem}.topcta{padding:9px 12px;font-size:.95rem}.logo svg{width:34px;height:34px}}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;color:#f3efe6;background:radial-gradient(900px 420px at 88% 0%,rgba(227,179,90,.22),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(33,71,127,.55),transparent 60%),linear-gradient(160deg,#0b1a33 0%,#0f2240 45%,#173462 100%);padding:clamp(56px,9vw,110px) 0 clamp(64px,9vw,120px)}
+.hero::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,transparent 1px 96px);pointer-events:none}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,5vw,64px);align-items:center}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-art{max-width:420px;justify-self:center}}
+.hero .eyebrow{color:var(--gold-2)}
+.hero h1{font-size:clamp(2.6rem,6vw,4.4rem);font-weight:700;color:#fff;margin:14px 0 18px}
+.hero h1 em{font-style:italic;color:var(--gold-2)}
+.hero .lede{color:#d5ddea;font-size:clamp(1.15rem,1.8vw,1.35rem);max-width:34ch}
+.ask{margin-top:30px;background:#fff;color:var(--ink);border-radius:20px;padding:22px;display:grid;gap:12px;box-shadow:var(--shadow-lg);max-width:620px}
+.ask label{font-weight:700;font-size:1.15rem;font-family:var(--display)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+input[type=text]{flex:1 1 280px;font:inherit;font-size:1.1rem;padding:16px 18px;border:2px solid #d9d2c3;border-radius:14px;background:#fbf9f4;color:#17202d;min-width:0}
+input[type=text]:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 4px rgba(192,138,38,.2)}
+.go{background:var(--navy);color:#fff;border:none;padding:16px 28px;font-size:1.1rem;border-radius:14px}
+.go:hover{background:var(--navy-2)}
+.ask .note{color:#5c6676}
+.trust{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:22px;color:#c8d2e2;font-size:1rem}
+.trust span::before{content:"✓";color:var(--gold-2);font-weight:700;margin-right:8px}
+.hero-art svg{display:block;width:100%;height:auto;filter:drop-shadow(0 30px 40px rgba(0,0,0,.35))}
+
+/* Three paths */
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:-56px;position:relative;z-index:2}
+.path{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px;display:grid;gap:10px;align-content:start;text-decoration:none;color:var(--ink);box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s}
+.path:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.path .num{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--gold-soft);color:var(--gold);font-family:var(--display);font-weight:700;font-size:1.3rem}
+.path h3{font-size:1.35rem}
+.path p{color:var(--muted);font-weight:400}
+.path .more{color:var(--accent);font-weight:700}
+
+/* Cards and shared parts */
+.card,.pick,.news-item,.starter,.gloss>div,.tile,.lv{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.tile{color:var(--ink);padding:20px 22px;text-align:left;font-size:1.05rem;line-height:1.35;display:grid;gap:6px;position:relative;transition:transform .15s,border-color .15s,box-shadow .15s}
+.tile::after{content:"→";position:absolute;right:18px;bottom:16px;color:var(--gold);font-size:1.2rem;transition:transform .15s}
+.tile small{font-weight:400;color:var(--muted);font-size:.9rem;padding-right:24px}
+.tile:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.tile:hover::after{transform:translateX(4px)}
+.tile[aria-pressed="true"]{border-color:var(--navy);box-shadow:0 0 0 2px var(--navy) inset,var(--shadow)}
+.tile .lvtag{font-size:.72rem}
+.levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.lv{color:var(--ink);padding:16px 18px;text-align:left;display:grid;gap:2px;font-size:1.02rem;line-height:1.3;transition:border-color .15s}
+.lv .n{font-family:var(--body);color:var(--gold);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase}
+.lv small{font-weight:400;color:var(--muted);font-size:.85rem}
+.lv:hover{border-color:var(--gold)}
+.lv[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.lv[aria-pressed="true"] small{color:#c8d2e2}
+.lv[aria-pressed="true"] .n{color:var(--gold-2)}
+.findhead{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+.subhead{font-family:var(--display);font-size:1.35rem;margin-top:8px}
+
+/* Answer */
+#answer{display:grid;gap:18px;scroll-margin-top:100px}
+#answer:empty{display:none}
+.answer-head{display:grid;gap:6px;border-left:6px solid var(--gold);padding-left:18px}
+.card{padding:26px;display:grid;gap:14px}
+.card.top{border:2px solid var(--gold);box-shadow:var(--shadow-lg)}
+.card-head{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.rank{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:#fff;font-family:var(--display);font-weight:700;font-size:1.25rem;flex:none}
+.card.top .rank{background:linear-gradient(180deg,var(--gold-2),var(--gold));color:#1a1206}
+.pill{display:inline-block;font-size:.8rem;font-weight:700;padding:4px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.pill.best{background:var(--gold-soft);color:#8a5d10}
+.cost{color:var(--muted);font-size:.95rem}
+ol.steps{margin:0;padding-left:1.3em;display:grid;gap:6px}
+.say{background:var(--bg);border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:12px;padding:16px 18px;display:grid;gap:10px;font-size:1.05rem}
+.say b{font-size:.85rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.copy{justify-self:start;background:var(--navy);border:none;color:#fff;padding:9px 18px;font-size:.95rem}
+.copy:hover{background:var(--navy-2)}
+
+/* Step 0 */
+.step0,.needs{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:clamp(24px,4vw,44px);display:grid;gap:18px;box-shadow:var(--shadow)}
+.step0 .big1{font-size:1.3rem;font-family:var(--display);max-width:40ch}
+.s0grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.s0grid>div{background:var(--bg);border-radius:16px;padding:20px;display:grid;gap:6px;align-content:start;border-top:4px solid var(--gold)}
+.s0grid>div:nth-child(2){border-top-color:var(--bad)}
+.s0grid>div:nth-child(3){border-top-color:var(--ok)}
+.starters{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.starter{padding:18px;display:grid;gap:10px;align-content:start}
+.starter .what{font-size:.75rem;font-weight:700;color:var(--gold);letter-spacing:.14em;text-transform:uppercase}
+
+/* Needs */
+.needs .big{font-size:1.2rem;font-family:var(--display);max-width:48ch}
+.needgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.need{border-radius:16px;padding:22px;display:grid;gap:8px;align-content:start}
+.need ul{margin:0;padding-left:0;list-style:none;display:grid;gap:10px}
+.need li{padding-left:30px;position:relative}
+.need.yes{background:color-mix(in srgb,var(--ok) 9%,var(--surface))}
+.need.yes li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
+.need.no{background:var(--bg);border:1px dashed var(--line)}
+.need.no li::before{content:"✕";position:absolute;left:2px;color:var(--bad);font-weight:700}
+.myths{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.myths p{background:var(--bg);border-radius:14px;padding:16px 18px}
+
+/* Picks */
+.picks{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.pick{padding:22px;display:grid;gap:8px;align-content:start;transition:transform .15s,box-shadow .15s}
+.pick:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.pick .badge{justify-self:start;background:var(--gold-soft);color:#8a5d10;font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.04em}
+.pick h4{font-size:1.35rem}
+.pick .cost{font-size:.92rem}
+.howrank{background:var(--navy);color:#e9eef7;border-radius:20px;padding:26px 28px;display:grid;gap:12px;box-shadow:var(--shadow-lg)}
+.howrank h3{color:#fff}
+.howrank ol{margin:0;padding-left:1.3em;display:grid;gap:6px}
+.howrank b{color:var(--gold-2)}
+.howrank .note{color:#c2cde0}
 .rate{display:flex;gap:16px;flex-wrap:wrap;font-size:.9rem;color:var(--muted)}
-.rate .dots{color:var(--accent);letter-spacing:2px;font-size:1rem}
-.agents{background:var(--accent-soft);border-radius:12px;padding:18px;display:grid;gap:8px}
-#picks h3{margin-top:8px}
-.buy{background:var(--surface);border:3px solid var(--gold);border-radius:16px;padding:22px 24px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.buytext{display:grid;gap:6px;flex:1 1 320px}
-.buy .lvtag{font-weight:700;color:var(--gold);font-size:.9rem}
-.buybtn{background:var(--gold);color:#fff;text-decoration:none;font-weight:700;font-size:1.2rem;padding:16px 28px;border-radius:12px;white-space:nowrap}
-.buyopts{display:grid;gap:10px;justify-items:center}
-.etsylink{font-size:1rem}
-.buybtn:hover{filter:brightness(1.05)}
-.season{background:var(--accent-soft);border-radius:16px;padding:24px;display:grid;gap:12px}
-.season .lvtag{font-weight:700;color:var(--gold);font-size:.9rem}
+.rate .dots{color:var(--gold);letter-spacing:2px;font-size:1rem}
+.agents{background:var(--gold-soft);border-radius:18px;padding:22px 24px;display:grid;gap:10px}
+.agents ol{margin:0;padding-left:1.3em;display:grid;gap:6px}
+.legend{display:flex;gap:10px;flex-wrap:wrap}
+.tag{font-size:.85rem;font-weight:700;padding:6px 14px;border-radius:999px;color:#fff}
+.tag.g{background:var(--ok)}.tag.y{background:var(--warn)}.tag.r{background:var(--bad)}
+.agentcard{border-top:6px solid var(--line)}
+.agentcard.g{border-top-color:var(--ok)}.agentcard.y{border-top-color:var(--warn)}.agentcard.r{border-top-color:var(--bad)}
+
+/* Buy band */
+.band.navyband{background:radial-gradient(800px 360px at 100% 0%,rgba(227,179,90,.22),transparent 60%),linear-gradient(150deg,#0b1a33,#173462);color:#eef2f8}
+.buy{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(24px,5vw,60px);align-items:center}
+@media (max-width:820px){.buy{grid-template-columns:1fr}}
+.buytext{display:grid;gap:14px}
+.buytext h2{color:#fff}
+.buytext p{color:#d3dbe8;font-size:1.1rem}
+.buy .lvtag{color:var(--gold-2)}
+.buy ul.feat{margin:0;padding:0;list-style:none;display:grid;gap:8px;color:#e6ebf4}
+.buy ul.feat li::before{content:"★";color:var(--gold-2);margin-right:10px}
+.buyopts{display:grid;gap:14px;justify-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:28px}
+.book{width:150px;aspect-ratio:8.5/11;border-radius:4px 10px 10px 4px;background:linear-gradient(135deg,#f7f2e6,#efe5cf);box-shadow:-6px 0 0 #c9b98f inset,0 24px 40px -14px rgba(0,0,0,.6);display:grid;place-items:center;text-align:center;padding:14px;color:#0f2240;font-family:var(--display);font-weight:700;font-size:.95rem;line-height:1.15;transform:rotate(-4deg)}
+.book small{display:block;font-family:var(--body);font-weight:700;font-size:.6rem;color:var(--gold);letter-spacing:.12em;margin-top:8px}
+.price{font-family:var(--display);font-size:2.2rem;color:#fff;line-height:1}
+.price small{font-size:1rem;color:#c2cde0;font-family:var(--body)}
+.buybtn{width:100%}
+.etsylink{color:var(--gold-2);font-size:1rem}
+
+/* Season */
+.season{display:grid;gap:16px}
 .season .starter{background:var(--surface)}
-.starters{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
-.starter{background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:8px}
-.starter .what{font-size:.85rem;font-weight:700;color:var(--accent)}
-.jump{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
-.jump a{background:var(--surface);border:2px solid var(--accent);border-radius:999px;padding:8px 16px;text-decoration:none;font-size:1rem}
-.step0{background:var(--surface);border:3px solid var(--accent);border-radius:16px;padding:24px;display:grid;gap:14px;scroll-margin-top:16px}
-.step0 .lvtag{font-weight:700;color:var(--accent);font-size:.9rem}
-.s0grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
-.s0grid>div{background:var(--bg);border-radius:10px;padding:14px;display:grid;gap:4px}
-.gsearch{font:inherit;font-size:1.05rem;padding:12px 14px;border:2px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);max-width:420px}
-.gloss{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.gloss>div{background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:4px;scroll-margin-top:16px}
-.gloss>div.hit{border-color:var(--gold)}
-.gloss dt{font-family:var(--display);font-weight:700;font-size:1.15rem;color:var(--accent)}
+
+/* News */
+.news{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.news-item{padding:22px;display:grid;gap:6px;align-content:start}
+.news-item .date{font-size:.8rem;color:var(--gold);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-variant-numeric:tabular-nums}
+
+/* Word list */
+.gsearch{font:inherit;font-size:1.1rem;padding:14px 18px;border:2px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);max-width:460px;width:100%}
+.gloss{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.gloss>div{padding:18px 20px;display:grid;gap:6px;align-content:start;scroll-margin-top:100px}
+.gloss>div.hit{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold) inset,var(--shadow)}
+.gloss dt{font-family:var(--display);font-weight:700;font-size:1.2rem;color:var(--navy-3)}
 .gloss dd{margin:0}
 .gloss dd.like{color:var(--muted);font-style:italic;font-size:.95rem}
-.term{font:inherit;font-weight:inherit;background:none;border:none;padding:0;color:inherit;text-decoration:underline dotted var(--accent);text-decoration-thickness:2px;text-underline-offset:4px;cursor:help;border-radius:0}
-.tip{position:fixed;left:16px;right:16px;bottom:16px;max-width:620px;margin:0 auto;background:var(--ink);color:var(--bg);border-radius:14px;padding:18px 20px;display:none;gap:6px;box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:10}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .gloss dt{color:var(--gold-2)}}
+.term{font:inherit;font-weight:inherit;background:none;border:none;padding:0;color:inherit;text-decoration:underline dotted var(--gold);text-decoration-thickness:2px;text-underline-offset:4px;cursor:help;border-radius:0}
+.tip{position:fixed;left:16px;right:16px;bottom:16px;max-width:620px;margin:0 auto;background:var(--navy);color:#fff;border-radius:18px;padding:20px 22px;display:none;gap:6px;box-shadow:0 20px 50px rgba(0,0,0,.4);z-index:30;border-top:4px solid var(--gold-2)}
 .tip.on{display:grid}
-.tip b{font-family:var(--display);font-size:1.2rem}
-.tip button{justify-self:end;background:var(--bg);color:var(--ink);border:none;padding:8px 18px}
-footer{color:var(--muted);font-size:.9rem;display:grid;gap:6px;border-top:1px solid var(--line);padding-top:18px}
-@media (max-width:480px){body{font-size:18px}h1{font-size:1.8rem}}
-@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}
+.tip b{font-family:var(--display);font-size:1.25rem;color:var(--gold-2)}
+.tip .note{color:#c2cde0}
+.tip button{justify-self:end;background:var(--gold-2);color:#1a1206;border:none;padding:10px 20px}
+
+/* Safety */
+.safety{background:var(--surface);border:1px solid var(--line);border-left:8px solid var(--bad);border-radius:20px;padding:clamp(22px,4vw,36px);display:grid;gap:14px;box-shadow:var(--shadow)}
+.safety ul{margin:0;padding-left:1.2em;display:grid;gap:10px}
+
+/* Guides list + footer */
+.guides{display:grid;gap:14px}
+.linklist{columns:3 260px;gap:28px;padding-left:1.1em;margin:0}
+.linklist li{margin-bottom:10px;break-inside:avoid}
+.sitefoot{background:#0b1a33;color:#c2cde0;padding:56px 0 40px;font-size:.95rem}
+.sitefoot .inner{display:grid;gap:18px}
+.sitefoot .logo{font-size:1.2rem}
+.sitefoot a{color:#fff}
+.sitefoot p{max-width:80ch}
+.footlinks{display:flex;flex-wrap:wrap;gap:8px 22px}
+.footlinks a{font-weight:700;text-decoration:none}
+.footlinks a:hover{text-decoration:underline}
+.fine{font-size:.85rem;color:#8f9cb3;border-top:1px solid rgba(255,255,255,.1);padding-top:18px}
+
+/* Article pages */
+.crumb{font-size:.95rem}
+.crumb a{font-weight:700}
+.article{display:grid;gap:22px}
+.article h1{font-size:clamp(2rem,4.4vw,3rem);font-weight:700}
+.answer{font-size:1.2rem;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--gold);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow)}
+.more{display:grid;gap:8px}
+.more a{font-weight:700}
+.cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.pagehead{background:linear-gradient(160deg,#0b1a33,#173462);color:#eef2f8;padding:48px 0 44px}
+.pagehead .crumb,.pagehead .crumb a{color:#c8d2e2}
+.pagehead h1{color:#fff;margin-top:10px}
+.pagehead .lede{color:#d3dbe8;margin-top:12px}
+
+@media (max-width:520px){
+  body{font-size:18px}
+  .inner{padding:0 18px}
+  .ask{padding:18px}
+  .go{width:100%}
+  .paths{margin-top:-40px}
+}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
+@media print{.topbar,.hero-art,.paths,.sitefoot,.tip{display:none}.band{padding:24px 0}.hero{background:none;color:#000}.hero h1,.hero .lede{color:#000}}
 </style>
 </head>
 <body>
-<div class="wrap">
-
-<header>
-  <div class="brand">The Boomer's AI Passage</div>
-  <h1>From Curious to Confident</h1>
-  <p class="lede">No hype. No jargon. Just what it can do for you.</p>
-  <nav class="jump" aria-label="Jump to">
-    <a href="#step0">New to AI? Start here</a>
-    <a href="#needs">What you need</a>
-    <a href="#picks">Our AI picks</a>
-    <a href="#agents">Agents report card</a>
-    <a href="#lv-h">Find help for a problem</a>
-    <a href="#gloss-h">Word list</a>
-    <a href="https://theboomersaipassage.gumroad.com/l/wpfolg" target="_blank" rel="noopener">Get the Handbook</a>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="topbar"><div class="inner">
+  <a class="logo" href="/"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span>The Boomer's <b>AI Passage</b></span></a>
+  <nav class="mainnav" aria-label="Main">
+    <a href="#step0">Start here</a>
+    <a href="#find">Find help</a>
+    <a href="#picks">Our picks</a>
+    <a href="#agents">Agents</a>
+    <a href="#words">Word list</a>
   </nav>
-</header>
-
+  <a class="btn btn-gold topcta" href="#buy"><span class="hide-sm">Get the&nbsp;</span>Handbook</a>
+</div></header>
+<main id="main">
+<section class="hero" aria-labelledby="hero-h"><div class="inner hero-grid">
+  <div>
+    <p class="eyebrow">AI for people 60 and up · Plain English</p>
+    <h1 id="hero-h">From Curious to <em>Confident.</em></h1>
+    <p class="lede">No hype. No jargon. Tell us what you need help with, and we'll show you which AI to use, what it costs, and the exact words to type.</p>
+    <div class="ask">
+      <label id="ask-label" for="q">What would you like help with?</label>
+      <form class="row" id="askForm">
+        <input type="text" id="q" placeholder="For example: understand my medical bill" autocomplete="off">
+        <button class="go" type="submit">Show me</button>
+      </form>
+      <p class="note">Or <a href="#find">pick a common problem</a>. There are no wrong questions.</p>
+    </div>
+    <div class="trust"><span>Rankings are never for sale</span><span>Checked November 2026</span><span>No tech skills needed</span></div>
+  </div>
+  <div class="hero-art"><svg viewBox="0 0 420 470" role="img" aria-label="A tablet showing a friendly conversation with AI">
+<defs>
+<radialGradient id="sun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#f3cf86"/><stop offset=".6" stop-color="#e3b35a" stop-opacity=".55"/><stop offset="1" stop-color="#e3b35a" stop-opacity="0"/></radialGradient>
+<linearGradient id="dev" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22324f"/><stop offset="1" stop-color="#0a1426"/></linearGradient>
+</defs>
+<circle cx="250" cy="170" r="170" fill="url(#sun)"/>
+<rect x="60" y="40" width="300" height="400" rx="34" fill="url(#dev)" stroke="#3a4d70" stroke-width="2"/>
+<rect x="76" y="62" width="268" height="356" rx="20" fill="#faf6ee"/>
+<rect x="76" y="62" width="268" height="52" rx="20" fill="#f2ece0"/>
+<rect x="76" y="94" width="268" height="20" fill="#f2ece0"/>
+<circle cx="102" cy="88" r="12" fill="#173462"/><path d="M95 92 Q102 79 109 92" fill="none" stroke="#e3b35a" stroke-width="2.4" stroke-linecap="round"/>
+<text x="122" y="94" font-family="Literata, Georgia, serif" font-weight="700" font-size="15" fill="#0f2240">Your AI helper</text>
+<rect x="150" y="134" width="176" height="62" rx="16" fill="#173462"/>
+<text x="166" y="160" font-family="Atkinson Hyperlegible, Arial" font-size="14" fill="#fff">Help me write a toast</text>
+<text x="166" y="180" font-family="Atkinson Hyperlegible, Arial" font-size="14" fill="#fff">for our 35th anniversary</text>
+<rect x="94" y="214" width="208" height="118" rx="16" fill="#fff" stroke="#e2dacb"/>
+<text x="110" y="240" font-family="Atkinson Hyperlegible, Arial" font-size="14" fill="#17202d">Of course! Here's a warm,</text>
+<text x="110" y="260" font-family="Atkinson Hyperlegible, Arial" font-size="14" fill="#17202d">short toast you can read:</text>
+<rect x="110" y="276" width="170" height="8" rx="4" fill="#e9e1cf"/>
+<rect x="110" y="292" width="150" height="8" rx="4" fill="#e9e1cf"/>
+<rect x="110" y="308" width="120" height="8" rx="4" fill="#e9e1cf"/>
+<rect x="94" y="362" width="232" height="40" rx="20" fill="#fff" stroke="#e2dacb"/>
+<text x="114" y="387" font-family="Atkinson Hyperlegible, Arial" font-size="13" fill="#8a93a3">Type or talk in plain English…</text>
+<circle cx="306" cy="382" r="14" fill="#c08a26"/><path d="M300 382h11m-4-4 4 4-4 4" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(300 40)"><rect width="112" height="40" rx="20" fill="#fff"/><circle cx="22" cy="20" r="10" fill="#2f7d3a"/><path d="M17 20l3.5 3.5L27 16" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/><text x="38" y="25" font-family="Atkinson Hyperlegible, Arial" font-weight="700" font-size="13" fill="#0f2240">No jargon</text></g>
+<g transform="translate(14 300)"><rect width="122" height="40" rx="20" fill="#e3b35a"/><text x="18" y="25" font-family="Atkinson Hyperlegible, Arial" font-weight="700" font-size="13" fill="#1a1206">★ Free to start</text></g>
+</svg></div>
+</div></section>
+<section class="band tight" aria-label="Three ways to begin"><div class="inner">
+  <div class="paths">
+    <a class="path" href="#step0"><span class="num">1</span><h3>Brand new to AI?</h3><p>Five minutes. What it is, what you need, and your very first question.</p><span class="more">Start here →</span></a>
+    <a class="path" href="#find"><span class="num">2</span><h3>Have a job for AI?</h3><p>Pick an everyday problem. Get the best 3 tools, ranked, with the words to type.</p><span class="more">Find help →</span></a>
+    <a class="path" href="#buy"><span class="num">3</span><h3>Want it on paper?</h3><p>The handbook: 100 things to ask AI, in big easy-to-read type. A great gift.</p><span class="more">See the handbook →</span></a>
+  </div>
+</div></section>
+<section class="band alt" id="find" aria-labelledby="lv-h"><div class="inner">
+  <div class="section-head"><span class="eyebrow">Find help</span><h2 id="lv-h">Pick a problem. Get the right AI.</h2>
+  <p class="note">Asking AI for reservations or egg timers? That's Step 1. Come back each week for the next step.</p></div>
+  <h3 class="subhead">Your five steps</h3>
+  <div class="levels" id="levels"></div>
+  <h3 class="subhead">Common problems</h3>
+  <div class="tiles" id="tiles"></div>
+  <section id="answer" aria-live="polite"></section>
+</div></section>
+<div class="band"><div class="inner">
 <section class="step0" id="step0" aria-labelledby="s0-h">
   <span class="lvtag">Step 0 · 5 minutes</span>
   <h2 id="s0-h">What is AI?</h2>
-  <p><b>AI is a computer program you talk to in plain English.</b> It answers like a well-read helper who never gets tired of questions.</p>
+  <p class="big1"><b>AI is a computer program you talk to in plain English.</b> It answers like a well-read helper who never gets tired of questions.</p>
   <div class="s0grid">
     <div><h3>Good at</h3><p>Writing, explaining, planning and answering questions.</p></div>
     <div><h3>Bad at</h3><p>It can be wrong and still sound sure. It only knows what you tell it about you.</p></div>
@@ -185,9 +371,10 @@ footer{color:var(--muted);font-size:.9rem;display:grid;gap:6px;border-top:1px so
   <h3>Not sure what to ask? Try one of these</h3>
   <p class="note">Tap "Copy," then paste it into the AI. There are no wrong questions.</p>
   <div class="starters" id="starters"></div>
-  <p class="note">That's it. You've used AI. Next, pick a problem below.</p>
+  <p class="note">That's it. You've used AI. Next, <a href="#find">pick a problem</a>.</p>
 </section>
-
+</div></div>
+<div class="band alt"><div class="inner">
 <section class="needs" id="needs" aria-labelledby="needs-h">
   <span class="lvtag">Step 0, part 2 · No spooky stuff</span>
   <h2 id="needs-h">What you need (and what you don't)</h2>
@@ -222,8 +409,9 @@ footer{color:var(--muted);font-size:.9rem;display:grid;gap:6px;border-top:1px so
     <p><b>"My old phone won't work."</b> Usually it will. If the app won't install, use the website in your phone's browser instead.</p>
   </div>
 </section>
-
-<section class="section-head" id="picks" aria-labelledby="picks-h">
+</div></div>
+<section class="band " id="picks" aria-labelledby="picks-h"><div class="inner">
+  <span class="eyebrow">Our picks</span>
   <h2 id="picks-h">Our picks: which AI for which job</h2>
   <p class="note">Start with ONE everyday helper. Add a specialty tool only when you have a job for it.</p>
   <div class="howrank">
@@ -244,9 +432,9 @@ footer{color:var(--muted);font-size:.9rem;display:grid;gap:6px;border-top:1px so
     <h3>What about AI "agents"?</h3>
     <p>See our <a href="#agents-h">Agents report card</a> below: which ones are ready for you, which need a helper, and which to skip for now.</p>
   </div>
-</section>
-
-<section class="section-head" id="agents" aria-labelledby="agents-h">
+</div></section>
+<section class="band alt" id="agents" aria-labelledby="agents-h"><div class="inner">
+  <span class="eyebrow">Report card</span>
   <h2 id="agents-h">Agents report card</h2>
   <p>An <b>agent</b> is an AI that does errands for you: it clicks, fills in forms or books things, instead of just answering. Here's an honest look at the ones you can get today.</p>
   <div class="legend">
@@ -262,63 +450,50 @@ footer{color:var(--muted);font-size:.9rem;display:grid;gap:6px;border-top:1px so
     </ol>
   </div>
   <p class="note">Checked November 2026. We update this report card every week as agents get easier and safer.</p>
-</section>
-
-<section class="buy" aria-labelledby="buy-h">
-  <div class="buytext">
-    <span class="lvtag">The Handbook · $19</span>
-    <h2 id="buy-h">Get the large-print handbook</h2>
-    <p>Step 0, the word list, and 100 things to ask AI, with the exact words to type. Print it or read it on a tablet.</p>
-    <p class="note">A great Christmas gift for parents and grandparents.</p>
-  </div>
-  <div class="buyopts">
-    <a class="buybtn" href="https://theboomersaipassage.gumroad.com/l/wpfolg" target="_blank" rel="noopener">Get the Handbook</a>
-    <a class="etsylink" href="https://www.etsy.com/shop/BoomersAIPassage" target="_blank" rel="noopener">Also on Etsy</a>
-  </div>
-</section>
-
+</div></section>
+<div class="band"><div class="inner">
 <section class="season" aria-labelledby="season-h">
   <span class="lvtag" id="seasonTag"></span>
   <h2 id="season-h"></h2>
   <p id="seasonIntro"></p>
   <div class="starters" id="seasonList"></div>
 </section>
-
-<section class="section-head" aria-labelledby="lv-h">
-  <h2 id="lv-h">Your five steps</h2>
-  <p class="note">Asking AI for reservations or egg timers? That's Step 1. Come back each week for the next step.</p>
-  <div class="levels" id="levels"></div>
-</section>
-
-<section class="ask" aria-labelledby="ask-label">
-  <label id="ask-label" for="q">What would you like help with?</label>
-  <form class="row" id="askForm">
-    <input type="text" id="q" placeholder="For example: understand my medical bill" autocomplete="off">
-    <button class="go" type="submit">Show me</button>
-  </form>
-  <p class="note">Or pick one of the common problems below.</p>
-</section>
-
-<section class="section-head" aria-label="Common problems">
-  <h2>Common problems</h2>
-  <div class="tiles" id="tiles"></div>
-</section>
-
-<section id="answer" aria-live="polite"></section>
-
-<section class="section-head" aria-labelledby="news-h">
+</div></div>
+<section class="band navyband" id="buy" aria-labelledby="buy-h"><div class="inner">
+<div class="buy">
+  <div class="buytext">
+    <span class="lvtag">The Handbook · $19</span>
+    <h2 id="buy-h">Everything on this site, on paper.</h2>
+    <p>Easy-to-read type, plain words, and the exact words to type. Print it, or keep it on a tablet by the chair.</p>
+    <ul class="feat">
+      <li>Step 0: what AI is, in five minutes</li>
+      <li>100 things to ask AI, from easy to amazing</li>
+      <li>The full word list and five safety rules</li>
+      <li>A gift page, ready for Christmas</li>
+    </ul>
+  </div>
+  <div class="buyopts">
+    <div class="book" aria-hidden="true"><span>The Boomer's AI Passage<small>FROM CURIOUS TO CONFIDENT</small></span></div>
+    <div class="price">$19 <small>instant PDF</small></div>
+    <a class="btn btn-gold buybtn" href="https://theboomersaipassage.gumroad.com/l/wpfolg" target="_blank" rel="noopener">Get the Handbook</a>
+    <a class="etsylink" href="https://www.etsy.com/shop/BoomersAIPassage" target="_blank" rel="noopener">Also on Etsy</a>
+  </div>
+</div>
+</div></section>
+<section class="band alt" aria-labelledby="news-h"><div class="inner">
+  <span class="eyebrow">What's new</span>
   <h2 id="news-h">New in AI this month</h2>
   <p class="note">What changed lately, and whether you need to care. Checked November 2026.</p>
   <div class="news" id="news"></div>
-</section>
-
-<section class="section-head" aria-labelledby="gloss-h">
+</div></section>
+<section id="words" class="band " aria-labelledby="gloss-h"><div class="inner">
+  <span class="eyebrow">Plain English</span>
   <h2 id="gloss-h">Word list</h2>
   <p class="note">AI words in plain English. Tap an underlined word anywhere on this page to see what it means.</p>
   <input type="text" id="gq" class="gsearch" placeholder="Look up a word, like agent" autocomplete="off" aria-label="Look up a word">
   <dl class="gloss" id="gloss"></dl>
-</section>
-
+</div></section>
+<div class="band"><div class="inner">
 <section class="safety" aria-labelledby="safe-h">
   <h2 id="safe-h">Five safety rules before you start</h2>
   <ul>
@@ -329,13 +504,17 @@ footer{color:var(--muted);font-size:.9rem;display:grid;gap:6px;border-top:1px so
     <li>If a message, call or "AI" asks for money or gift cards in a hurry, stop. That is a scam pattern. The AARP Fraud Watch Network helpline (877-908-3360) is free to call.</li>
   </ul>
 </section>
-
-<footer>
-  <p>Prices are US list prices checked in November 2026 and change often. Confirm on the tool's own site before you pay. We are not paid by any of these companies.</p>
-  <p>The Boomer's AI Passage · From Curious to Confident. No hype. No jargon. Just what it can do for you.</p>
-</footer>
-
-</div>
+</div></div>
+</main>
+<!--GUIDES-->
+<footer class="sitefoot"><div class="inner">
+  <a class="logo" href="/"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span>The Boomer's <b>AI Passage</b></span></a>
+  <p>From Curious to Confident. No hype. No jargon. Just what it can do for you.</p>
+  <nav class="footlinks" aria-label="Footer">
+    <a href="#step0">Start here</a><a href="/problems/">Every problem</a><a href="/words/">Word list</a><a href="#agents">Agents report card</a><a href="/share/">Share your story</a><a href="https://theboomersaipassage.gumroad.com/l/wpfolg">The Handbook</a>
+  </nav>
+  <p class="fine">Prices are US list prices checked in November 2026 and change often. Confirm on the tool's own site before you pay. No company can pay for a higher ranking. If we ever earn a fee from a link, we say so, and it never changes the order.</p>
+</div></footer>
 <div class="tip" id="tip" role="dialog" aria-live="polite"><b id="tipT"></b><span id="tipD"></span><span id="tipL" class="note"></span><button type="button" id="tipX">Got it</button></div>
 
 <script>

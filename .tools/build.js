@@ -24,16 +24,7 @@ fs.mkdirSync(path.join(OUT, "problems"), { recursive: true });
 fs.mkdirSync(path.join(OUT, "words"), { recursive: true });
 
 // Shared stylesheet = the app's own CSS, plus a few rules for article pages.
-const css = html.match(/<style>([\s\S]*?)<\/style>/)[1] + `
-.crumb{font-size:.95rem}
-.article{display:grid;gap:18px}
-.answer{font-size:1.2rem;background:var(--accent-soft);border-radius:14px;padding:18px 20px}
-.more{display:grid;gap:8px}
-.more a{font-weight:700}
-.linklist{columns:2 260px;gap:24px;padding-left:1.1em}
-.linklist li{margin-bottom:8px;break-inside:avoid}
-.cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-`;
+const css = html.match(/<style>([\s\S]*?)<\/style>/)[1];
 fs.writeFileSync(path.join(OUT, "style.css"), css);
 
 const head = (title, desc, url, extra = "") => `<!DOCTYPE html>
@@ -56,27 +47,35 @@ const head = (title, desc, url, extra = "") => `<!DOCTYPE html>
 ${extra}
 </head>
 <body>
-<div class="wrap">
-<header><div class="brand"><a href="/" style="text-decoration:none">The Boomer's AI Passage</a></div></header>`;
+<a class="skip" href="#main">Skip to the content</a>
+<header class="topbar"><div class="inner">
+  <a class="logo" href="/"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span>The Boomer's <b>AI Passage</b></span></a>
+  <nav class="mainnav" aria-label="Main"><a href="/#step0">Start here</a><a href="/problems/">Find help</a><a href="/#picks">Our picks</a><a href="/#agents">Agents</a><a href="/words/">Word list</a></nav>
+  <a class="btn btn-gold topcta" href="${GUMROAD}"><span class="hide-sm">Get the&nbsp;</span>Handbook</a>
+</div></header>
+<main id="main"><div class="band"><div class="inner">`;
 
 const foot = `
-<section class="buy" aria-label="The handbook">
+</div></div>
+<section class="band navyband" aria-label="The handbook"><div class="inner"><div class="buy">
   <div class="buytext">
     <span class="lvtag">The Handbook · $19</span>
-    <h2>Get the easy-to-read handbook</h2>
-    <p>Step 0, the word list, and 100 things to ask AI, with the exact words to type.</p>
+    <h2>Everything on this site, on paper.</h2>
+    <p>Step 0, the word list, and 100 things to ask AI, with the exact words to type. Easy-to-read type.</p>
   </div>
   <div class="buyopts">
-    <a class="buybtn" href="${GUMROAD}" rel="noopener">Get the Handbook</a>
+    <div class="price">$19 <small>instant PDF</small></div>
+    <a class="btn btn-gold buybtn" href="${GUMROAD}" rel="noopener">Get the Handbook</a>
     <a class="etsylink" href="${ETSY}" rel="noopener">Also on Etsy</a>
   </div>
-</section>
-<footer>
-  <p><a href="/">Home</a> · <a href="/problems/">All everyday problems</a> · <a href="/words/">AI word list</a></p>
-  <p>The Boomer's AI Passage · From Curious to Confident. No hype. No jargon. Just what it can do for you.</p>
-  <p>Prices change often; checked ${new Date().toLocaleString("en-US", { month: "long", year: "numeric" })}. Rankings are never for sale.</p>
-</footer>
-</div>
+</div></div></section>
+</main>
+<footer class="sitefoot"><div class="inner">
+  <a class="logo" href="/"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span>The Boomer's <b>AI Passage</b></span></a>
+  <p>From Curious to Confident. No hype. No jargon. Just what it can do for you.</p>
+  <nav class="footlinks" aria-label="Footer"><a href="/">Home</a><a href="/problems/">Every problem</a><a href="/words/">Word list</a><a href="/share/">Share your story</a><a href="${GUMROAD}">The Handbook</a></nav>
+  <p class="fine">Prices change often; checked ${new Date().toLocaleString("en-US", { month: "long", year: "numeric" })}. Rankings are never for sale.</p>
+</div></footer>
 </body>
 </html>`;
 
@@ -184,12 +183,11 @@ let home = html
 <meta property="og:description" content="No hype. No jargon. Just what AI can do for you.">
 <meta property="og:url" content="${DOMAIN}/">
 <meta property="og:type" content="website">`)
-  .replace("<footer>", `<nav class="section-head" aria-label="All guides">
-  <h2>Browse every guide</h2>
+  .replace("<!--GUIDES-->", `<section class="band alt" aria-label="All guides"><div class="inner guides">
+  <span class="eyebrow">Every guide</span><h2>Browse every guide</h2>
   <ul class="linklist">${P.map(p => `<li><a href="/problems/${p.id}/">${esc(p.title)}</a></li>`).join("")}</ul>
   <p><a href="/words/">The full AI word list</a> · <a href="/share/">Share your story</a></p>
-</nav>
-<footer>`);
+</div></section>`);
 fs.writeFileSync(path.join(OUT, "index.html"), home);
 
 // 404, robots, sitemap, llms.txt, CNAME
