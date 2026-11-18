@@ -35,6 +35,8 @@ const head = (title, desc, url, extra = "") => `<!DOCTYPE html>
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${url}">
+<meta property="og:image" content="${DOMAIN}/og.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${url}">
@@ -183,6 +185,8 @@ function seoHead(title, desc, url) {
   return `<title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${url}">
+<meta property="og:image" content="${DOMAIN}/og.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${url}">
@@ -217,6 +221,7 @@ for (const sp of SUBPAGES) {
 fs.writeFileSync(path.join(OUT, "404.html"), head("Page not found | The Boomer's AI Passage", "Page not found.", DOMAIN + "/") +
   `<section class="article"><h1>That page isn't here</h1><p class="lede"><a href="/">Go to the home page</a> or <a href="/problems/">browse everyday problems</a>.</p></section>` + foot);
 fs.writeFileSync(path.join(OUT, "favicon.svg"), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>`);
+fs.copyFileSync(path.join(__dirname, "og.png"), path.join(OUT, "og.png"));
 fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${DOMAIN}/sitemap.xml\n`);
 fs.writeFileSync(path.join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
