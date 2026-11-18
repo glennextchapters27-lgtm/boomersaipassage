@@ -23,7 +23,14 @@
 
 ## Reference
 - [AI word list](https://boomersaipassage.com/words/): plain-English definitions of 32 AI terms
-- [Home: what AI is, what you need, agents report card, safety rules](https://boomersaipassage.com/)
+- [Start here: what AI is, what you need, safety rules](https://boomersaipassage.com/start/)
+- [Our AI picks and how we rank](https://boomersaipassage.com/picks/)
+- [AI agents report card](https://boomersaipassage.com/agents/)
+- [AI news this month](https://boomersaipassage.com/news/)
+- [Let AI help with Thanksgiving.](https://boomersaipassage.com/thanksgiving/): Open any free AI helper (ChatGPT, Claude or Gemini), copy one of the requests below, change the details, and press Enter. It answers in seconds.
+- [A gift for Mom, Dad, Grandma or Grandpa who's curious about AI.](https://boomersaipassage.com/gift/): The Boomer's AI Passage handbook: an instant PDF ($19) with 100 things to ask AI, the AI word list, five safety rules and a gift page to sign. Print it or give it on a tablet.
+- [How to use ChatGPT, in plain English.](https://boomersaipassage.com/chatgpt-for-seniors/): Go to chatgpt.com on any phone, tablet or computer, type a question in the box at the bottom, and press Enter. The free version is enough to start.
+- [Is AI safe? Yes, with five simple rules.](https://boomersaipassage.com/ai-safety/): Yes. Using ChatGPT, Claude or Gemini is safe if you never share passwords or account numbers, double-check health, money and legal answers, and use the official app or website.
 
 ## Product
 - [The Boomer's AI Passage handbook](https://theboomersaipassage.gumroad.com/l/wpfolg): 100 things to ask AI, step by step

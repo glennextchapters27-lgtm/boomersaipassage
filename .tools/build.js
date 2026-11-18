@@ -53,7 +53,7 @@ ${extra}
 <a class="skip" href="#main">Skip to the content</a>
 <header class="topbar"><div class="inner">
   <a class="logo" href="/"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span>The Boomer's <b>AI Passage</b></span></a>
-  <nav class="mainnav" aria-label="Main"><a href="/#step0">Start here</a><a href="/problems/">Find help</a><a href="/#picks">Our picks</a><a href="/#agents">Agents</a><a href="/words/">Word list</a></nav>
+  <nav class="mainnav" aria-label="Main"><a href="/start/">Start here</a><a href="/problems/">Find help</a><a href="/picks/">Our picks</a><a href="/agents/">Agents</a><a href="/words/">Word list</a><a href="/news/">What's new</a></nav>
   <a class="btn btn-gold topcta" href="${GUMROAD}"><span class="hide-sm">Get the&nbsp;</span>Handbook</a>
 </div></header>
 <main id="main"><div class="band"><div class="inner">`;
@@ -76,7 +76,7 @@ const foot = `
 <footer class="sitefoot"><div class="inner">
   <a class="logo" href="/"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span>The Boomer's <b>AI Passage</b></span></a>
   <p>From Curious to Confident. No hype. No jargon. Just what it can do for you.</p>
-  <nav class="footlinks" aria-label="Footer"><a href="/">Home</a><a href="/problems/">Every problem</a><a href="/words/">Word list</a><a href="/share/">Share your story</a><a href="${GUMROAD}">The Handbook</a></nav>
+  <nav class="footlinks" aria-label="Footer"><a href="/">Home</a><a href="/start/">Start here</a><a href="/problems/">Every problem</a><a href="/chatgpt-for-seniors/">ChatGPT guide</a><a href="/ai-safety/">Is AI safe?</a><a href="/thanksgiving/">Thanksgiving</a><a href="/gift/">Gift idea</a><a href="/words/">Word list</a><a href="/share/">Share your story</a></nav>
   <p class="fine">Prices change often; checked ${new Date().toLocaleString("en-US", { month: "long", year: "numeric" })}. Rankings are never for sale.</p>
 </div></footer>
 </body>
@@ -125,6 +125,28 @@ for (const p of P) {
 </section>` + foot;
   fs.mkdirSync(path.join(OUT, "problems", p.id), { recursive: true });
   fs.writeFileSync(path.join(OUT, "problems", p.id, "index.html"), page);
+}
+
+
+// Stand-alone guides
+const GUIDES = require(path.join(__dirname, "guides.js"))(GUMROAD);
+const COPYJS = `<script>document.addEventListener("click",e=>{const b=e.target.closest(".copy");if(!b)return;navigator.clipboard&&navigator.clipboard.writeText(b.dataset.say).then(()=>{const t=b.textContent;b.textContent="Copied";setTimeout(()=>b.textContent=t,1500);});});</script>`;
+for (const g of GUIDES) {
+  const url = `${DOMAIN}/${g.slug}/`;
+  const faq = { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": g.faq.map(([q, a]) => ({ "@type": "Question", "name": q, "acceptedAnswer": { "@type": "Answer", "text": a } })) };
+  const page = head(g.title, g.desc, url, `<script type="application/ld+json">${JSON.stringify(faq)}</script>`) + `
+<p class="crumb"><a href="/">Home</a> › ${esc(g.eyebrow)}</p>
+<section class="article">
+  <span class="eyebrow">${esc(g.eyebrow)}</span>
+  <h1>${esc(g.h1)}</h1>
+  <p class="lede">${esc(g.lede)}</p>
+  <p class="answer"><b>Short answer:</b> ${esc(g.answer)}</p>
+  ${g.body()}
+  <div class="more"><h2>Common questions</h2>${g.faq.map(([q, a]) => `<p><b>${esc(q)}</b><br>${esc(a)}</p>`).join("")}</div>
+</section>${COPYJS}` + foot;
+  fs.mkdirSync(path.join(OUT, g.slug), { recursive: true });
+  fs.writeFileSync(path.join(OUT, g.slug, "index.html"), page);
+  urls.push(url);
 }
 
 // Problem index
@@ -237,7 +259,11 @@ ${P.map(p => `- [${p.title}](${DOMAIN}/problems/${p.id}/): our top pick is ${T[p
 
 ## Reference
 - [AI word list](${DOMAIN}/words/): plain-English definitions of ${GLOSS.length} AI terms
-- [Home: what AI is, what you need, agents report card, safety rules](${DOMAIN}/)
+- [Start here: what AI is, what you need, safety rules](${DOMAIN}/start/)
+- [Our AI picks and how we rank](${DOMAIN}/picks/)
+- [AI agents report card](${DOMAIN}/agents/)
+- [AI news this month](${DOMAIN}/news/)
+${GUIDES.map(g => `- [${g.h1}](${DOMAIN}/${g.slug}/): ${g.answer}`).join("\n")}
 
 ## Product
 - [The Boomer's AI Passage handbook](${GUMROAD}): 100 things to ask AI, step by step
