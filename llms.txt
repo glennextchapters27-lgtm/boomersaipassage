@@ -1,0 +1,29 @@
+# The Boomer's AI Passage
+
+> Plain-English guidance on choosing and using AI tools, written for people over 60. Each guide answers "Which AI should I use for this?" with ranked picks, current prices, setup steps and the exact words to type. Rankings use four criteria (does the job well, easy to use, good value, trustworthy) and are never sold. Updated weekly.
+
+## Everyday problems
+- [Write a letter or email](https://boomersaipassage.com/problems/letter/): our top pick is Claude.
+- [Understand a medical bill or insurance letter](https://boomersaipassage.com/problems/bill/): our top pick is Claude.
+- [Get ready for a doctor visit](https://boomersaipassage.com/problems/doctor/): our top pick is ChatGPT.
+- [Remember what the doctor said](https://boomersaipassage.com/problems/record/): our top pick is Otter.ai.
+- [Is this text or email a scam?](https://boomersaipassage.com/problems/scam/): our top pick is ChatGPT.
+- [Plan a trip](https://boomersaipassage.com/problems/trip/): our top pick is ChatGPT.
+- [Fix or restore old family photos](https://boomersaipassage.com/problems/photos/): our top pick is MyHeritage Photo Enhancer.
+- [Identify a plant, bird or bug](https://boomersaipassage.com/problems/identify/): our top pick is Merlin Bird ID.
+- [Read small print or describe things](https://boomersaipassage.com/problems/vision/): our top pick is Be My Eyes.
+- [Plan meals or cook with what I have](https://boomersaipassage.com/problems/meals/): our top pick is ChatGPT.
+- [Learn a language or new skill](https://boomersaipassage.com/problems/language/): our top pick is Duolingo.
+- [Fix a phone or computer problem](https://boomersaipassage.com/problems/tech/): our top pick is Google Gemini.
+- [Make something fun for the grandkids](https://boomersaipassage.com/problems/grandkids/): our top pick is ChatGPT.
+- [Research a big purchase](https://boomersaipassage.com/problems/buy/): our top pick is Perplexity.
+- [Write my life story or family history](https://boomersaipassage.com/problems/memoir/): our top pick is Claude.
+- [Build a tiny app without coding](https://boomersaipassage.com/problems/build/): our top pick is Claude.
+- [Organize my week and reminders](https://boomersaipassage.com/problems/organize/): our top pick is Google Gemini.
+
+## Reference
+- [AI word list](https://boomersaipassage.com/words/): plain-English definitions of 32 AI terms
+- [Home: what AI is, what you need, agents report card, safety rules](https://boomersaipassage.com/)
+
+## Product
+- [The Boomer's AI Passage handbook](https://theboomersaipassage.gumroad.com/l/wpfolg): 100 things to ask AI, step by step

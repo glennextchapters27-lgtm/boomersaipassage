@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Boomer's AI Passage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Literata:opsz,wght@7..72,600;7..72,700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: one calm column. Pick a problem (big tiles) or type your own -> ranked answer cards below. Large type for older readers. */
+:root{
+  --bg:#f4f6f8;
+  --surface:#ffffff;
+  --ink:#16222e;
+  --muted:#4a5866;
+  --accent:#0b5e6b;
+  --accent-soft:#dcedef;
+  --gold:#b7791f;
+  --line:#cfd8df;
+  --display:"Literata", Georgia, serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f171e; --surface:#17222c; --ink:#eef3f6; --muted:#a9b8c4;
+    --accent:#5cc3cf; --accent-soft:#163a40; --gold:#e3b25c; --line:#2c3b48;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f171e; --surface:#17222c; --ink:#eef3f6; --muted:#a9b8c4;
+  --accent:#5cc3cf; --accent-soft:#163a40; --gold:#e3b25c; --line:#2c3b48;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:21px;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:32px 20px 64px;display:grid;gap:36px}
+header{display:grid;gap:10px}
+.brand{font-family:var(--display);font-weight:700;font-size:1rem;color:var(--accent);letter-spacing:.02em}
+h1{font-family:var(--display);font-size:2.3rem;line-height:1.15;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-size:1.5rem;margin:0;text-wrap:balance}
+h3{font-family:var(--display);font-size:1.25rem;margin:0}
+p{margin:0;max-width:65ch}
+.lede{color:var(--muted);font-size:1.1rem}
+.ask{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:14px}
+label{font-weight:700;font-size:1.1rem}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+input[type=text]{flex:1 1 320px;font:inherit;font-size:1.1rem;padding:14px 16px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+button{font:inherit;font-weight:700;cursor:pointer;border-radius:10px}
+.go{background:var(--accent);color:var(--surface);border:none;padding:14px 26px;font-size:1.1rem}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.tile{background:var(--surface);color:var(--ink);border:2px solid var(--line);padding:16px;text-align:left;font-size:1.02rem;line-height:1.35;display:grid;gap:4px}
+.tile small{font-weight:400;color:var(--muted);font-size:.85rem}
+.tile:hover{border-color:var(--accent)}
+.tile[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.section-head{display:grid;gap:6px}
+#answer{display:grid;gap:16px;scroll-margin-top:16px}
+.answer-head{display:grid;gap:6px;border-left:6px solid var(--accent);padding-left:16px}
+.card{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:12px}
+.card.top{border-color:var(--accent)}
+.card-head{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.rank{font-family:var(--display);font-weight:700;font-size:1.6rem;color:var(--accent);min-width:1.6em}
+.pill{display:inline-block;font-size:.85rem;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.pill.best{background:var(--gold);color:#fff}
+.cost{color:var(--muted);font-size:.95rem}
+ol.steps{margin:0;padding-left:1.3em;display:grid;gap:4px}
+.say{background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:8px}
+.say b{font-size:.9rem;color:var(--muted)}
+.copy{justify-self:start;background:transparent;border:2px solid var(--accent);color:var(--accent);padding:6px 14px;font-size:.9rem}
+a{color:var(--accent);font-weight:700}
+.note{color:var(--muted);font-size:.95rem}
+.news{display:grid;gap:12px}
+.news-item{background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:4px}
+.news-item .date{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.safety{background:var(--accent-soft);border-radius:14px;padding:22px;display:grid;gap:10px}
+.safety ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.lv{background:var(--surface);color:var(--ink);border:2px solid var(--line);padding:12px 14px;text-align:left;display:grid;gap:2px;font-size:1rem;line-height:1.3}
+.lv .n{font-family:var(--display);color:var(--accent);font-size:.9rem}
+.lv small{font-weight:400;color:var(--muted);font-size:.82rem}
+.lv[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.tile .lvtag{font-size:.78rem;font-weight:700;color:var(--accent)}
+.picks{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.pick{background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:6px;align-content:start}
+.pick .badge{justify-self:start;background:var(--accent);color:var(--surface);font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.02em}
+.pick h4{margin:0;font-family:var(--display);font-size:1.25rem}
+.pick .cost{font-size:.9rem}
+.needs{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:24px;display:grid;gap:14px;scroll-margin-top:16px}
+.needs .lvtag{font-weight:700;color:var(--accent);font-size:.9rem}
+.needs .big{font-size:1.15rem}
+.needgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.need{border-radius:12px;padding:16px 18px;display:grid;gap:6px}
+.need ul{margin:0;padding-left:1.1em;display:grid;gap:8px}
+.need.yes{background:var(--accent-soft)}
+.need.no{background:var(--bg);border:2px dashed var(--line)}
+.myths{display:grid;gap:10px}
+.myths p{margin:0}
+.legend{display:flex;gap:10px;flex-wrap:wrap}
+.tag{font-size:.85rem;font-weight:700;padding:4px 12px;border-radius:999px;color:#fff}
+.tag.g{background:#2f7d3a}.tag.y{background:#a86f00}.tag.r{background:#a33a2c}
+.agentcard{border-left:8px solid var(--line)}
+.agentcard.g{border-left-color:#2f7d3a}.agentcard.y{border-left-color:#a86f00}.agentcard.r{border-left-color:#a33a2c}
+.agents ol{margin:0;padding-left:1.3em;display:grid;gap:4px}
+.howrank{background:var(--surface);border:2px solid var(--gold);border-radius:12px;padding:18px;display:grid;gap:8px}
+.howrank ol{margin:0;padding-left:1.3em;display:grid;gap:4px}
+.rate{display:flex;gap:16px;flex-wrap:wrap;font-size:.9rem;color:var(--muted)}
+.rate .dots{color:var(--accent);letter-spacing:2px;font-size:1rem}
+.agents{background:var(--accent-soft);border-radius:12px;padding:18px;display:grid;gap:8px}
+#picks h3{margin-top:8px}
+.buy{background:var(--surface);border:3px solid var(--gold);border-radius:16px;padding:22px 24px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.buytext{display:grid;gap:6px;flex:1 1 320px}
+.buy .lvtag{font-weight:700;color:var(--gold);font-size:.9rem}
+.buybtn{background:var(--gold);color:#fff;text-decoration:none;font-weight:700;font-size:1.2rem;padding:16px 28px;border-radius:12px;white-space:nowrap}
+.buyopts{display:grid;gap:10px;justify-items:center}
+.etsylink{font-size:1rem}
+.buybtn:hover{filter:brightness(1.05)}
+.season{background:var(--accent-soft);border-radius:16px;padding:24px;display:grid;gap:12px}
+.season .lvtag{font-weight:700;color:var(--gold);font-size:.9rem}
+.season .starter{background:var(--surface)}
+.starters{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.starter{background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:8px}
+.starter .what{font-size:.85rem;font-weight:700;color:var(--accent)}
+.jump{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.jump a{background:var(--surface);border:2px solid var(--accent);border-radius:999px;padding:8px 16px;text-decoration:none;font-size:1rem}
+.step0{background:var(--surface);border:3px solid var(--accent);border-radius:16px;padding:24px;display:grid;gap:14px;scroll-margin-top:16px}
+.step0 .lvtag{font-weight:700;color:var(--accent);font-size:.9rem}
+.s0grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.s0grid>div{background:var(--bg);border-radius:10px;padding:14px;display:grid;gap:4px}
+.gsearch{font:inherit;font-size:1.05rem;padding:12px 14px;border:2px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);max-width:420px}
+.gloss{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.gloss>div{background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:4px;scroll-margin-top:16px}
+.gloss>div.hit{border-color:var(--gold)}
+.gloss dt{font-family:var(--display);font-weight:700;font-size:1.15rem;color:var(--accent)}
+.gloss dd{margin:0}
+.gloss dd.like{color:var(--muted);font-style:italic;font-size:.95rem}
+.term{font:inherit;font-weight:inherit;background:none;border:none;padding:0;color:inherit;text-decoration:underline dotted var(--accent);text-decoration-thickness:2px;text-underline-offset:4px;cursor:help;border-radius:0}
+.tip{position:fixed;left:16px;right:16px;bottom:16px;max-width:620px;margin:0 auto;background:var(--ink);color:var(--bg);border-radius:14px;padding:18px 20px;display:none;gap:6px;box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:10}
+.tip.on{display:grid}
+.tip b{font-family:var(--display);font-size:1.2rem}
+.tip button{justify-self:end;background:var(--bg);color:var(--ink);border:none;padding:8px 18px}
+footer{color:var(--muted);font-size:.9rem;display:grid;gap:6px;border-top:1px solid var(--line);padding-top:18px}
+@media (max-width:480px){body{font-size:18px}h1{font-size:1.8rem}}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand">The Boomer's AI Passage</div>
+  <h1>From Curious to Confident</h1>
+  <p class="lede">No hype. No jargon. Just what it can do for you.</p>
+  <nav class="jump" aria-label="Jump to">
+    <a href="#step0">New to AI? Start here</a>
+    <a href="#needs">What you need</a>
+    <a href="#picks">Our AI picks</a>
+    <a href="#agents">Agents report card</a>
+    <a href="#lv-h">Find help for a problem</a>
+    <a href="#gloss-h">Word list</a>
+    <a href="https://theboomersaipassage.gumroad.com/l/wpfolg" target="_blank" rel="noopener">Get the Handbook</a>
+  </nav>
+</header>
+
+<section class="step0" id="step0" aria-labelledby="s0-h">
+  <span class="lvtag">Step 0 · 5 minutes</span>
+  <h2 id="s0-h">What is AI?</h2>
+  <p><b>AI is a computer program you talk to in plain English.</b> It answers like a well-read helper who never gets tired of questions.</p>
+  <div class="s0grid">
+    <div><h3>Good at</h3><p>Writing, explaining, planning and answering questions.</p></div>
+    <div><h3>Bad at</h3><p>It can be wrong and still sound sure. It only knows what you tell it about you.</p></div>
+    <div><h3>Costs</h3><p>Free to start. Paid plans are about $8 to $20 a month. You don't need one to begin.</p></div>
+  </div>
+  <h3>Try it now</h3>
+  <ol class="steps">
+    <li>Go to <b>chatgpt.com</b>, <b>claude.ai</b> or <b>gemini.google.com</b>. Any one is fine.</li>
+    <li>Click in the box at the bottom.</li>
+    <li>Type this, then press Enter:</li>
+  </ol>
+  <div class="say"><span>I'm new to AI. In simple words, what are 5 useful things you could help me with this week?</span>
+    <button class="copy" type="button" data-say="I'm new to AI. In simple words, what are 5 useful things you could help me with this week?">Copy these words</button></div>
+  <h3>Not sure what to ask? Try one of these</h3>
+  <p class="note">Tap "Copy," then paste it into the AI. There are no wrong questions.</p>
+  <div class="starters" id="starters"></div>
+  <p class="note">That's it. You've used AI. Next, pick a problem below.</p>
+</section>
+
+<section class="needs" id="needs" aria-labelledby="needs-h">
+  <span class="lvtag">Step 0, part 2 · No spooky stuff</span>
+  <h2 id="needs-h">What you need (and what you don't)</h2>
+  <p class="big">The AI runs on the company's giant computers, not yours. Like electricity: the power plant is huge, but you just plug in a lamp.</p>
+  <div class="needgrid">
+    <div class="need yes">
+      <h3>You need</h3>
+      <ul>
+        <li><b>A phone, tablet or computer you already own.</b> Anything from the last 5 years or so.</li>
+        <li><b>Your regular internet.</b> Home Wi-Fi or your phone's data.</li>
+        <li><b>An email address,</b> to make a free account.</li>
+        <li><b>Optional:</b> earbuds or a speaker, if you'd like to talk to it.</li>
+      </ul>
+    </div>
+    <div class="need no">
+      <h3>You don't need</h3>
+      <ul>
+        <li><b>A new or powerful computer.</b> The heavy work happens on their end.</li>
+        <li><b>Coding or programming.</b> You type or talk in plain English.</li>
+        <li><b>A special network or server.</b> Regular internet is plenty.</li>
+        <li><b>Complicated software.</b> It's a website or a free app.</li>
+        <li><b>To pay.</b> Start with the free version.</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Myth or fact?</h3>
+  <div class="myths">
+    <p><b>"AI is for tech people."</b> Myth. If you can send a text message, you can use AI.</p>
+    <p><b>"I might break something."</b> Myth. You can't. If an answer goes sideways, start a new chat.</p>
+    <p><b>"Building an app takes a programmer."</b> Not anymore. "Vibe coding" means describing what you want in plain words, and the AI builds it.</p>
+    <p><b>"It's always listening."</b> Myth. A chatbot only sees what you type or say while it's open. You can check its privacy settings any time.</p>
+    <p><b>"My old phone won't work."</b> Usually it will. If the app won't install, use the website in your phone's browser instead.</p>
+  </div>
+</section>
+
+<section class="section-head" id="picks" aria-labelledby="picks-h">
+  <h2 id="picks-h">Our picks: which AI for which job</h2>
+  <p class="note">Start with ONE everyday helper. Add a specialty tool only when you have a job for it.</p>
+  <div class="howrank">
+    <h3>How we rank</h3>
+    <ol>
+      <li><b>Does the job well.</b> We test it on the real task. This counts most.</li>
+      <li><b>Easy to use.</b> Few steps, clear screens, works by voice.</li>
+      <li><b>Good value.</b> A free version that's actually useful, and clear prices.</li>
+      <li><b>Trustworthy.</b> An established company, with privacy settings you can find.</li>
+    </ol>
+    <p class="note">No company can pay for a higher spot. If we ever earn a fee from a link, we say so, and it never changes the order.</p>
+  </div>
+  <h3>Everyday helpers: pick one to start</h3>
+  <div class="picks" id="picksMain"></div>
+  <h3>Specialty tools: one job each</h3>
+  <div class="picks" id="picksSpec"></div>
+  <div class="agents">
+    <h3>What about AI "agents"?</h3>
+    <p>See our <a href="#agents-h">Agents report card</a> below: which ones are ready for you, which need a helper, and which to skip for now.</p>
+  </div>
+</section>
+
+<section class="section-head" id="agents" aria-labelledby="agents-h">
+  <h2 id="agents-h">Agents report card</h2>
+  <p>An <b>agent</b> is an AI that does errands for you: it clicks, fills in forms or books things, instead of just answering. Here's an honest look at the ones you can get today.</p>
+  <div class="legend">
+    <span class="tag g">Ready for you</span><span class="tag y">Try with a helper</span><span class="tag r">Not yet</span>
+  </div>
+  <div class="picks" id="agentCards"></div>
+  <div class="agents">
+    <h3>Three rules for any agent</h3>
+    <ol>
+      <li><b>Watch it work</b> the first few times.</li>
+      <li><b>Never give it your bank or card login.</b> Let it stop and ask you before it pays for anything.</li>
+      <li><b>Start small:</b> a reminder, a recipe order, a simple form.</li>
+    </ol>
+  </div>
+  <p class="note">Checked November 2026. We update this report card every week as agents get easier and safer.</p>
+</section>
+
+<section class="buy" aria-labelledby="buy-h">
+  <div class="buytext">
+    <span class="lvtag">The Handbook · $19</span>
+    <h2 id="buy-h">Get the large-print handbook</h2>
+    <p>Step 0, the word list, and 100 things to ask AI, with the exact words to type. Print it or read it on a tablet.</p>
+    <p class="note">A great Christmas gift for parents and grandparents.</p>
+  </div>
+  <div class="buyopts">
+    <a class="buybtn" href="https://theboomersaipassage.gumroad.com/l/wpfolg" target="_blank" rel="noopener">Get the Handbook</a>
+    <a class="etsylink" href="https://www.etsy.com/shop/BoomersAIPassage" target="_blank" rel="noopener">Also on Etsy</a>
+  </div>
+</section>
+
+<section class="season" aria-labelledby="season-h">
+  <span class="lvtag" id="seasonTag"></span>
+  <h2 id="season-h"></h2>
+  <p id="seasonIntro"></p>
+  <div class="starters" id="seasonList"></div>
+</section>
+
+<section class="section-head" aria-labelledby="lv-h">
+  <h2 id="lv-h">Your five steps</h2>
+  <p class="note">Asking AI for reservations or egg timers? That's Step 1. Come back each week for the next step.</p>
+  <div class="levels" id="levels"></div>
+</section>
+
+<section class="ask" aria-labelledby="ask-label">
+  <label id="ask-label" for="q">What would you like help with?</label>
+  <form class="row" id="askForm">
+    <input type="text" id="q" placeholder="For example: understand my medical bill" autocomplete="off">
+    <button class="go" type="submit">Show me</button>
+  </form>
+  <p class="note">Or pick one of the common problems below.</p>
+</section>
+
+<section class="section-head" aria-label="Common problems">
+  <h2>Common problems</h2>
+  <div class="tiles" id="tiles"></div>
+</section>
+
+<section id="answer" aria-live="polite"></section>
+
+<section class="section-head" aria-labelledby="news-h">
+  <h2 id="news-h">New in AI this month</h2>
+  <p class="note">What changed lately, and whether you need to care. Checked November 2026.</p>
+  <div class="news" id="news"></div>
+</section>
+
+<section class="section-head" aria-labelledby="gloss-h">
+  <h2 id="gloss-h">Word list</h2>
+  <p class="note">AI words in plain English. Tap an underlined word anywhere on this page to see what it means.</p>
+  <input type="text" id="gq" class="gsearch" placeholder="Look up a word, like agent" autocomplete="off" aria-label="Look up a word">
+  <dl class="gloss" id="gloss"></dl>
+</section>
+
+<section class="safety" aria-labelledby="safe-h">
+  <h2 id="safe-h">Five safety rules before you start</h2>
+  <ul>
+    <li>Never type in your Social Security number, bank or card numbers, or passwords.</li>
+    <li>AI can be confidently wrong. Double-check anything about health, money or the law with a real person.</li>
+    <li>Use the official app or website. Search for the name yourself rather than clicking a link someone sent you.</li>
+    <li>Start with the free version. Pay only after it has helped you for a few weeks.</li>
+    <li>If a message, call or "AI" asks for money or gift cards in a hurry, stop. That is a scam pattern. The AARP Fraud Watch Network helpline (877-908-3360) is free to call.</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Prices are US list prices checked in November 2026 and change often. Confirm on the tool's own site before you pay. We are not paid by any of these companies.</p>
+  <p>The Boomer's AI Passage · From Curious to Confident. No hype. No jargon. Just what it can do for you.</p>
+</footer>
+
+</div>
+<div class="tip" id="tip" role="dialog" aria-live="polite"><b id="tipT"></b><span id="tipD"></span><span id="tipL" class="note"></span><button type="button" id="tipX">Got it</button></div>
+
+<script>
+const T = {
+  chatgpt:{name:"ChatGPT", maker:"OpenAI", cost:"Free version. Paid plans from about $8 a month; Plus about $20.", url:"https://chatgpt.com"},
+  claude:{name:"Claude", maker:"Anthropic", cost:"Free version. Pro about $20 a month.", url:"https://claude.ai"},
+  gemini:{name:"Google Gemini", maker:"Google", cost:"Free version. Paid plans from about $5 a month.", url:"https://gemini.google.com"},
+  copilot:{name:"Microsoft Copilot", maker:"Microsoft", cost:"Free version. Included with Microsoft 365 plans from about $10 a month.", url:"https://copilot.microsoft.com"},
+  perplexity:{name:"Perplexity", maker:"Perplexity", cost:"Free version. Pro about $20 a month.", url:"https://www.perplexity.ai"},
+  otter:{name:"Otter.ai", maker:"Otter", cost:"Free version with monthly limits. Paid plans available.", url:"https://otter.ai"},
+  myheritage:{name:"MyHeritage Photo Enhancer", maker:"MyHeritage", cost:"Free to try. Paid plan for more photos.", url:"https://www.myheritage.com/photo-enhancer"},
+  gphotos:{name:"Google Photos", maker:"Google", cost:"Free, with some editing tools on paid storage plans.", url:"https://photos.google.com"},
+  lens:{name:"Google Lens", maker:"Google", cost:"Free. Built into the Google app and many Android cameras.", url:"https://lens.google"},
+  merlin:{name:"Merlin Bird ID", maker:"Cornell Lab of Ornithology", cost:"Free.", url:"https://merlin.allaboutbirds.org"},
+  bemyeyes:{name:"Be My Eyes", maker:"Be My Eyes", cost:"Free.", url:"https://www.bemyeyes.com"},
+  seeingai:{name:"Seeing AI", maker:"Microsoft", cost:"Free.", url:"https://www.seeingai.com"},
+  duolingo:{name:"Duolingo", maker:"Duolingo", cost:"Free version. Paid plan removes ads and adds practice features.", url:"https://www.duolingo.com"},
+  canva:{name:"Canva", maker:"Canva", cost:"Free version. Pro plan for extra features.", url:"https://www.canva.com"},
+  lovable:{name:"Lovable", maker:"Lovable", cost:"Free version with daily limits. Paid plans available.", url:"https://lovable.dev"}
+};
+
+const P = [
+ {id:"letter", icon:"Write", title:"Write a letter or email", sub:"Complaint, thank-you, hard conversation",
+  keys:["letter","email","write","complaint","thank","note","card message","reply","wording"],
+  picks:[
+   {t:"claude", best:"Best for careful, warm writing", why:"Good at matching your tone, whether firm, friendly or formal. Tell it who the letter is for and what you want to happen.",
+    steps:["Go to claude.ai and make a free account.","Type what happened and who the letter is for.","Ask for changes in plain words: \"shorter\", \"less angry\", \"more polite\"."],
+    say:"Help me write a polite but firm letter to my cable company. I was charged $40 twice in October and want a refund. Keep it under 150 words."},
+   {t:"chatgpt", best:"Best all-rounder", why:"Fast and easy. The phone app lets you talk instead of type.",
+    steps:["Download the ChatGPT app or go to chatgpt.com.","Tap the microphone and say what you want to write.","Copy the result into your email."],
+    say:"Write a short thank-you note to my neighbor who shoveled my driveway all week."},
+   {t:"gemini", best:"Best if you use Gmail", why:"Works inside Gmail, so it can draft replies right where you read your email.",
+    steps:["Open Gmail on a computer.","Look for the Gemini star icon when you reply.","Describe the reply you want."],
+    say:"Draft a reply saying I can't make Tuesday but Thursday afternoon works."}
+  ]},
+ {id:"bill", icon:"Explain", title:"Understand a medical bill or insurance letter", sub:"What does this actually say?",
+  keys:["medical bill","bill","insurance","medicare","eob","explanation of benefits","statement","letter from","confusing","understand","explain"],
+  picks:[
+   {t:"claude", best:"Best for long, confusing documents", why:"You can upload a photo or PDF of the letter and ask it to explain each line in plain English.",
+    steps:["Black out your member ID and Social Security number first.","Upload a photo of the page at claude.ai.","Ask: what do I owe, and is anything wrong?"],
+    say:"Explain this Medicare letter in simple words. What do I owe, by when, and is there anything I should question?"},
+   {t:"chatgpt", best:"Easiest from your phone", why:"Snap a photo in the app and ask questions about it.",
+    steps:["Open the ChatGPT app.","Tap the + button and take a photo of the bill.","Ask it to explain the charges."],
+    say:"Which of these charges should insurance have covered? Give me questions to ask the billing office."}
+  ]},
+ {id:"doctor", icon:"Prepare", title:"Get ready for a doctor visit", sub:"Questions to ask, what to bring",
+  keys:["doctor","appointment","visit","questions","specialist","surgery","diagnosis","medication","medicine","health"],
+  picks:[
+   {t:"chatgpt", best:"Best for a quick question list", why:"Turns your worries into a clear, short list you can print or show on your phone.",
+    steps:["Describe your symptoms or the reason for the visit.","Ask for the 5 most important questions.","Bring the list. Your doctor still decides."],
+    say:"I'm seeing a cardiologist next week about high blood pressure. What are the 5 most important questions I should ask?"},
+   {t:"claude", best:"Best for understanding a diagnosis", why:"Patient and clear when explaining medical terms. Ask it to explain like you're a smart friend, not a doctor.",
+    steps:["Type the term or diagnosis you were given.","Ask what it means and what to ask next.","Confirm anything important with your doctor."],
+    say:"My report says 'mild degenerative disc disease'. Explain it in plain words and tell me what to ask my doctor."}
+  ]},
+ {id:"record", icon:"Record", title:"Remember what the doctor said", sub:"Record and get notes",
+  keys:["remember","record","notes","transcribe","forget","meeting","what they said"],
+  picks:[
+   {t:"otter", best:"Best for recording and notes", why:"Records a conversation and turns it into written notes and a summary.",
+    steps:["Install the Otter app on your phone.","Ask the doctor: \"Is it OK if I record so I don't forget?\"","Read the summary at home."],
+    say:"(No typing needed. Just press record.)"},
+   {t:"chatgpt", best:"Best for summarizing your own notes", why:"Paste in rough notes and get a clean summary with next steps.",
+    steps:["Type or paste what you remember.","Ask for a summary and a to-do list."],
+    say:"Here are my notes from today's appointment. Turn them into a short summary and a list of what I need to do."}
+  ]},
+ {id:"scam", icon:"Check", title:"Is this text or email a scam?", sub:"Check before you click",
+  keys:["scam","fraud","phishing","suspicious","text message","fake","hacked","gift card","is this real","legit"],
+  picks:[
+   {t:"chatgpt", best:"Best quick second opinion", why:"Paste the message in and it will point out common scam warning signs. Never click the link first.",
+    steps:["Copy the message text. Do not click any link in it.","Paste it into ChatGPT.","If it's about your bank, call the number on the back of your card."],
+    say:"I got this text. Does it look like a scam? Explain the warning signs: [paste text here]"},
+   {t:"gemini", best:"Good second opinion", why:"Same idea, from Google. Asking two different AIs is a smart habit.",
+    steps:["Paste the message into Gemini.","Ask if it shows signs of a scam."],
+    say:"Is this email really from Amazon? What should I check?"}
+  ]},
+ {id:"trip", icon:"Plan", title:"Plan a trip", sub:"Itinerary, packing, what to see",
+  keys:["trip","travel","vacation","itinerary","visit","cruise","road trip","pack","packing","hotel","flight"],
+  picks:[
+   {t:"chatgpt", best:"Best trip planner", why:"Builds a day-by-day plan around your pace, budget and walking limits.",
+    steps:["Say where, when, who's coming and your pace.","Ask for a day-by-day plan.","Ask follow-ups: \"less walking\", \"cheaper hotels\"."],
+    say:"Plan 4 relaxed days in Savannah for two people in our 60s. Not too much walking, good seafood, one day trip."},
+   {t:"perplexity", best:"Best for current facts", why:"Shows the websites it used, so you can check hours, prices and closures.",
+    steps:["Ask a specific question.","Click the source links to confirm."],
+    say:"Is the Biltmore Estate open the week of Christmas, and what do tickets cost?"},
+   {t:"gemini", best:"Best with Google Maps", why:"Can pull in Google Maps and Flights information.",
+    steps:["Open Gemini.","Ask about routes, drive times or flights."],
+    say:"How long is the drive from Chicago to Nashville, and where's a nice place to stop halfway?"}
+  ]},
+ {id:"photos", icon:"Restore", title:"Fix or restore old family photos", sub:"Faded, scratched, black and white",
+  keys:["photo","photos","picture","pictures","old photo","restore","faded","scratched","colorize","black and white","family pictures"],
+  picks:[
+   {t:"myheritage", best:"Best for old family photos", why:"Sharpens blurry faces and can add color to black-and-white pictures.",
+    steps:["Scan the photo or take a clear phone picture of it.","Upload it at MyHeritage Photo Enhancer.","Download the improved version."],
+    say:"(Just upload the photo.)"},
+   {t:"gphotos", best:"Best free option on your phone", why:"Has one-tap fixes for brightness and color, and can remove small blemishes.",
+    steps:["Open the photo in Google Photos.","Tap Edit, then try the suggested fixes."],
+    say:"(Tap Edit and choose a suggestion.)"}
+  ]},
+ {id:"identify", icon:"Identify", title:"Identify a plant, bird or bug", sub:"What is this?",
+  keys:["plant","bird","flower","tree","bug","insect","mushroom","identify","what is this","garden","weed"],
+  picks:[
+   {t:"merlin", best:"Best for birds", why:"Free from Cornell. Point your phone at a singing bird and it names it by sound.",
+    steps:["Install Merlin Bird ID.","Tap Sound ID and hold up your phone.","Watch the names appear."],
+    say:"(Tap Sound ID or take a photo.)"},
+   {t:"lens", best:"Best for plants and everything else", why:"Take a picture of almost anything and Google tells you what it is.",
+    steps:["Open the Google app.","Tap the camera icon.","Point it at the plant."],
+    say:"(Point and tap.)"}
+  ]},
+ {id:"vision", icon:"Read", title:"Read small print or describe things", sub:"Labels, menus, mail",
+  keys:["small print","read","eyes","vision","see","label","menu","blind","low vision","magnify","describe"],
+  picks:[
+   {t:"bemyeyes", best:"Best for low vision", why:"Describes what your camera sees, out loud. You can also connect to a volunteer.",
+    steps:["Install Be My Eyes.","Point your camera at the label or letter.","Ask questions out loud."],
+    say:"What does this medicine label say about dosage?"},
+   {t:"seeingai", best:"Best free reader", why:"Reads printed text aloud as soon as it's in front of the camera.",
+    steps:["Install Seeing AI.","Choose Short Text or Document.","Hold the page in front of the camera."],
+    say:"(It starts reading automatically.)"}
+  ]},
+ {id:"meals", icon:"Cook", title:"Plan meals or cook with what I have", sub:"Recipes, shopping list",
+  keys:["meal","meals","recipe","recipes","cook","dinner","food","fridge","grocery","shopping list","diet","keto","diabetic"],
+  picks:[
+   {t:"chatgpt", best:"Best meal planner", why:"Give it what's in your fridge or your diet and it builds recipes and a shopping list.",
+    steps:["List what you have or what you can't eat.","Ask for 3 simple recipes.","Ask for a shopping list for the week."],
+    say:"I have chicken thighs, spinach, eggs and cheese. Give me 3 easy dinners for two, 30 minutes or less."},
+   {t:"claude", best:"Best for a full week plan", why:"Good at organized weekly plans with a combined shopping list.",
+    steps:["Describe your week and any diet rules.","Ask for a 7-day plan and one shopping list."],
+    say:"Make a 5-day low-carb dinner plan for two with one combined grocery list."}
+  ]},
+ {id:"language", icon:"Learn", title:"Learn a language or new skill", sub:"Practice at your own pace",
+  keys:["learn","language","spanish","italian","french","german","practice","skill","lesson","study","class"],
+  picks:[
+   {t:"duolingo", best:"Best daily habit", why:"Short game-like lessons, 5 to 10 minutes a day.",
+    steps:["Install Duolingo.","Pick your language and a daily goal.","Do one lesson a day."],
+    say:"(Follow the lessons.)"},
+   {t:"chatgpt", best:"Best conversation partner", why:"Voice mode lets you practice speaking with a patient partner who never gets tired.",
+    steps:["Open the ChatGPT app and tap the voice button.","Ask it to speak slowly with you in Spanish."],
+    say:"Let's practice ordering at a restaurant in Italian. Speak slowly and correct my mistakes gently."}
+  ]},
+ {id:"tech", icon:"Fix", title:"Fix a phone or computer problem", sub:"Step-by-step tech help",
+  keys:["phone","computer","iphone","android","printer","wifi","password","app","tech","settings","laptop","tablet","ipad","fix"],
+  picks:[
+   {t:"gemini", best:"Best for showing the problem", why:"Gemini Live lets you point your camera or share your screen and ask what to tap.",
+    steps:["Open the Gemini app.","Turn on Live and share your camera or screen.","Ask: what do I tap next?"],
+    say:"My printer says it's offline. Walk me through fixing it one step at a time."},
+   {t:"chatgpt", best:"Best with a screenshot", why:"Take a screenshot of the error and ask what it means.",
+    steps:["Take a screenshot of the problem.","Upload it to ChatGPT.","Ask for one step at a time."],
+    say:"Here's a screenshot of the error. Tell me what to do, one step at a time, and wait for me."},
+   {t:"copilot", best:"Best for Windows PCs", why:"Built into Windows and knows its settings well.",
+    steps:["Click the Copilot icon on your Windows taskbar.","Describe the problem."],
+    say:"How do I make the text bigger on my Windows laptop?"}
+  ]},
+ {id:"grandkids", icon:"Create", title:"Make something fun for the grandkids", sub:"Stories, cards, birthday invites",
+  keys:["grandkid","grandkids","grandchild","grandson","granddaughter","kids","story","bedtime","birthday","card","invitation","invite","poem"],
+  picks:[
+   {t:"chatgpt", best:"Best for stories and pictures", why:"Writes a bedtime story starring your grandkid and can draw a picture to go with it.",
+    steps:["Tell it the child's name, age and favorite things.","Ask for a short story.","Ask for a picture to match."],
+    say:"Write a 3-minute bedtime story about my granddaughter Lily, age 6, who loves horses and the ocean."},
+   {t:"canva", best:"Best for cards and invites", why:"Templates for birthday cards and invitations you can print or text.",
+    steps:["Go to canva.com.","Search \"birthday card\".","Change the words and photo."],
+    say:"(Use the Magic Write button for card wording.)"}
+  ]},
+ {id:"buy", icon:"Compare", title:"Research a big purchase", sub:"Car, TV, hearing aids, appliances",
+  keys:["buy","purchase","compare","best","review","car","tv","television","appliance","hearing aid","mattress","which one"],
+  picks:[
+   {t:"perplexity", best:"Best for comparing products", why:"Searches the web now and shows its sources, so you can check the reviews yourself.",
+    steps:["Ask your question with your budget.","Click the sources it lists.","Ask follow-up questions."],
+    say:"Compare the best washing machines under $900 for reliability. Show sources."},
+   {t:"chatgpt", best:"Best for a checklist", why:"Makes a list of what to ask the salesperson.",
+    steps:["Tell it what you're buying.","Ask for 10 questions to ask before you pay."],
+    say:"I'm buying a used car. What should I check and what questions should I ask the seller?"}
+  ]},
+ {id:"memoir", icon:"Preserve", title:"Write my life story or family history", sub:"For kids and grandkids",
+  keys:["memoir","life story","family history","genealogy","story of my life","stories","write a book","legacy","history"],
+  picks:[
+   {t:"claude", best:"Best writing partner", why:"Asks you questions, then shapes your answers into chapters in your own voice.",
+    steps:["Create a Project in Claude called \"My Story\".","Ask it to interview you, one question at a time.","Every week, ask it to turn answers into a chapter."],
+    say:"Interview me about my childhood, one question at a time, so we can turn it into a story for my grandkids."},
+   {t:"chatgpt", best:"Best by voice", why:"Tell your stories out loud in voice mode, then ask for them written up.",
+    steps:["Open the app and start voice mode.","Tell a story.","Ask it to write it up cleanly."],
+    say:"I'm going to tell you about my first job. Afterwards, write it up as a short story."}
+  ]},
+ {id:"build", icon:"Build", title:"Build a tiny app without coding", sub:"\"Vibe coding\" for beginners",
+  keys:["app","build","make an app","website","code","coding","vibe","program","tool","tracker","spreadsheet"],
+  picks:[
+   {t:"claude", best:"Best first step", why:"Describe what you want in plain words and Claude builds a working page you can click on, right in the chat.",
+    steps:["Go to claude.ai.","Describe the tool in a few sentences.","Ask for changes until it's right."],
+    say:"Make me a simple page to track my blood pressure readings each morning, with a chart of the last 30 days."},
+   {t:"lovable", best:"Best for a real website", why:"Builds a full website or app from a description and can put it online.",
+    steps:["Make a free account at lovable.dev.","Describe your app.","Click to publish when you like it."],
+    say:"Build a website for our neighborhood garden club with a calendar and a sign-up form."}
+  ]},
+ {id:"organize", icon:"Organize", title:"Organize my week and reminders", sub:"Calendar, to-dos, pills",
+  keys:["organize","reminder","reminders","calendar","schedule","to do","todo","pills","busy","week","routine"],
+  picks:[
+   {t:"gemini", best:"Best on Android and with Google Calendar", why:"Can add events and reminders to your Google Calendar when you ask out loud.",
+    steps:["Open Gemini on your phone.","Say: remind me to...","Check that it appears in your calendar."],
+    say:"Remind me every Monday at 9 a.m. to take out the recycling."},
+   {t:"chatgpt", best:"Best for planning the week", why:"Turns a jumble of tasks into a calm, realistic plan.",
+    steps:["List everything on your mind.","Ask it to spread the tasks across the week."],
+    say:"Here's everything I need to do this week. Spread it out so no day is too busy."}
+  ]}
+];
+
+const NEWS = [
+  {date:"Nov 2026", title:"AI price plans changed again", body:"OpenAI, Google and Anthropic reworked their plans in October. Cheaper starter plans now exist (Gemini from about $5, ChatGPT Go about $8). Do you need to care? Only if you pay. The free versions still work for most people."},
+  {date:"Nov 2026", title:"Claude added a personal finance tool", body:"Anthropic's Claude can now help you look over your spending. Do you need to care? Maybe. Follow the safety rule: never type in full account numbers."},
+  {date:"Nov 2026", title:"Perplexity launched AI \"agents\"", body:"An agent is an AI that does a series of steps for you, not just answers a question. These are aimed at work tasks for now. Do you need to care? Not yet. We'll tell you when agents are simple enough for everyday use."}
+];
+
+const GLOSS = [
+ ["AI","Artificial intelligence. A computer program that can understand and write everyday language.","Like a very well-read assistant."],
+ ["Chatbot","An AI you talk with by typing or speaking. ChatGPT, Claude and Gemini are chatbots.","Like texting a helpful expert."],
+ ["Prompt","Whatever you type or say to the AI. Your question or request.","Like telling a helper what you need."],
+ ["Response","The AI's answer to your prompt.","Like the reply to a letter."],
+ ["ChatGPT","The best-known chatbot, made by a company called OpenAI.","One brand of AI helper."],
+ ["Claude","A chatbot made by a company called Anthropic. Known for careful writing.","One brand of AI helper."],
+ ["Gemini","Google's chatbot. Built into Gmail and Android phones.","Google's AI helper."],
+ ["Copilot","Microsoft's chatbot. Built into Windows and Word.","Microsoft's AI helper."],
+ ["Perplexity","An AI search tool that shows the websites it got its answer from.","Like a librarian who cites sources."],
+ ["Model","The \"brain\" inside a chatbot. Companies release new models every few months.","Like a car's engine. Same car, newer engine."],
+ ["App","A program you install on your phone or tablet.","Like a tool in your toolbox."],
+ ["Free plan","The no-cost version of a tool. It usually has daily limits.","Like a free sample."],
+ ["Subscription","A monthly fee for more use or better features. You can usually cancel any time.","Like a magazine subscription."],
+ ["Voice mode","Talking to the AI out loud instead of typing. It talks back.","Like a phone call with a helper."],
+ ["Upload","Sending a photo or file from your phone or computer to the AI so it can look at it.","Like handing someone a document."],
+ ["Screenshot","A picture of what's on your screen. Useful for showing the AI a problem.","Like photocopying your screen."],
+ ["Hallucination","When AI makes something up but sounds sure. Always double-check important facts.","Like a confident guess that's wrong."],
+ ["Agent","An AI that does a series of steps for you, not just answers a question.","Like an assistant you send on errands."],
+ ["Vibe coding","Building a simple app or web page by describing it in plain words. No programming needed.","Like telling a carpenter what you want built."],
+ ["Memory","When a chatbot remembers things about you from earlier chats. You can turn it off.","Like a helper who remembers your preferences."],
+ ["Project","A folder in a chatbot that keeps related chats and files together.","Like a file folder for one topic."],
+ ["Summarize","Asking AI to shorten something long into the main points.","Like asking for the CliffsNotes."],
+ ["Image generator","An AI that draws pictures from a description you type.","Like an artist who works from your words."],
+ ["Deepfake","A fake video, photo or voice made with AI to look or sound real.","Like a very convincing forgery."],
+ ["Voice cloning","Copying someone's voice with AI. Scammers use it to fake calls from family.","Like an impersonator. If a call asks for money, hang up and call back."],
+ ["Scam","A trick to get your money or information. AI makes scams more convincing.","Like an old con with new tools."],
+ ["Privacy","Who can see what you type. Don't type in passwords, account or Social Security numbers.","Like what you'd say on a postcard."],
+ ["Log in","Signing in to your account with your email and password.","Like unlocking your front door."],
+ ["Two-step verification","A second check, like a code texted to you, when you log in. It keeps others out.","Like a deadbolt on top of the lock."],
+ ["Browser","The program you use to visit websites: Chrome, Safari, Edge.","Like the window you look at the internet through."],
+ ["Link","Words or a button you tap to go to a web page. Don't tap links from strangers.","Like a door to another room."],
+ ["Accessibility","Features that help with eyesight, hearing or hands, like bigger text and read-aloud.","Like reading glasses for your phone."]
+];
+const RATE = {chatgpt:[5,4], claude:[4,4], gemini:[4,5], copilot:[4,4], perplexity:[4,4], otter:[4,3], myheritage:[4,3],
+  gphotos:[4,5], lens:[5,5], merlin:[5,5], bemyeyes:[5,5], seeingai:[4,5], duolingo:[5,4], canva:[4,4], lovable:[3,3]};
+function dots(n){return "●".repeat(n)+"○".repeat(5-n);}
+function rateHTML(k){const r = RATE[k]; if(!r) return "";
+  return `<div class="rate" aria-label="Our rating: easy to use ${r[0]} of 5, value ${r[1]} of 5"><span>Easy to use <span class="dots">${dots(r[0])}</span></span><span>Value <span class="dots">${dots(r[1])}</span></span></div>`;}
+const AGENTS = [
+ {s:"g", name:"Alexa+", maker:"Amazon", url:"https://www.alexa.com",
+  what:"Talk to it like a helper. It can set reminders, add to your calendar, order groceries, book a repair or call a ride.",
+  cost:"Free with Amazon Prime. About $20 a month without Prime. Basic chat is free at alexa.com.",
+  note:"Ready for everyday use by voice. Turn on \"ask before buying.\""},
+ {s:"y", name:"Claude in Chrome", maker:"Anthropic", url:"https://claude.ai",
+  what:"Works inside your Chrome browser: reads the page, clicks, fills in forms and works across tabs for you.",
+  cost:"Included with any paid Claude plan (from about $20 a month). Computer only, Chrome browser only.",
+  note:"Powerful, but set it up with a helper and watch it the first few times."},
+ {s:"y", name:"Comet browser", maker:"Perplexity", url:"https://www.perplexity.ai/comet",
+  what:"A free web browser with an assistant built in. It can compare products, fill in forms and do several steps for you.",
+  cost:"Free. Paid plans raise the limits.",
+  note:"Security researchers found tricks that could fool it. Fixes followed, but don't connect your email or bank."},
+ {s:"y", name:"ChatGPT agent mode", maker:"OpenAI", url:"https://chatgpt.com",
+  what:"Ask ChatGPT to do a task online, like planning a meal and filling a shopping cart. It uses its own browser.",
+  cost:"Paid ChatGPT plans only, with monthly limits.",
+  note:"Availability has changed this year. Check your ChatGPT tools menu."},
+ {s:"r", name:"ChatGPT Dots", maker:"OpenAI", url:"https://chatgpt.com",
+  what:"Always-on agents that keep working after you close the app.",
+  cost:"Only on the top ChatGPT Pro plan (about $200 a month), rolling out slowly.",
+  note:"Too costly for most people. Wait."},
+ {s:"r", name:"Gemini agent", maker:"Google", url:"https://gemini.google.com",
+  what:"Google's agent that works across Gmail, Calendar and Chrome for you.",
+  cost:"Business customers first. Google says it's coming to the regular Gemini app.",
+  note:"Not here yet for everyday users. We'll tell you when it is."}
+];
+const PICKS_MAIN = [["chatgpt","Our #1 pick to start","Best all-rounder. Easy phone app with voice. Writes, explains, plans, makes pictures."],
+ ["claude","Best for writing","Careful writing, long documents and life stories. Builds simple apps for you."],
+ ["gemini","Best with Google","Best if you use Gmail, Google Calendar or an Android phone. Can see your screen and help."],
+ ["copilot","Best on Windows","Built into Windows and Word."],
+ ["perplexity","Best for research","Shows the websites it used, so you can check."]];
+const PICKS_SPEC = [["otter","Remember what was said","Records a doctor visit and gives you written notes."],
+ ["myheritage","Old photos","Sharpens and colors old family photos."],
+ ["lens","What is this?","Point your camera at a plant, bug or sign."],
+ ["merlin","Birds","Names birds by their song."],
+ ["bemyeyes","Low vision","Describes what your camera sees, out loud."],
+ ["seeingai","Read aloud","Reads printed text aloud."],
+ ["duolingo","Languages","Short daily language lessons."],
+ ["canva","Cards and invites","Ready-made designs you change."],
+ ["lovable","Build a website","Builds a real website from your description."]];
+function renderPicks(id, list){
+  document.getElementById(id).innerHTML = list.map(([k,b,w]) => { const t = T[k];
+    return `<article class="pick"><span class="badge">${b}</span><h4>${t.name}</h4><p>${w}</p>${rateHTML(k)}<p class="cost">${t.cost}</p><a href="${t.url}" target="_blank" rel="noopener">Open ${t.name}</a></article>`; }).join("");
+}
+const SEASON = {
+ tag:"This season · Thanksgiving and the holidays",
+ title:"Let AI help with the holidays",
+ intro:"Keep the traditions. Let AI do the busywork.",
+ items:[
+  ["Grandma's recipe card","[Take a photo of the handwritten card and upload it.] Type out this recipe clearly, and make it for 12 people."],
+  ["Thanksgiving timeline","We're eating at 3 p.m. Make me a cooking timeline for a 16-pound turkey, stuffing, mashed potatoes and two pies, with one oven."],
+  ["A grace or toast","Write a short Thanksgiving grace for our family. Warm, simple, and under one minute to read."],
+  ["Holiday letter","Help me write our holiday letter. Here's what happened this year: [list]. Keep it warm and under one page."],
+  ["Gift ideas","Give me 10 gift ideas for my grandson, age 12, who loves baseball and video games. Under $40 each."],
+  ["Medicare deadline","Medicare open enrollment ends December 7. Explain in plain words what I should compare before then."]
+ ]
+};
+const STARTERS = [
+ ["Cooking","How long do I boil an egg for a soft yolk?"],
+ ["Weather","What should I wear for a walk if it's 45 degrees and windy?"],
+ ["Health","What are simple stretches for a stiff back? Keep it gentle."],
+ ["Words","What's a nice way to say happy birthday to my sister?"],
+ ["Trivia","Who won the World Series in 1969?"],
+ ["Garden","When should I plant tulip bulbs in Illinois?"],
+ ["Phone","How do I make the text bigger on my iPhone?"],
+ ["Explain","What is the stock market, in simple words?"],
+ ["Fun","Tell me a clean joke my grandkids would like."],
+ ["Help me","I have chicken and rice. What can I make for dinner?"]
+];
+const GMAP = {}; GLOSS.forEach(g => GMAP[g[0].toLowerCase()] = g);
+const TAPPABLE = ["vibe coding","voice mode","screenshot","upload","agent","app","prompt","chatbot","project","subscription","free plan","hallucination","summarize","browser","link","deepfake","voice cloning","two-step verification"];
+function linkTerms(text){
+  let out = esc(text), used = new Set();
+  TAPPABLE.forEach(t => {
+    if (used.has(t)) return;
+    const re = new RegExp("\\b(" + t.replace(/ /g,"\\s") + "s?)\\b","i");
+    if (re.test(out) && !/<button[^>]*>[^<]*$/.test(out.split(re)[0])) {
+      out = out.replace(re, `<button type="button" class="term" data-t="${t}">$1</button>`);
+      used.add(t);
+    }
+  });
+  return out;
+}
+function renderGloss(q){
+  const s = (q||"").toLowerCase().trim();
+  document.getElementById("gloss").innerHTML = [...GLOSS].sort((a,b)=>a[0].localeCompare(b[0]))
+    .filter(g => !s || g[0].toLowerCase().includes(s) || g[1].toLowerCase().includes(s))
+    .map(g => `<div id="g-${g[0].toLowerCase().replace(/[^a-z]+/g,"-")}"><dt>${g[0]}</dt><dd>${esc(g[1])}</dd><dd class="like">${esc(g[2])}</dd></div>`).join("")
+    || `<p class="note">No match yet. Try a shorter word.</p>`;
+}
+const LEVELS = [
+  {n:1, name:"Ask anything", sub:"Questions, letters, recipes, trips"},
+  {n:2, name:"Show it things", sub:"Photos, bills, screens, scams"},
+  {n:3, name:"Make it your helper", sub:"Doctor visits, shopping, routines"},
+  {n:4, name:"Create with it", sub:"Stories, cards, your life story"},
+  {n:5, name:"Build with it", sub:"Your own apps and tools"}
+];
+const LV = {letter:1, meals:1, trip:1, identify:1, language:1,
+            bill:2, scam:2, photos:2, vision:2, tech:2,
+            doctor:3, record:3, buy:3, organize:3,
+            grandkids:4, memoir:4, build:5};
+P.forEach(p => p.level = LV[p.id]);
+
+const tilesEl = document.getElementById("tiles");
+const answerEl = document.getElementById("answer");
+const levelsEl = document.getElementById("levels");
+
+function renderTiles(level){
+  tilesEl.innerHTML = "";
+  P.filter(p => !level || p.level === level).forEach(p => {
+    const b = document.createElement("button");
+    b.className = "tile"; b.type = "button"; b.id = "tile-" + p.id;
+    b.setAttribute("aria-pressed","false");
+    b.innerHTML = `<span class="lvtag">Step ${p.level}</span><span>${p.title}</span><small>${p.sub}</small>`;
+    b.addEventListener("click", () => show(p));
+    tilesEl.appendChild(b);
+  });
+}
+LEVELS.forEach(l => {
+  const b = document.createElement("button");
+  b.className = "lv"; b.type = "button"; b.setAttribute("aria-pressed","false");
+  b.innerHTML = `<span class="n">Step ${l.n}</span><span>${l.name}</span><small>${l.sub}</small>`;
+  b.addEventListener("click", () => {
+    const on = b.getAttribute("aria-pressed") === "true";
+    levelsEl.querySelectorAll(".lv").forEach(x => x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed", on ? "false" : "true");
+    renderTiles(on ? 0 : l.n);
+  });
+  levelsEl.appendChild(b);
+});
+renderTiles(0);
+
+document.getElementById("news").innerHTML = NEWS.map(n =>
+  `<article class="news-item"><span class="date">${n.date}</span><h3>${n.title}</h3><p>${n.body}</p></article>`).join("");
+
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));}
+
+function show(p, typed){
+  document.querySelectorAll(".tile").forEach(t => t.setAttribute("aria-pressed", t.id === "tile-"+p.id ? "true":"false"));
+  const head = typed
+    ? `<div class="answer-head"><h2>For "${esc(typed)}"</h2><p class="note">Closest match: ${p.title} (Step ${p.level}). Ranked best first for this job. <a href="#picks-h">How we rank</a></p></div>`
+    : `<div class="answer-head"><h2>${p.title}</h2><p class="note">Step ${p.level}. Ranked best first for this job. <a href="#picks-h">How we rank</a></p></div>`;
+  answerEl.innerHTML = head + p.picks.map((k,i) => {
+    const t = T[k.t];
+    return `<article class="card ${i===0?"top":""}">
+      <div class="card-head"><span class="rank">${i+1}</span><h3>${t.name}</h3><span class="pill ${i===0?"best":""}">${k.best}</span></div>
+      <p>${linkTerms(k.why)}</p>
+      ${rateHTML(k.t)}
+      <p class="cost">${t.cost} Made by ${t.maker}.</p>
+      <div><b>How to start</b><ol class="steps">${k.steps.map(s=>`<li>${linkTerms(s)}</li>`).join("")}</ol></div>
+      <div class="say"><b>Try saying this:</b><span>${esc(k.say)}</span>
+        ${k.say.startsWith("(") ? "" : `<button class="copy" type="button" data-say="${esc(k.say)}">Copy these words</button>`}</div>
+      <a href="${t.url}" target="_blank" rel="noopener">Open ${t.name}</a>
+    </article>`;
+  }).join("");
+  answerEl.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto":"smooth", block:"start"});
+}
+
+function general(typed){
+  document.querySelectorAll(".tile").forEach(t => t.setAttribute("aria-pressed","false"));
+  answerEl.innerHTML = `<div class="answer-head"><h2>For "${esc(typed)}"</h2><p class="note">We don't have a ready-made answer for this one yet, so start with a general helper. Any of these three can handle most everyday questions.</p></div>` +
+  ["chatgpt","claude","gemini"].map((k,i)=>{const t=T[k];return `<article class="card ${i===0?"top":""}">
+    <div class="card-head"><span class="rank">${i+1}</span><h3>${t.name}</h3></div>
+    <p class="cost">${t.cost}</p>
+    <div class="say"><b>Try saying this:</b><span>I'm new to AI. Help me with this, one step at a time: ${esc(typed)}</span>
+    <button class="copy" type="button" data-say="I'm new to AI. Help me with this, one step at a time: ${esc(typed)}">Copy these words</button></div>
+    <a href="${t.url}" target="_blank" rel="noopener">Open ${t.name}</a></article>`}).join("");
+  answerEl.scrollIntoView({block:"start"});
+}
+
+function match(q){
+  const s = q.toLowerCase();
+  let best = null, score = 0;
+  P.forEach(p => {
+    let sc = 0;
+    p.keys.forEach(k => { if (s.includes(k)) sc += k.split(" ").length + 1; });
+    if (sc > score){ score = sc; best = p; }
+  });
+  return best;
+}
+
+document.getElementById("askForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const q = document.getElementById("q").value.trim();
+  if (!q) { document.getElementById("q").focus(); return; }
+  const p = match(q);
+  p ? show(p, q) : general(q);
+});
+
+document.addEventListener("click", async e => {
+  const c = e.target.closest(".copy");
+  if (c) {
+    try { await navigator.clipboard.writeText(c.dataset.say); c.textContent = "Copied"; }
+    catch { c.textContent = "Select the words above to copy"; }
+    return;
+  }
+  const t = e.target.closest(".term");
+  if (t) {
+    const g = GMAP[t.dataset.t];
+    if (!g) return;
+    document.getElementById("tipT").textContent = g[0];
+    document.getElementById("tipD").textContent = g[1];
+    document.getElementById("tipL").textContent = g[2];
+    document.getElementById("tip").classList.add("on");
+    document.getElementById("tipX").focus();
+  }
+});
+document.getElementById("tipX").addEventListener("click", () => document.getElementById("tip").classList.remove("on"));
+document.addEventListener("keydown", e => { if (e.key === "Escape") document.getElementById("tip").classList.remove("on"); });
+document.getElementById("gq").addEventListener("input", e => renderGloss(e.target.value));
+renderGloss("");
+renderPicks("picksMain", PICKS_MAIN);
+renderPicks("picksSpec", PICKS_SPEC);
+const SLAB = {g:"Ready for you", y:"Try with a helper", r:"Not yet"};
+document.getElementById("agentCards").innerHTML = AGENTS.map(a =>
+  `<article class="pick agentcard ${a.s}"><span class="tag ${a.s}" style="justify-self:start">${SLAB[a.s]}</span><h4>${esc(a.name)}</h4><p class="note">by ${esc(a.maker)}</p><p>${esc(a.what)}</p><p class="cost">${esc(a.cost)}</p><p><b>Our take:</b> ${esc(a.note)}</p><a href="${a.url}" target="_blank" rel="noopener">Open ${esc(a.name)}</a></article>`).join("");
+document.getElementById("seasonTag").textContent = SEASON.tag;
+document.getElementById("season-h").textContent = SEASON.title;
+document.getElementById("seasonIntro").textContent = SEASON.intro;
+document.getElementById("seasonList").innerHTML = SEASON.items.map(s =>
+  `<div class="starter"><span class="what">${esc(s[0])}</span><span>${esc(s[1])}</span><button class="copy" type="button" data-say="${esc(s[1])}">Copy</button></div>`).join("");
+document.getElementById("starters").innerHTML = STARTERS.map(s =>
+  `<div class="starter"><span class="what">${s[0]}</span><span>${esc(s[1])}</span><button class="copy" type="button" data-say="${esc(s[1])}">Copy</button></div>`).join("");
+
+show(P[1]);
+window.scrollTo(0,0);
+</script>
+</body>
+</html>
