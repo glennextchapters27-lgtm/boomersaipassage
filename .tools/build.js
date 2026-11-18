@@ -42,8 +42,9 @@ const head = (title, desc, url, extra = "") => `<!DOCTYPE html>
 <meta property="og:site_name" content="The Boomer's AI Passage">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Literata:opsz,wght@7..72,600;7..72,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 ${extra}
 </head>
 <body>
@@ -193,6 +194,7 @@ fs.writeFileSync(path.join(OUT, "index.html"), home);
 // 404, robots, sitemap, llms.txt, CNAME
 fs.writeFileSync(path.join(OUT, "404.html"), head("Page not found | The Boomer's AI Passage", "Page not found.", DOMAIN + "/") +
   `<section class="article"><h1>That page isn't here</h1><p class="lede"><a href="/">Go to the home page</a> or <a href="/problems/">browse everyday problems</a>.</p></section>` + foot);
+fs.writeFileSync(path.join(OUT, "favicon.svg"), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>`);
 fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${DOMAIN}/sitemap.xml\n`);
 fs.writeFileSync(path.join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

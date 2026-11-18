@@ -4,9 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Boomer's AI Passage</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Literata:opsz,wght@7..72,600;7..72,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&display=swap" rel="stylesheet">
 <style>
 /* The Boomer's AI Passage: design system v2 (navy + gold, warm cream, large type). */
 :root{
@@ -274,6 +275,20 @@ ol.steps{margin:0;padding-left:1.3em;display:grid;gap:6px}
   .paths{margin-top:-40px}
 }
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* Accessibility pass (crew review) */
+.eyebrow,.lvtag,.lv .n,.starter .what,.news-item .date{color:#8a5d10;font-size:.9rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .eyebrow,:root:not([data-theme="light"]) .lvtag,:root:not([data-theme="light"]) .lv .n,:root:not([data-theme="light"]) .starter .what,:root:not([data-theme="light"]) .news-item .date{color:var(--gold-2)}}
+.hero .eyebrow,.buy .lvtag,.lv[aria-pressed="true"] .n{color:var(--gold-2)}
+.tile .lvtag{font-size:.78rem}
+.card a,.pick a,button.term{display:inline-block;min-height:44px;padding:10px 0}
+button.term{min-height:0;padding:6px 0}
+.linklist li{margin:0 0 14px}
+.linklist a{display:inline-block;padding:4px 0}
+p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
+.step0 .big1,.needs .big{font-weight:400}
+.step0 .big1 b{font-weight:700}
+@media (max-width:600px){.hero-art{display:none}}
 @media print{.topbar,.hero-art,.paths,.sitefoot,.tip{display:none}.band{padding:24px 0}.hero{background:none;color:#000}.hero h1,.hero .lede{color:#000}}
 </style>
 </head>
@@ -299,14 +314,14 @@ ol.steps{margin:0;padding-left:1.3em;display:grid;gap:6px}
     <div class="ask">
       <label id="ask-label" for="q">What would you like help with?</label>
       <form class="row" id="askForm">
-        <input type="text" id="q" placeholder="For example: understand my medical bill" autocomplete="off">
+        <input type="text" id="q" placeholder="Like: my medical bill" autocomplete="off">
         <button class="go" type="submit">Show me</button>
       </form>
       <p class="note">Or <a href="#find">pick a common problem</a>. There are no wrong questions.</p>
     </div>
     <div class="trust"><span>Rankings are never for sale</span><span>Checked November 2026</span><span>No tech skills needed</span></div>
   </div>
-  <div class="hero-art"><svg viewBox="0 0 420 470" role="img" aria-label="A tablet showing a friendly conversation with AI">
+  <div class="hero-art" aria-hidden="true"><svg viewBox="0 0 420 470">
 <defs>
 <radialGradient id="sun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#f3cf86"/><stop offset=".6" stop-color="#e3b35a" stop-opacity=".55"/><stop offset="1" stop-color="#e3b35a" stop-opacity="0"/></radialGradient>
 <linearGradient id="dev" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22324f"/><stop offset="1" stop-color="#0a1426"/></linearGradient>
@@ -343,7 +358,7 @@ ol.steps{margin:0;padding-left:1.3em;display:grid;gap:6px}
 </div></section>
 <section class="band alt" id="find" aria-labelledby="lv-h"><div class="inner">
   <div class="section-head"><span class="eyebrow">Find help</span><h2 id="lv-h">Pick a problem. Get the right AI.</h2>
-  <p class="note">Asking AI for reservations or egg timers? That's Step 1. Come back each week for the next step.</p></div>
+  <p class="note">Asking AI for reservations or egg timers? That's Step 1. Start there, then move up when you're ready.</p></div>
   <h3 class="subhead">Your five steps</h3>
   <div class="levels" id="levels"></div>
   <h3 class="subhead">Common problems</h3>
@@ -721,7 +736,7 @@ const P = [
 const NEWS = [
   {date:"Nov 2026", title:"AI price plans changed again", body:"OpenAI, Google and Anthropic reworked their plans in October. Cheaper starter plans now exist (Gemini from about $5, ChatGPT Go about $8). Do you need to care? Only if you pay. The free versions still work for most people."},
   {date:"Nov 2026", title:"Claude added a personal finance tool", body:"Anthropic's Claude can now help you look over your spending. Do you need to care? Maybe. Follow the safety rule: never type in full account numbers."},
-  {date:"Nov 2026", title:"Perplexity launched AI \"agents\"", body:"An agent is an AI that does a series of steps for you, not just answers a question. These are aimed at work tasks for now. Do you need to care? Not yet. We'll tell you when agents are simple enough for everyday use."}
+  {date:"Nov 2026", title:"Perplexity launched AI \"agents\"", body:"An agent is an AI that does a series of steps for you, not just answers a question. These are aimed at work tasks for now. Do you need to care? Some agents are ready now. See our Agents report card."}
 ];
 
 const GLOSS = [
@@ -903,7 +918,7 @@ function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;
 function show(p, typed){
   document.querySelectorAll(".tile").forEach(t => t.setAttribute("aria-pressed", t.id === "tile-"+p.id ? "true":"false"));
   const head = typed
-    ? `<div class="answer-head"><h2>For "${esc(typed)}"</h2><p class="note">Closest match: ${p.title} (Step ${p.level}). Ranked best first for this job. <a href="#picks-h">How we rank</a></p></div>`
+    ? `<div class="answer-head"><h2>For “${esc(typed)}”</h2><p class="note">Closest match: ${p.title} (Step ${p.level}). Ranked best first for this job. <a href="#picks-h">How we rank</a></p></div>`
     : `<div class="answer-head"><h2>${p.title}</h2><p class="note">Step ${p.level}. Ranked best first for this job. <a href="#picks-h">How we rank</a></p></div>`;
   answerEl.innerHTML = head + p.picks.map((k,i) => {
     const t = T[k.t];
@@ -923,7 +938,7 @@ function show(p, typed){
 
 function general(typed){
   document.querySelectorAll(".tile").forEach(t => t.setAttribute("aria-pressed","false"));
-  answerEl.innerHTML = `<div class="answer-head"><h2>For "${esc(typed)}"</h2><p class="note">We don't have a ready-made answer for this one yet, so start with a general helper. Any of these three can handle most everyday questions.</p></div>` +
+  answerEl.innerHTML = `<div class="answer-head"><h2>For “${esc(typed)}”</h2><p class="note">We don't have a ready-made answer for this one yet, so start with a general helper. Any of these three can handle most everyday questions.</p></div>` +
   ["chatgpt","claude","gemini"].map((k,i)=>{const t=T[k];return `<article class="card ${i===0?"top":""}">
     <div class="card-head"><span class="rank">${i+1}</span><h3>${t.name}</h3></div>
     <p class="cost">${t.cost}</p>
@@ -978,7 +993,7 @@ renderPicks("picksMain", PICKS_MAIN);
 renderPicks("picksSpec", PICKS_SPEC);
 const SLAB = {g:"Ready for you", y:"Try with a helper", r:"Not yet"};
 document.getElementById("agentCards").innerHTML = AGENTS.map(a =>
-  `<article class="pick agentcard ${a.s}"><span class="tag ${a.s}" style="justify-self:start">${SLAB[a.s]}</span><h4>${esc(a.name)}</h4><p class="note">by ${esc(a.maker)}</p><p>${esc(a.what)}</p><p class="cost">${esc(a.cost)}</p><p><b>Our take:</b> ${esc(a.note)}</p><a href="${a.url}" target="_blank" rel="noopener">Open ${esc(a.name)}</a></article>`).join("");
+  `<article class="pick agentcard ${a.s}"><span class="tag ${a.s}" style="justify-self:start">${SLAB[a.s]}</span><h4>${esc(a.name)}</h4><p class="note">by ${esc(a.maker)}</p><p>${esc(a.what)}</p><p class="cost">${esc(a.cost)}</p><p><b>Our take:</b> ${esc(a.note)}</p><a href="${a.url}" target="_blank" rel="noopener">${a.s==="r"?"Learn more about":"Open"} ${esc(a.name)}</a></article>`).join("");
 document.getElementById("seasonTag").textContent = SEASON.tag;
 document.getElementById("season-h").textContent = SEASON.title;
 document.getElementById("seasonIntro").textContent = SEASON.intro;
