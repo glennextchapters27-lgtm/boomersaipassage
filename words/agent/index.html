@@ -48,6 +48,30 @@
     <a class="etsylink" href="https://www.etsy.com/shop/BoomersAIPassage" rel="noopener">Also on Etsy</a>
   </div>
 </div></div></section>
+<section class="band fb" aria-labelledby="fb-h"><div class="inner">
+  <h2 id="fb-h">What should we cover next?</h2>
+  <p>New terms, ideas and tool rankings go up every week, and readers decide what comes next. Tap what you'd like more of.</p>
+  <div class="fb-picks" role="group" aria-label="Topics">
+    <label><input type="checkbox" value="AI agents (AI that runs errands)"> AI agents</label>
+    <label><input type="checkbox" value="Spotting scams"> Spotting scams</label>
+    <label><input type="checkbox" value="Health and medical"> Health and medical</label>
+    <label><input type="checkbox" value="Money and bills"> Money and bills</label>
+    <label><input type="checkbox" value="Travel"> Travel</label>
+    <label><input type="checkbox" value="Phones and tablets"> Phones and tablets</label>
+    <label><input type="checkbox" value="Family, photos and grandkids"> Family and photos</label>
+    <label><input type="checkbox" value="More AI words explained"> More AI words</label>
+  </div>
+  <label class="fb-l" for="fb-note">Anything else? (optional)</label>
+  <textarea id="fb-note" rows="3" placeholder="Like: how do I use AI to plan a trip?"></textarea>
+  <button class="btn btn-gold" id="fb-send" type="button">Send my ideas</button>
+  <p class="fb-small">This opens your email with your ideas filled in. Just press Send. We never share your address.</p>
+</div></section>
+<script>(function(){var b=document.getElementById("fb-send");if(!b)return;b.addEventListener("click",function(){var p=[].slice.call(document.querySelectorAll(".fb-picks input:checked")).map(function(i){return "- "+i.value;});var n=(document.getElementById("fb-note").value||"").trim();var body="I'd like more about:
+"+(p.length?p.join("
+"):"- (nothing ticked)")+(n?"
+
+Also: "+n:"")+"
+";var a=["glen","nextchapters27"].join(".")+"@"+"gmail.com";location.href="mailto:"+a+"?subject="+encodeURIComponent("Ideas for The Boomer's AI Passage")+"&body="+encodeURIComponent(body);});})();</script>
 </main>
 <footer class="sitefoot"><div class="inner">
   <a class="logo" href="/"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span>The Boomer's <b>AI Passage</b></span></a>

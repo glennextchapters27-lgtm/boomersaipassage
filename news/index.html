@@ -303,6 +303,15 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
 .step0 .big1 b{font-weight:700}
 @media (max-width:600px){.hero-art{display:none}}
 @media print{.topbar,.hero-art,.paths,.sitefoot,.tip{display:none}.band{padding:24px 0}.hero{background:none;color:#000}.hero h1,.hero .lede{color:#000}}
+.fb{background:#faf6ee}
+.fb h2{margin:0 0 8px}
+.fb-picks{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.fb-picks label{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 16px;border:2px solid #d9c9a3;border-radius:999px;background:#fff;cursor:pointer;font-size:1.05rem}
+.fb-picks input{width:20px;height:20px;accent-color:#0f2240}
+.fb-picks label:has(input:checked){border-color:#0f2240;background:#eef2f8}
+.fb-l{display:block;font-weight:700;margin:8px 0 6px}
+.fb textarea{width:100%;max-width:640px;font:inherit;font-size:1.05rem;padding:12px;border:2px solid #d9c9a3;border-radius:12px;display:block;margin-bottom:14px}
+.fb-small{font-size:.95rem;color:#5b6576;margin-top:10px}
 </style>
 </head>
 <body>
@@ -328,6 +337,25 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
   <p class="note">What changed lately, and whether you need to care. Checked November 2026.</p>
   <div class="news" id="news"></div>
 </div></section>
+<section class="band fb" aria-labelledby="fb-h"><div class="inner">
+  <h2 id="fb-h">What should we cover next?</h2>
+  <p>New terms, ideas and tool rankings go up every week, and readers decide what comes next. Tap what you'd like more of.</p>
+  <div class="fb-picks" role="group" aria-label="Topics">
+    <label><input type="checkbox" value="AI agents (AI that runs errands)"> AI agents</label>
+    <label><input type="checkbox" value="Spotting scams"> Spotting scams</label>
+    <label><input type="checkbox" value="Health and medical"> Health and medical</label>
+    <label><input type="checkbox" value="Money and bills"> Money and bills</label>
+    <label><input type="checkbox" value="Travel"> Travel</label>
+    <label><input type="checkbox" value="Phones and tablets"> Phones and tablets</label>
+    <label><input type="checkbox" value="Family, photos and grandkids"> Family and photos</label>
+    <label><input type="checkbox" value="More AI words explained"> More AI words</label>
+  </div>
+  <label class="fb-l" for="fb-note">Anything else? (optional)</label>
+  <textarea id="fb-note" rows="3" placeholder="Like: how do I use AI to plan a trip?"></textarea>
+  <button class="btn btn-gold" id="fb-send" type="button">Send my ideas</button>
+  <p class="fb-small">This opens your email with your ideas filled in. Just press Send. We never share your address.</p>
+</div></section>
+<script>(function(){var b=document.getElementById("fb-send");if(!b)return;b.addEventListener("click",function(){var p=[].slice.call(document.querySelectorAll(".fb-picks input:checked")).map(function(i){return "- "+i.value;});var n=(document.getElementById("fb-note").value||"").trim();var body="I'd like more about:\n"+(p.length?p.join("\n"):"- (nothing ticked)")+(n?"\n\nAlso: "+n:"")+"\n";var a=["glen","nextchapters27"].join(".")+"@"+"gmail.com";location.href="mailto:"+a+"?subject="+encodeURIComponent("Ideas for The Boomer's AI Passage")+"&body="+encodeURIComponent(body);});})();</script>
 
 <section class="band navyband" id="buy" aria-labelledby="buy-h"><div class="inner">
 <div class="buy">
