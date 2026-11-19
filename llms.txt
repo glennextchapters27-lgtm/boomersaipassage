@@ -1,6 +1,6 @@
 # The Boomer's AI Passage
 
-> Plain-English guidance on choosing and using AI tools, written for people over 60. Each guide answers "Which AI should I use for this?" with ranked picks, current prices, setup steps and the exact words to type. Rankings use four criteria (does the job well, easy to use, good value, trustworthy) and are never sold. Updated weekly.
+> Plain-English guidance on choosing and using AI tools, for anyone ready to go from curious to confident. Each guide answers "Which AI should I use for this?" with ranked picks, current prices, setup steps and the exact words to type. Rankings use four criteria (does the job well, easy to use, good value, trustworthy) and are never sold. Updated weekly.
 
 ## Everyday problems
 - [Write a letter or email](https://boomersaipassage.com/problems/letter/): our top pick is Claude.
