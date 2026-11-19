@@ -563,22 +563,24 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
 <section class="band fb" aria-labelledby="fb-h"><div class="inner">
   <h2 id="fb-h">What should we cover next?</h2>
   <p>New terms, ideas and tool rankings go up every week, and readers decide what comes next. Tap what you'd like more of.</p>
+  <div class="fb-form">
   <div class="fb-picks" role="group" aria-label="Topics">
-    <label><input type="checkbox" value="AI agents (AI that runs errands)"> AI agents</label>
-    <label><input type="checkbox" value="Spotting scams"> Spotting scams</label>
-    <label><input type="checkbox" value="Health and medical"> Health and medical</label>
-    <label><input type="checkbox" value="Money and bills"> Money and bills</label>
+    <label><input type="checkbox" value="AI Agents"> AI agents</label>
+    <label><input type="checkbox" value="Spotting Scams"> Spotting scams</label>
+    <label><input type="checkbox" value="Health & Medical"> Health and medical</label>
+    <label><input type="checkbox" value="Money & Bills"> Money and bills</label>
     <label><input type="checkbox" value="Travel"> Travel</label>
-    <label><input type="checkbox" value="Phones and tablets"> Phones and tablets</label>
-    <label><input type="checkbox" value="Family, photos and grandkids"> Family and photos</label>
-    <label><input type="checkbox" value="More AI words explained"> More AI words</label>
+    <label><input type="checkbox" value="Phones & Tablets"> Phones and tablets</label>
+    <label><input type="checkbox" value="Family & Photos"> Family and photos</label>
+    <label><input type="checkbox" value="More AI Terms"> More AI words</label>
   </div>
   <label class="fb-l" for="fb-note">Anything else? (optional)</label>
   <textarea id="fb-note" rows="3" placeholder="Like: how do I use AI to plan a trip?"></textarea>
   <button class="btn btn-gold" id="fb-send" type="button">Send my ideas</button>
-  <p class="fb-small">This opens your email with your ideas filled in. Just press Send. We never share your address.</p>
+  </div>
+  <p class="fb-small" id="fb-msg" role="status" aria-live="polite">No name or email needed.</p>
 </div></section>
-<script>(function(){var b=document.getElementById("fb-send");if(!b)return;b.addEventListener("click",function(){var p=[].slice.call(document.querySelectorAll(".fb-picks input:checked")).map(function(i){return "- "+i.value;});var n=(document.getElementById("fb-note").value||"").trim();var body="I'd like more about:\n"+(p.length?p.join("\n"):"- (nothing ticked)")+(n?"\n\nAlso: "+n:"")+"\n";var a=["glen","nextchapters27"].join(".")+"@"+"gmail.com";location.href="mailto:"+a+"?subject="+encodeURIComponent("Ideas for The Boomer's AI Passage")+"&body="+encodeURIComponent(body);});})();</script>
+<script>(function(){var b=document.getElementById("fb-send");if(!b)return;var F="https://docs.google.com/forms/d/e/1FAIpQLSda0B-EZsf5BenGolUu5YFwwUAhgBi7LgBKQkGDfni6RFUQSQ/formResponse";b.addEventListener("click",function(){var p=[].slice.call(document.querySelectorAll(".fb-picks input:checked")).map(function(i){return i.value;});var n=(document.getElementById("fb-note").value||"").trim();if(!p.length&&!n){document.getElementById("fb-msg").textContent="Tap a topic or type a note first.";return;}var d=new URLSearchParams();p.forEach(function(v){d.append("entry.767873080",v);});if(n)d.append("entry.1606713323",n);b.disabled=true;b.textContent="Sending…";fetch(F,{method:"POST",mode:"no-cors",body:d}).then(function(){document.querySelector(".fb-form").hidden=true;document.getElementById("fb-msg").textContent="Thank you! We read every note, and your ideas help decide next week's guides.";}).catch(function(){b.disabled=false;b.textContent="Send my ideas";document.getElementById("fb-msg").innerHTML='That did not go through. <a href="https://docs.google.com/forms/d/e/1FAIpQLSda0B-EZsf5BenGolUu5YFwwUAhgBi7LgBKQkGDfni6RFUQSQ/viewform">Open the form instead</a>.';});});})();</script>
 </main>
 <!--GUIDES-->
 <footer class="sitefoot"><div class="inner">
