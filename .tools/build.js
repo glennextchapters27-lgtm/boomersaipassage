@@ -111,7 +111,7 @@ for (const p of P) {
   const related = P.filter(o => o.level === p.level && o.id !== p.id).slice(0, 4)
     .map(o => `<a href="/problems/${o.id}/">${esc(o.title)}</a>`).join("");
   const page = head(`${p.title}: which AI to use | The Boomer's AI Passage`,
-    `${answer} Plain-English steps, costs and the exact words to type. Written for people over 60.`, url,
+    `${answer} Plain-English steps, costs and the exact words to type. For anyone ready to go from curious to confident.`, url,
     `<script type="application/ld+json">${JSON.stringify(faq)}</script>`) + `
 <p class="crumb"><a href="/">Home</a> › <a href="/problems/">Everyday problems</a> › Step ${lvl.n}</p>
 <section class="article">
@@ -155,7 +155,7 @@ const byLevel = LEVELS.map(l => `<h2>Step ${l.n}: ${esc(l.name)}</h2><ul class="
 fs.mkdirSync(path.join(OUT, "problems"), { recursive: true });
 fs.writeFileSync(path.join(OUT, "problems", "index.html"),
   head("Everyday problems AI can help with | The Boomer's AI Passage",
-    "Pick an everyday problem and see which AI to use, what it costs, and exactly what to type. Plain English, for people over 60.",
+    "Pick an everyday problem and see which AI to use, what it costs, and exactly what to type. Plain English, no tech background needed.",
     DOMAIN + "/problems/") + `
 <p class="crumb"><a href="/">Home</a> › Everyday problems</p>
 <section class="article"><h1>Everyday problems AI can help with</h1>
@@ -215,15 +215,15 @@ function seoHead(title, desc, url) {
 <meta property="og:type" content="website">`;
 }
 let home = keepOnly(html, ["home", "all"])
-  .replace("<title>The Boomer's AI Passage</title>", seoHead("The Boomer's AI Passage: AI for Boomers, From Curious to Confident", "Plain-English help choosing and using AI, written for people over 60. Pick an everyday problem and get the right AI tool, what it costs, and the exact words to type.", DOMAIN + "/"))
+  .replace("<title>The Boomer's AI Passage</title>", seoHead("The Boomer's AI Passage: AI for Boomers, From Curious to Confident", "Plain-English help for anyone ready to go from curious to confident with AI. Pick an everyday problem and get the right AI tool, what it costs, and the exact words to type.", DOMAIN + "/"))
   .replace("<!--GUIDES-->", "");
 fs.writeFileSync(path.join(OUT, "index.html"), home);
 
 const SUBPAGES = [
   { slug: "start", keep: "start", eyebrow: "Start here", h1: "New to AI? Start here.", lede: "Five minutes: what AI is, what you need (and don't), your first questions, and five safety rules.", title: "New to AI? Start Here | The Boomer's AI Passage", desc: "What AI is in plain English, what you need to use it, your first questions to try, and five safety rules. Written for people over 60." },
-  { slug: "picks", keep: "picks", eyebrow: "Our picks", h1: "The AI tools we recommend.", lede: "Our top all-purpose helpers and the best tool for each special job, with how we rank them.", title: "Best AI Tools for Seniors, Ranked | The Boomer's AI Passage", desc: "The AI tools we recommend for people over 60, ranked on how well they do the job, ease of use, value and trust. Rankings are never for sale." },
+  { slug: "picks", keep: "picks", eyebrow: "Our picks", h1: "The AI tools we recommend.", lede: "Our top all-purpose helpers and the best tool for each special job, with how we rank them.", title: "Best AI Tools for Seniors, Ranked | The Boomer's AI Passage", desc: "The AI tools we recommend for everyday life, ranked on how well they do the job, ease of use, value and trust. Rankings are never for sale." },
   { slug: "agents", keep: "agents", eyebrow: "Report card", h1: "AI agents: which are ready for you?", lede: "Agents do errands for you. Here's an honest look at which ones are ready, which need a helper, and which to skip for now.", title: "AI Agents Report Card for Seniors | The Boomer's AI Passage", desc: "An honest, plain-English report card on AI agents like Alexa+, ChatGPT agent mode and Claude in Chrome: ready, try with a helper, or not yet." },
-  { slug: "news", keep: "news", eyebrow: "What's new", h1: "New in AI this month.", lede: "What changed lately, in plain words, and whether you need to care.", title: "AI News for Seniors, in Plain English | The Boomer's AI Passage", desc: "What changed in AI this month, explained in plain English for people over 60, and whether you need to care." },
+  { slug: "news", keep: "news", eyebrow: "What's new", h1: "New in AI this month.", lede: "What changed lately, in plain words, and whether you need to care.", title: "AI News for Seniors, in Plain English | The Boomer's AI Passage", desc: "What changed in AI this month, explained in plain English, and whether you need to care." },
 ];
 for (const sp of SUBPAGES) {
   const url = `${DOMAIN}/${sp.slug}/`;
@@ -252,7 +252,7 @@ ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${today}</lastmod></url>`).join(
 `);
 fs.writeFileSync(path.join(OUT, "llms.txt"), `# The Boomer's AI Passage
 
-> Plain-English guidance on choosing and using AI tools, written for people over 60. Each guide answers "Which AI should I use for this?" with ranked picks, current prices, setup steps and the exact words to type. Rankings use four criteria (does the job well, easy to use, good value, trustworthy) and are never sold. Updated weekly.
+> Plain-English guidance on choosing and using AI tools, for anyone ready to go from curious to confident. Each guide answers "Which AI should I use for this?" with ranked picks, current prices, setup steps and the exact words to type. Rankings use four criteria (does the job well, easy to use, good value, trustworthy) and are never sold. Updated weekly.
 
 ## Everyday problems
 ${P.map(p => `- [${p.title}](${DOMAIN}/problems/${p.id}/): our top pick is ${T[p.picks[0].t].name}.`).join("\n")}

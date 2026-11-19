@@ -1,5 +1,5 @@
 // Stand-alone guides: each becomes /<slug>/ with its own title, answer-first lead and FAQ data.
-// Plain words, short sentences, written for people 60 and up. Prices come from the site's tool list (checked monthly).
+// Plain words, short sentences, for anyone ready to go from curious to confident. Prices come from the site's tool list (checked monthly).
 const say = (label, text) => `<div class="say"><b>${label}</b><span>${text}</span><button class="copy" type="button" data-say="${text.replace(/"/g, "&quot;")}">Copy</button></div>`;
 
 module.exports = (GUMROAD) => [
@@ -99,7 +99,7 @@ ${say("Medicare deadline", "Medicare open enrollment ends December 7. Explain in
 {
   slug: "chatgpt-for-seniors",
   title: "How to Use ChatGPT: A Plain-English Guide for Seniors | The Boomer's AI Passage",
-  desc: "How to start using ChatGPT in five minutes, written for people over 60: what you need, how to sign up for free, what to type first, and how to stay safe.",
+  desc: "How to start using ChatGPT in five minutes, in plain English: what you need, how to sign up for free, what to type first, and how to stay safe.",
   eyebrow: "Step-by-step guide",
   h1: "How to use ChatGPT, in plain English.",
   lede: "Five minutes, no tech skills. What you need, how to start for free, and what to type first.",
