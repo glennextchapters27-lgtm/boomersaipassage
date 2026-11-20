@@ -5,6 +5,7 @@ const [, , SRC, OUT] = process.argv;
 const DOMAIN = "https://boomersaipassage.com";
 const GUMROAD = "https://theboomersaipassage.gumroad.com/l/wpfolg";
 const ETSY = "https://www.etsy.com/shop/BoomersAIPassage";
+const AMAZON = "https://www.amazon.com/dp/B0HS83RQ6X";
 const html = fs.readFileSync(SRC, "utf8");
 const lines = html.split("\n");
 const start = lines.findIndex(l => l.startsWith("const T = {"));
@@ -70,6 +71,7 @@ const foot = `
     <div class="price">$19 <small>instant PDF</small></div>
     <a class="btn btn-gold buybtn" href="${GUMROAD}" rel="noopener">Get the Handbook</a>
     <a class="etsylink" href="${ETSY}" rel="noopener">Also on Etsy</a>
+    <a class="etsylink" href="${AMAZON}" rel="noopener">Paperback on Amazon, $12.99</a>
   </div>
 </div></div></section>
 <section class="band fb" aria-labelledby="fb-h"><div class="inner">

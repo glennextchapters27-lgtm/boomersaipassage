@@ -93,7 +93,7 @@ ${say("Medicare deadline", "Medicare open enrollment ends December 7. Explain in
 <p>Everything starts free on this website. Send them <a href="/start/">Start here</a> and see if it clicks.</p>`,
   faq: [
     ["Is this a good gift for someone who has never used AI?", "Yes. It starts from zero: what AI is, what they need (a phone, tablet or computer they already own), and the first thing to type."],
-    ["Is it a printed book?", "It's an instant PDF you can print at home or at an office store, or read on a tablet. A paperback is coming to Amazon."],
+    ["Is it a printed book?", "It's an instant PDF you can print at home or at an office store, or read on a tablet. Prefer a printed copy? The paperback is on Amazon for $12.99."],
     ["How much does it cost?", "$19, one time. The AI tools it teaches have free versions."]]
 },
 {
