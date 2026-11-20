@@ -66,6 +66,13 @@
   <p class="fb-small" id="fb-msg" role="status" aria-live="polite">No name or email needed.</p>
 </div></section>
 <script>(function(){var b=document.getElementById("fb-send");if(!b)return;var F="https://docs.google.com/forms/d/e/1FAIpQLSda0B-EZsf5BenGolUu5YFwwUAhgBi7LgBKQkGDfni6RFUQSQ/formResponse";b.addEventListener("click",function(){var p=[].slice.call(document.querySelectorAll(".fb-picks input:checked")).map(function(i){return i.value;});var n=(document.getElementById("fb-note").value||"").trim();if(!p.length&&!n){document.getElementById("fb-msg").textContent="Tap a topic or type a note first.";return;}var d=new URLSearchParams();p.forEach(function(v){d.append("entry.767873080",v);});if(n)d.append("entry.1606713323",n);b.disabled=true;b.textContent="Sending…";fetch(F,{method:"POST",mode:"no-cors",body:d}).then(function(){document.querySelector(".fb-form").hidden=true;document.getElementById("fb-msg").textContent="Thank you! We read every note, and your ideas help decide next week's guides.";}).catch(function(){b.disabled=false;b.textContent="Send my ideas";document.getElementById("fb-msg").innerHTML='That did not go through. <a href="https://docs.google.com/forms/d/e/1FAIpQLSda0B-EZsf5BenGolUu5YFwwUAhgBi7LgBKQkGDfni6RFUQSQ/viewform">Open the form instead</a>.';});});})();</script>
+<section class="newsletter" aria-labelledby="nl-h"><div class="inner" style="max-width:640px;margin:0 auto;padding:28px 16px;text-align:center">
+  <h2 id="nl-h">Get one AI tip a week</h2>
+  <p>Plain English, the exact words to type, and a heads-up on new scams. Free. Unsubscribe anytime.</p>
+  <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="648843b3-0da9-4f16-bbc5-7b9eb105541f"></script>
+  <noscript><p><a href="https://boomersaipassage.beehiiv.com/subscribe">Sign up here</a></p></noscript>
+</div></section>
+<script async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>
 </main>
 <footer class="sitefoot"><div class="inner">
   <a class="logo" href="/"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span>The Boomer's <b>AI Passage</b></span></a>
