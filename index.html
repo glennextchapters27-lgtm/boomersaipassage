@@ -398,7 +398,7 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
   <h2 id="season-h"></h2>
   <p id="seasonIntro"></p>
   <div class="starters" id="seasonList"></div>
-  <p><a href="/thanksgiving/">All 10 Thanksgiving ideas →</a> &nbsp;·&nbsp; <a href="/gift/">A Christmas gift for Mom and Dad →</a> &nbsp;·&nbsp; <a href="/set-up-ai-for-parents/">Home for the holidays? Set up AI for them →</a></p>
+  <p><a href="/thanksgiving/">All 13 Thanksgiving ideas →</a> &nbsp;·&nbsp; <a href="/gift/">A Christmas gift for Mom and Dad →</a> &nbsp;·&nbsp; <a href="/set-up-ai-for-parents/">Home for the holidays? Set up AI for them →</a></p>
 </section>
 </div></div>
 
@@ -749,15 +749,15 @@ function renderPicks(id, list){
     return `<article class="pick"><span class="badge">${b}</span><h4>${t.name}</h4><p>${w}</p>${rateHTML(k)}<p class="cost">${t.cost}</p><a href="${t.url}" target="_blank" rel="noopener">Open ${t.name}</a></article>`; }).join("");
 }
 const SEASON = {
- tag:"This season · Thanksgiving and the holidays",
- title:"Let AI help with the holidays",
- intro:"Keep the traditions. Let AI do the busywork.",
+ tag:"Thanksgiving week · Thursday, November 26",
+ title:"Thanksgiving is Thursday. Let AI do the busywork.",
+ intro:"Copy one, change the details, press Enter. Then check the scam alert before Black Friday.",
  items:[
-  ["Grandma's recipe card","[Take a photo of the handwritten card and upload it.] Type out this recipe clearly, and make it for 12 people."],
+  ["Shopping list","We're hosting 12 people for Thanksgiving: turkey, stuffing, mashed potatoes, green beans and two pies. Make me one shopping list, grouped by store aisle."],
   ["Thanksgiving timeline","We're eating at 3 p.m. Make me a cooking timeline for a 16-pound turkey, stuffing, mashed potatoes and two pies, with one oven."],
+  ["Grandma's recipe card","[Take a photo of the handwritten card and upload it.] Type out this recipe clearly, and make it for 12 people."],
   ["A grace or toast","Write a short Thanksgiving grace for our family. Warm, simple, and under one minute to read."],
-  ["Holiday letter","Help me write our holiday letter. Here's what happened this year: [list]. Keep it warm and under one page."],
-  ["Gift ideas","Give me 10 gift ideas for my grandson, age 12, who loves baseball and video games. Under $40 each."],
+  ["Black Friday scam check","I got this text about a Black Friday deal or a package delivery: [paste it]. Is it a scam? What should I do? Don't tell me to click any link."],
   ["Medicare deadline","Medicare open enrollment ends December 7. Explain in plain words what I should compare before then."]
  ]
 };

@@ -37,13 +37,16 @@ ${say("Something personal", "Help me write a short note to my granddaughter for 
 },
 {
   slug: "thanksgiving",
-  title: "How to Use AI for Thanksgiving: 10 Things to Ask (Exact Words) | The Boomer's AI Passage",
-  desc: "Ten easy ways to let a free AI helper handle Thanksgiving busywork: recipe cards, a cooking timeline, a grace or toast, games for the grandkids. Copy the exact words.",
+  title: "How to Use AI for Thanksgiving: 13 Things to Ask (Exact Words) | The Boomer's AI Passage",
+  desc: "Thirteen easy ways to let a free AI helper handle Thanksgiving busywork: a shopping list, recipe cards, a cooking timeline, a grace or toast, games for the grandkids. Copy the exact words.",
   eyebrow: "Thanksgiving · Thursday, November 26",
   h1: "Let AI help with Thanksgiving.",
-  lede: "Keep the traditions. Let AI do the busywork. Ten things to ask, with the exact words to copy.",
+  lede: "Keep the traditions. Let AI do the busywork. Thirteen things to ask, with the exact words to copy.",
   answer: "Open any free AI helper (ChatGPT, Claude or Gemini), copy one of the requests below, change the details, and press Enter. It answers in seconds.",
   body: () => `
+<h2>Before the day</h2>
+${say("Shopping list", "We're hosting 12 people for Thanksgiving: turkey, stuffing, mashed potatoes, green beans and two pies. Make me one shopping list, grouped by store aisle.")}
+${say("When to thaw the turkey", "I have a 16-pound frozen turkey and we eat Thursday at 3 p.m. When do I move it to the fridge, and what if I forgot?")}
 <h2>In the kitchen</h2>
 ${say("Grandma's recipe card", "[Take a photo of the handwritten card and upload it.] Type out this recipe clearly, and make it for 12 people.")}
 ${say("Cooking timeline", "We're eating at 3 p.m. Make me a cooking timeline for a 16-pound turkey, stuffing, mashed potatoes and two pies, with one oven.")}
@@ -57,6 +60,7 @@ ${say("Family memories", "Help me write a one-page story about my first Thanksgi
 ${say("Games", "Suggest 5 indoor games for kids ages 6 to 12 after Thanksgiving dinner. No screens, nothing to buy.")}
 ${say("Thank-you notes", "Help my grandkids write short thank-you notes to the cook. Give 3 simple examples they can copy.")}
 <h2>After the holiday</h2>
+${say("Black Friday scam check", "I got this text about a Black Friday deal or a package delivery: [paste it]. Is it a scam? What should I do? Don't tell me to click any link.")}
 ${say("Medicare deadline", "Medicare open enrollment ends December 7. Explain in plain words what I should compare before then.")}
 <p class="note">AI can make mistakes. Check cooking times and food safety with a trusted source, and never type in account numbers or passwords.</p>
 <p>New to AI? <a href="/start/">Start here: what it is, in five minutes</a>.</p>`,
