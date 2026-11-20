@@ -16,7 +16,7 @@
 <meta name="msvalidate.01" content="C5E3425BE3FF25D66890622A80F055AD" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 /* The Boomer's AI Passage: design system v2 (navy + gold, warm cream, large type). */
 :root{
@@ -312,6 +312,75 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
 .fb-l{display:block;font-weight:700;margin:8px 0 6px}
 .fb textarea{width:100%;max-width:640px;font:inherit;font-size:1.05rem;padding:12px;border:2px solid #d9c9a3;border-radius:12px;display:block;margin-bottom:14px}
 .fb-small{font-size:.95rem;color:#5b6576;margin-top:10px}
+
+/* ===== Design v3: modern, technical (Nov 2026). Override layer; URLs and content unchanged. ===== */
+:root{
+  --navy:#0B1F3A; --navy-2:#12305A; --navy-3:#1E3A66;
+  --gold:#9A6A12; --gold-2:#E3B35A; --gold-soft:#F6EBD3;
+  --bg:#ffffff; --bg-alt:#F4F6FA; --surface:#ffffff;
+  --ink:#0E1726; --muted:#4A5568; --line:#DCE3EC;
+  --accent:#12305A; --accent-soft:#E8EEF7;
+  --display:"Space Grotesk", "Segoe UI", Arial, sans-serif;
+  --radius:12px;
+  --shadow:0 1px 2px rgba(11,31,58,.06);
+  --shadow-lg:0 1px 2px rgba(11,31,58,.06),0 16px 36px -18px rgba(11,31,58,.35);
+  --max:1200px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0B1424;--bg-alt:#0F1B30;--surface:#13223B;--ink:#EEF2F8;--muted:#AAB6C8;--line:#24375A;--accent:#9DBEF0;--accent-soft:#1A2C4C;--gold:#E3B35A;--gold-soft:#3A2F18}}
+h1,h2,h3,h4{letter-spacing:-.015em}
+.eyebrow,.lvtag{color:var(--gold)}
+.hero .eyebrow{color:var(--gold-2)}
+/* Hero: clean, no glow or stripes; ask box sits beside the headline */
+.hero{background:linear-gradient(180deg,#0B1F3A 0%,#12305A 100%)}
+.hero::after{display:none}
+.hero-art{display:none}
+.hero-grid{grid-template-columns:1fr}
+.hero-grid>div:first-child{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);grid-template-areas:"eb ask" "h1 ask" "lede ask" "trust ask";column-gap:clamp(28px,5vw,64px);align-items:start}
+.hero-grid>div:first-child>.eyebrow{grid-area:eb;align-self:end}
+.hero-grid>div:first-child>h1{grid-area:h1}
+.hero-grid>div:first-child>.lede{grid-area:lede}
+.hero-grid>div:first-child>.trust{grid-area:trust}
+.hero-grid>div:first-child>.ask{grid-area:ask;align-self:center;margin-top:0}
+@media (max-width:900px){.hero-grid>div:first-child{grid-template-columns:1fr;grid-template-areas:"eb" "h1" "lede" "ask" "trust"}.hero-grid>div:first-child>.ask{margin-top:24px}}
+.hero h1 em{font-style:normal}
+.ask{border-radius:14px;padding:28px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+input[type=text]{background:#fff;border-color:#C9D3E0;border-radius:10px}
+.go{border-radius:10px}
+.btn{border-radius:10px}
+.btn-gold{background:var(--gold-2);color:#0B1F3A;box-shadow:none}
+.btn-gold:hover{background:#ECC373;box-shadow:none}
+/* Square-ish markers instead of round "balloons" */
+.path .num,.rank{border-radius:10px}
+.path .num{background:var(--navy);color:var(--gold-2)}
+.paths{margin-top:-48px}
+.tile::after{color:var(--navy)}
+.tile:hover,.lv:hover{border-color:var(--navy)}
+.step0,.needs,.safety,.howrank,.buyopts,.agents{border-radius:14px}
+.s0grid>div,.need,.myths p{border-radius:10px}
+.s0grid>div{background:var(--bg-alt)}
+.say{background:var(--bg-alt)}
+.fb{background:var(--bg-alt)}
+.fb-picks label,.fb textarea{border-color:#C9D3E0}
+.book{background:linear-gradient(135deg,#ffffff,#E8EEF7);box-shadow:-6px 0 0 #B8C4D6 inset,0 24px 40px -14px rgba(0,0,0,.6)}
+.tip{border-radius:12px}
+/* Drop-down navigation */
+.mainnav{align-items:center}
+.dd{position:relative}
+.dd>summary{list-style:none;cursor:pointer;color:#dfe6f2;font-weight:700;font-size:1rem;padding:10px 14px;border-radius:10px;display:flex;align-items:center;gap:6px}
+.dd>summary::-webkit-details-marker{display:none}
+.dd>summary::after{content:"";width:8px;height:8px;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(45deg) translateY(-3px);margin-left:2px}
+.dd>summary:hover,.dd[open]>summary{background:rgba(255,255,255,.1);color:#fff}
+.dd-panel{position:absolute;top:calc(100% + 10px);left:0;min-width:300px;background:#fff;color:#0E1726;border:1px solid #DCE3EC;border-radius:12px;padding:10px;display:grid;gap:2px;box-shadow:0 24px 48px -20px rgba(11,31,58,.5);z-index:40}
+.dd-panel a{color:#0E1726;text-decoration:none;font-weight:700;font-size:1.02rem;padding:10px 12px;border-radius:8px;display:grid;gap:2px}
+.dd-panel a small{font-weight:400;color:#4A5568;font-size:.88rem}
+.dd-panel a:hover{background:#F4F6FA;color:#0B1F3A}
+.mobilenav{display:none;margin-left:12px}
+.mobilenav>summary{list-style:none;cursor:pointer;color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:10px;min-height:46px;padding:0 14px;display:flex;align-items:center;gap:8px;font-weight:700}
+.mobilenav>summary::-webkit-details-marker{display:none}
+.mobilenav .dd-panel{left:auto;right:0;width:min(340px,calc(100vw - 32px));max-height:75vh;overflow:auto}
+.mobilenav .dd-panel b{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:#6B5212;padding:10px 12px 2px}
+@media (max-width:1020px){.mobilenav{display:block}.topcta{margin-left:auto}}
+@media (max-width:560px){.topcta{display:none}.mobilenav{margin-left:auto}}
 </style>
 </head>
 <body>
@@ -320,13 +389,33 @@ p.cost,.cost,.say b,p.fine,.fine{font-size:1rem}
   <a class="logo" href="/"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span>The Boomer's <b>AI Passage</b></span></a>
   <nav class="mainnav" aria-label="Main">
     <a href="/start/">Start here</a>
-    <a href="/#find">Find help</a>
-    <a href="/picks/">Our picks</a>
-    <a href="/agents/">Agents</a>
-    <a href="/words/">Word list</a>
-    <a href="/news/">What's new</a>
+    <details class="dd"><summary>Find help</summary><div class="dd-panel">
+      <a href="/#find">Pick a problem<small>Get the right AI and the words to type</small></a>
+      <a href="/problems/">Every problem<small>All 17, by step</small></a>
+      <a href="/picks/">Our picks<small>Which AI for which job</small></a>
+      <a href="/agents/">Agents report card<small>What AI can do on its own</small></a>
+    </div></details>
+    <details class="dd"><summary>Learn the basics</summary><div class="dd-panel">
+      <a href="/start/">What is AI?<small>Five minutes, no jargon</small></a>
+      <a href="/ai-safety/">Is AI safe?<small>Five rules before you start</small></a>
+      <a href="/chatgpt-for-seniors/">ChatGPT guide<small>Step by step</small></a>
+      <a href="/words/">Word list<small>AI words in plain English</small></a>
+      <a href="/news/">What's new<small>This month in AI</small></a>
+    </div></details>
+    <details class="dd"><summary>Holidays</summary><div class="dd-panel">
+      <a href="/thanksgiving/">Thanksgiving<small>13 things to ask AI</small></a>
+      <a href="/gift/">Christmas gift idea<small>The handbook</small></a>
+      <a href="/set-up-ai-for-parents/">Set up AI for parents<small>In 20 minutes</small></a>
+    </div></details>
   </nav>
   <a class="btn btn-gold topcta" href="/#buy"><span class="hide-sm">Get the&nbsp;</span>Handbook</a>
+  <details class="mobilenav"><summary aria-label="Menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Menu</summary><div class="dd-panel">
+    <a href="/start/">Start here</a>
+    <b>Find help</b><a href="/#find">Pick a problem</a><a href="/problems/">Every problem</a><a href="/picks/">Our picks</a><a href="/agents/">Agents report card</a>
+    <b>Learn the basics</b><a href="/ai-safety/">Is AI safe?</a><a href="/chatgpt-for-seniors/">ChatGPT guide</a><a href="/words/">Word list</a><a href="/news/">What's new</a>
+    <b>Holidays</b><a href="/thanksgiving/">Thanksgiving</a><a href="/gift/">Christmas gift idea</a><a href="/set-up-ai-for-parents/">Set up AI for parents</a>
+    <a class="btn btn-gold" href="/#buy" style="margin-top:8px;justify-content:center">Get the handbook</a>
+  </div></details>
 </div></header>
 <main id="main">
 <section class="pagehead"><div class="inner"><p class="crumb"><a href="/">Home</a> › Start here</p><h1>New to AI? Start here.</h1><p class="lede">Five minutes: what AI is, what you need (and don't), your first questions, and five safety rules.</p></div></section>
@@ -949,5 +1038,6 @@ $id("starters").innerHTML = STARTERS.map(s =>
 
 
 </script>
+<script>document.addEventListener("click",function(e){document.querySelectorAll("details.dd[open],details.mobilenav[open]").forEach(function(d){if(!d.contains(e.target))d.removeAttribute("open");});});document.querySelectorAll("details.dd").forEach(function(d){d.addEventListener("toggle",function(){if(d.open)document.querySelectorAll("details.dd[open]").forEach(function(o){if(o!==d)o.removeAttribute("open");});});});document.addEventListener("keydown",function(e){if(e.key==="Escape")document.querySelectorAll("details.dd[open],details.mobilenav[open]").forEach(function(d){d.removeAttribute("open");});});</script>
 </body>
 </html>

@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="The Boomer's AI Passage">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which AI should I use to read small print or describe things?","acceptedAnswer":{"@type":"Answer","text":"Our top pick is Be My Eyes. Describes what your camera sees, out loud. You can also connect to a volunteer."}},{"@type":"Question","name":"What should I type into Be My Eyes?","acceptedAnswer":{"@type":"Answer","text":"What does this medicine label say about dosage?"}},{"@type":"Question","name":"How much does Be My Eyes cost?","acceptedAnswer":{"@type":"Answer","text":"Free."}}]}</script>
@@ -24,8 +24,35 @@
 <a class="skip" href="#main">Skip to the content</a>
 <header class="topbar"><div class="inner">
   <a class="logo" href="/"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#173462" stroke="#e3b35a" stroke-width="2"/><path d="M9 27 Q20 7 31 27" fill="none" stroke="#e3b35a" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="4.2" fill="#e3b35a"/><path d="M8.5 29.5h23" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span>The Boomer's <b>AI Passage</b></span></a>
-  <nav class="mainnav" aria-label="Main"><a href="/start/">Start here</a><a href="/problems/">Find help</a><a href="/picks/">Our picks</a><a href="/agents/">Agents</a><a href="/words/">Word list</a><a href="/news/">What's new</a></nav>
+  <nav class="mainnav" aria-label="Main">
+    <a href="/start/">Start here</a>
+    <details class="dd"><summary>Find help</summary><div class="dd-panel">
+      <a href="/#find">Pick a problem<small>Get the right AI and the words to type</small></a>
+      <a href="/problems/">Every problem<small>All 17, by step</small></a>
+      <a href="/picks/">Our picks<small>Which AI for which job</small></a>
+      <a href="/agents/">Agents report card<small>What AI can do on its own</small></a>
+    </div></details>
+    <details class="dd"><summary>Learn the basics</summary><div class="dd-panel">
+      <a href="/start/">What is AI?<small>Five minutes, no jargon</small></a>
+      <a href="/ai-safety/">Is AI safe?<small>Five rules before you start</small></a>
+      <a href="/chatgpt-for-seniors/">ChatGPT guide<small>Step by step</small></a>
+      <a href="/words/">Word list<small>AI words in plain English</small></a>
+      <a href="/news/">What's new<small>This month in AI</small></a>
+    </div></details>
+    <details class="dd"><summary>Holidays</summary><div class="dd-panel">
+      <a href="/thanksgiving/">Thanksgiving<small>13 things to ask AI</small></a>
+      <a href="/gift/">Christmas gift idea<small>The handbook</small></a>
+      <a href="/set-up-ai-for-parents/">Set up AI for parents<small>In 20 minutes</small></a>
+    </div></details>
+  </nav>
   <a class="btn btn-gold topcta" href="https://theboomersaipassage.gumroad.com/l/wpfolg"><span class="hide-sm">Get the&nbsp;</span>Handbook</a>
+  <details class="mobilenav"><summary aria-label="Menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Menu</summary><div class="dd-panel">
+    <a href="/start/">Start here</a>
+    <b>Find help</b><a href="/#find">Pick a problem</a><a href="/problems/">Every problem</a><a href="/picks/">Our picks</a><a href="/agents/">Agents report card</a>
+    <b>Learn the basics</b><a href="/ai-safety/">Is AI safe?</a><a href="/chatgpt-for-seniors/">ChatGPT guide</a><a href="/words/">Word list</a><a href="/news/">What's new</a>
+    <b>Holidays</b><a href="/thanksgiving/">Thanksgiving</a><a href="/gift/">Christmas gift idea</a><a href="/set-up-ai-for-parents/">Set up AI for parents</a>
+    <a class="btn btn-gold" href="/#buy" style="margin-top:8px;justify-content:center">Get the handbook</a>
+  </div></details>
 </div></header>
 <main id="main"><div class="band"><div class="inner">
 <p class="crumb"><a href="/">Home</a> › <a href="/problems/">Everyday problems</a> › Step 2</p>
@@ -104,5 +131,6 @@
   <nav class="footlinks" aria-label="Footer"><a href="/">Home</a><a href="/start/">Start here</a><a href="/problems/">Every problem</a><a href="/chatgpt-for-seniors/">ChatGPT guide</a><a href="/ai-safety/">Is AI safe?</a><a href="/thanksgiving/">Thanksgiving</a><a href="/gift/">Gift idea</a><a href="/set-up-ai-for-parents/">Set up AI for parents</a><a href="/words/">Word list</a><a href="/share/">Share your story</a></nav>
   <p class="fine">Prices change often; checked November 2026. Rankings are never for sale.</p>
 </div></footer>
+<script>document.addEventListener("click",function(e){document.querySelectorAll("details.dd[open],details.mobilenav[open]").forEach(function(d){if(!d.contains(e.target))d.removeAttribute("open");});});document.querySelectorAll("details.dd").forEach(function(d){d.addEventListener("toggle",function(){if(d.open)document.querySelectorAll("details.dd[open]").forEach(function(o){if(o!==d)o.removeAttribute("open");});});});document.addEventListener("keydown",function(e){if(e.key==="Escape")document.querySelectorAll("details.dd[open],details.mobilenav[open]").forEach(function(d){d.removeAttribute("open");});});</script>
 </body>
 </html>
