@@ -44,6 +44,25 @@ ${say("Something personal", "Help me write a short note to my granddaughter for 
   lede: "Keep the traditions. Let AI do the busywork. Thirteen things to ask, with the exact words to copy.",
   answer: "Open any free AI helper (ChatGPT, Claude or Gemini), copy one of the requests below, change the details, and press Enter. It answers in seconds.",
   body: () => `
+<div class="example" id="example">
+<span class="eyebrow">See it work, start to finish</span>
+<h2>Example: when to thaw the turkey</h2>
+<ol class="steps">
+<li><b>Copy the question.</b> Tap "Copy" on the box below.</li>
+<li><b>Open a free AI helper.</b> Tap <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a>, <a href="https://claude.ai" target="_blank" rel="noopener">Claude</a> or <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a>. It opens in a new tab. (First time? <a href="/start/#signup">Make a free account</a>.)</li>
+<li><b>Paste it.</b> Tap the message box at the bottom. Press and hold, then tap <b>Paste</b>.</li>
+<li><b>Change the details to fit you.</b> Your turkey's weight, your dinner time.</li>
+<li><b>Send it.</b> Tap the arrow, or press Enter. Wait a few seconds.</li>
+</ol>
+${say("Copy this", "I have a 16-pound frozen turkey and we eat Thursday at 3 p.m. When do I move it to the fridge, and what if I forgot?")}
+<div class="sample">
+<p><b>What you'll get back (a sample; yours will be worded a little differently):</b></p>
+<p><b>Move it to the fridge by Sunday morning.</b> A 16-pound turkey needs about 4 days in the refrigerator, about 1 day for every 4 to 5 pounds. Leave it in its wrapper, on a tray, on the bottom shelf. Starting a day early is fine: a thawed turkey keeps 1 to 2 days in the fridge.</p>
+<p><b>If you forgot:</b> thaw it in cold water. Keep it wrapped, cover it with cold tap water, and change the water every 30 minutes. Allow about 30 minutes per pound, so about 8 hours. Then cook it right away. For a 3 p.m. dinner, start very early Thursday morning.</p>
+<p><b>Last resort:</b> you can cook it frozen. It's safe, but it takes about 50% longer. Never thaw it on the counter.</p>
+</div>
+<p class="note">Then keep talking to it, like a person. Try: "Make me a reminder list for Sunday through Thursday." Sample checked against <a href="https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/poultry/lets-talk-turkey-roasting" target="_blank" rel="noopener">USDA turkey guidance</a>.</p>
+</div>
 <h2>Before the day</h2>
 ${say("Shopping list", "We're hosting 12 people for Thanksgiving: turkey, stuffing, mashed potatoes, green beans and two pies. Make me one shopping list, grouped by store aisle.")}
 ${say("When to thaw the turkey", "I have a 16-pound frozen turkey and we eat Thursday at 3 p.m. When do I move it to the fridge, and what if I forgot?")}

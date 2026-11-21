@@ -411,6 +411,18 @@ input[type=text]{background:#fff;border-color:#C9D3E0;border-radius:10px}
 .opt[open] .opt-more{font-size:0}
 .opt[open] .opt-more::after{content:"Hide ▴";font-size:1rem}
 .opt-body{padding:0 22px 22px;display:grid;gap:14px}
+
+.nextstep{background:var(--gold-soft);border:2px solid var(--gold);border-radius:14px;padding:16px 18px;margin:10px 0 6px;display:grid;gap:8px}
+.nextstep ol{margin:0;padding-left:1.3em;display:grid;gap:10px}
+.ns-ok{font-weight:800;margin:0;color:#3a2a08}
+.ns-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.ns-btns .btn{padding:10px 14px;font-size:1rem;background:var(--navy);color:#fff;border-radius:10px;text-decoration:none}
+.ns-foot{margin:0;font-size:.95rem}
+.example{border:2px solid var(--navy);border-radius:var(--radius);padding:22px;margin:24px 0;background:var(--surface);display:grid;gap:12px;scroll-margin-top:90px}
+.example .sample{background:var(--bg);border-left:5px solid var(--gold);border-radius:10px;padding:14px 16px}
+.example .sample p{margin:.35em 0}
+.howget{background:var(--surface);border:2px solid var(--gold);border-radius:var(--radius);padding:18px 20px;display:grid;gap:8px}
+.howget ol{margin:0;padding-left:1.3em;display:grid;gap:8px}
 </style>
 </head>
 <body>
@@ -996,6 +1008,7 @@ renderTiles(0);
 $id("news").innerHTML = NEWS.map(n =>
   `<article class="news-item"><span class="date">${n.date}</span><h3>${n.title}</h3><p>${n.body}</p></article>`).join("");
 
+function nextStep(c){const box=c.closest(".say,.starter,.card,.opt-body")||c.parentElement;if(!box||box.nextElementSibling&&box.nextElementSibling.classList.contains("nextstep"))return;const d=document.createElement("div");d.className="nextstep";d.innerHTML='<p class="ns-ok">✓ Copied. Now get your answer in 3 steps:</p><ol><li><b>Tap one helper.</b> It opens in a new tab.<span class="ns-btns"><a class="btn" href="https://chatgpt.com" target="_blank" rel="noopener">Open ChatGPT</a><a class="btn" href="https://claude.ai" target="_blank" rel="noopener">Open Claude</a><a class="btn" href="https://gemini.google.com" target="_blank" rel="noopener">Open Gemini</a></span></li><li><b>Paste your question.</b> Tap the message box at the bottom. Press and hold, then tap <b>Paste</b>. (On a computer: click the box, then Ctrl+V, or Command+V on a Mac.)</li><li><b>Send it.</b> Change any details to fit you, then tap the arrow or press Enter. Your answer appears in a few seconds.</li></ol><p class="ns-foot">First time? <a href="/start/#signup">How to make a free account</a> · <a href="/thanksgiving/#example">See a full example</a></p>';box.after(d);}
 function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));}
 
 function show(p, typed){
@@ -1023,8 +1036,15 @@ function show(p, typed){
 
 function general(typed){
   document.querySelectorAll(".tile").forEach(t => t.setAttribute("aria-pressed","false"));
-  answerEl.innerHTML = `<div class="answer-head"><h2>For “${esc(typed)}”</h2><p class="note">We don't have a ready-made answer for this one yet, so start with a general helper. Any of these three can handle most everyday questions.</p></div>` +
-  ["chatgpt","claude","gemini"].map((k,i)=>{const t=T[k];return `<details class="card opt ${i===0?"top":""}">
+  const ask = "I'm new to AI. Help me with this, one step at a time: " + typed;
+  try { navigator.clipboard && navigator.clipboard.writeText(ask); } catch(e) {}
+  answerEl.innerHTML = `<div class="answer-head"><h2>Good question. An AI helper will answer it in seconds.</h2><p class="note">This site doesn't answer questions itself. It shows you where to ask and what to type. Here's how to get your answer for “${esc(typed)}”:</p></div>
+  <div class="howget"><ol>
+    <li><b>Your question is copied</b> (if not, tap "Copy these words" below).</li>
+    <li><b>Tap "Open ChatGPT"</b> below (or Claude or Gemini). It opens in a new tab.</li>
+    <li><b>Paste it.</b> Tap the message box at the bottom, press and hold, then tap <b>Paste</b>. Tap the arrow to send.</li>
+  </ol><p class="note">First time? <a href="/start/#signup">Make a free account</a> first. It takes about 3 minutes.</p></div>` +
+  ["chatgpt","claude","gemini"].map((k,i)=>{const t=T[k];return `<details class="card opt ${i===0?"top":""}" ${i===0?"open":""}>
     <summary class="card-head"><span class="rank">${i+1}</span><span class="opt-title"><h3>${t.name}</h3></span><span class="opt-more">Show how</span></summary>
     <div class="opt-body">
     <p class="cost">${t.cost}</p>
@@ -1058,6 +1078,7 @@ document.addEventListener("click", async e => {
   if (c) {
     try { await navigator.clipboard.writeText(c.dataset.say); c.textContent = "Copied"; }
     catch { c.textContent = "Select the words above to copy"; }
+    nextStep(c);
     return;
   }
   const t = e.target.closest(".term");
