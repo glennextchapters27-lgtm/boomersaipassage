@@ -381,6 +381,36 @@ input[type=text]{background:#fff;border-color:#C9D3E0;border-radius:10px}
 .mobilenav .dd-panel b{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:#6B5212;padding:10px 12px 2px}
 @media (max-width:1020px){.mobilenav{display:block}.topcta{margin-left:auto}}
 @media (max-width:560px){.topcta{display:none}.mobilenav{margin-left:auto}}
+
+.topnote{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;justify-content:center;padding:12px 16px;background:var(--gold-soft);color:#3a2a08;text-decoration:none;font-size:1.05rem;border-bottom:1px solid var(--line);text-align:center}
+.topnote:hover{text-decoration:none;background:#f6e3b8}
+.tn-tag{font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:.85rem;background:var(--navy);color:#fff;padding:3px 10px;border-radius:999px}
+.tn-text{font-weight:700}
+.tn-go{text-decoration:underline}
+#today{scroll-margin-top:90px}
+.howto{margin:22px 0;background:var(--surface);border:2px solid var(--gold);border-radius:var(--radius)}
+.howto>summary{cursor:pointer;padding:18px 22px;font-family:var(--display);font-weight:700;font-size:1.2rem;list-style:none}
+.howto>summary::before{content:"+ ";color:var(--gold)}
+.howto[open]>summary::before{content:"− "}
+.howto-body{padding:0 22px 20px}
+#signup{scroll-margin-top:90px}
+.tf{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.tfq{background:var(--bg);border-radius:12px;border:1px solid var(--line)}
+.tfq>summary{cursor:pointer;padding:16px 18px;font-weight:700;list-style:none;display:grid;gap:4px}
+.tfq>summary::-webkit-details-marker,.howto>summary::-webkit-details-marker,.opt>summary::-webkit-details-marker{display:none}
+.tf-hint{font-weight:400;font-size:.9rem;color:var(--accent);text-decoration:underline}
+.tfq[open] .tf-hint{display:none}
+.tfq>p{padding:0 18px 16px;margin:0}
+.tfq.t .tf-ans{color:#1d6b3a}
+.tfq.f .tf-ans{color:#a3261c}
+.card.opt{padding:0;gap:0}
+.opt>summary{cursor:pointer;list-style:none;padding:20px 22px}
+.opt-title{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;flex:1}
+.opt-more{font-weight:700;color:var(--accent);white-space:nowrap}
+.opt-more::after{content:" ▾"}
+.opt[open] .opt-more{font-size:0}
+.opt[open] .opt-more::after{content:"Hide ▴";font-size:1rem}
+.opt-body{padding:0 22px 22px;display:grid;gap:14px}
 </style>
 </head>
 <body>
@@ -896,12 +926,13 @@ function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;
 function show(p, typed){
   document.querySelectorAll(".tile").forEach(t => t.setAttribute("aria-pressed", t.id === "tile-"+p.id ? "true":"false"));
   const head = typed
-    ? `<div class="answer-head"><h2>For “${esc(typed)}”</h2><p class="note">Closest match: ${p.title} (Step ${p.level}). Ranked best first for this job. <a href="/picks/">How we rank</a></p></div>`
-    : `<div class="answer-head"><h2>${p.title}</h2><p class="note">Step ${p.level}. Ranked best first for this job. <a href="/picks/">How we rank</a></p></div>`;
+    ? `<div class="answer-head"><h2>For “${esc(typed)}”</h2><p class="note">Closest match: ${p.title} (Step ${p.level}). ${p.picks.length} good options, best first. Tap one to see how. <a href="/picks/">How we rank</a></p></div>`
+    : `<div class="answer-head"><h2>${p.title}</h2><p class="note">Step ${p.level}. ${p.picks.length} good options, best first. Tap one to see how. <a href="/picks/">How we rank</a></p></div>`;
   answerEl.innerHTML = head + p.picks.map((k,i) => {
     const t = T[k.t];
-    return `<article class="card ${i===0?"top":""}">
-      <div class="card-head"><span class="rank">${i+1}</span><h3>${t.name}</h3><span class="pill ${i===0?"best":""}">${k.best}</span></div>
+    return `<details class="card opt ${i===0?"top":""}">
+      <summary class="card-head"><span class="rank">${i+1}</span><span class="opt-title"><h3>${t.name}</h3><span class="pill ${i===0?"best":""}">${k.best}</span></span><span class="opt-more">Show how</span></summary>
+      <div class="opt-body">
       <p>${linkTerms(k.why)}</p>
       ${rateHTML(k.t)}
       <p class="cost">${t.cost} Made by ${t.maker}.</p>
@@ -909,7 +940,8 @@ function show(p, typed){
       <div class="say"><b>Try saying this:</b><span>${esc(k.say)}</span>
         ${k.say.startsWith("(") ? "" : `<button class="copy" type="button" data-say="${esc(k.say)}">Copy these words</button>`}</div>
       <a href="${t.url}" target="_blank" rel="noopener">Open ${t.name}</a>
-    </article>`;
+      </div>
+    </details>`;
   }).join("");
   answerEl.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto":"smooth", block:"start"});
 }
@@ -917,12 +949,13 @@ function show(p, typed){
 function general(typed){
   document.querySelectorAll(".tile").forEach(t => t.setAttribute("aria-pressed","false"));
   answerEl.innerHTML = `<div class="answer-head"><h2>For “${esc(typed)}”</h2><p class="note">We don't have a ready-made answer for this one yet, so start with a general helper. Any of these three can handle most everyday questions.</p></div>` +
-  ["chatgpt","claude","gemini"].map((k,i)=>{const t=T[k];return `<article class="card ${i===0?"top":""}">
-    <div class="card-head"><span class="rank">${i+1}</span><h3>${t.name}</h3></div>
+  ["chatgpt","claude","gemini"].map((k,i)=>{const t=T[k];return `<details class="card opt ${i===0?"top":""}">
+    <summary class="card-head"><span class="rank">${i+1}</span><span class="opt-title"><h3>${t.name}</h3></span><span class="opt-more">Show how</span></summary>
+    <div class="opt-body">
     <p class="cost">${t.cost}</p>
     <div class="say"><b>Try saying this:</b><span>I'm new to AI. Help me with this, one step at a time: ${esc(typed)}</span>
     <button class="copy" type="button" data-say="I'm new to AI. Help me with this, one step at a time: ${esc(typed)}">Copy these words</button></div>
-    <a href="${t.url}" target="_blank" rel="noopener">Open ${t.name}</a></article>`}).join("");
+    <a href="${t.url}" target="_blank" rel="noopener">Open ${t.name}</a></div></details>`}).join("");
   answerEl.scrollIntoView({block:"start"});
 }
 
@@ -973,6 +1006,7 @@ const SLAB = {g:"Ready for you", y:"Try with a helper", r:"Not yet"};
 $id("agentCards").innerHTML = AGENTS.map(a =>
   `<article class="pick agentcard ${a.s}"><span class="tag ${a.s}" style="justify-self:start">${SLAB[a.s]}</span><h4>${esc(a.name)}</h4><p class="note">by ${esc(a.maker)}</p><p>${esc(a.what)}</p><p class="cost">${esc(a.cost)}</p><p><b>Our take:</b> ${esc(a.note)}</p><a href="${a.url}" target="_blank" rel="noopener">${a.s==="r"?"Learn more about":"Open"} ${esc(a.name)}</a></article>`).join("");
 $id("seasonTag").textContent = SEASON.tag;
+if($id("topnoteText")) $id("topnoteText").textContent = SEASON.title;
 $id("season-h").textContent = SEASON.title;
 $id("seasonIntro").textContent = SEASON.intro;
 $id("seasonList").innerHTML = SEASON.items.map(s =>

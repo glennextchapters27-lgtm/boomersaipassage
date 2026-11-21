@@ -362,3 +362,33 @@ input[type=text]{background:#fff;border-color:#C9D3E0;border-radius:10px}
 .mobilenav .dd-panel b{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:#6B5212;padding:10px 12px 2px}
 @media (max-width:1020px){.mobilenav{display:block}.topcta{margin-left:auto}}
 @media (max-width:560px){.topcta{display:none}.mobilenav{margin-left:auto}}
+
+.topnote{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;justify-content:center;padding:12px 16px;background:var(--gold-soft);color:#3a2a08;text-decoration:none;font-size:1.05rem;border-bottom:1px solid var(--line);text-align:center}
+.topnote:hover{text-decoration:none;background:#f6e3b8}
+.tn-tag{font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:.85rem;background:var(--navy);color:#fff;padding:3px 10px;border-radius:999px}
+.tn-text{font-weight:700}
+.tn-go{text-decoration:underline}
+#today{scroll-margin-top:90px}
+.howto{margin:22px 0;background:var(--surface);border:2px solid var(--gold);border-radius:var(--radius)}
+.howto>summary{cursor:pointer;padding:18px 22px;font-family:var(--display);font-weight:700;font-size:1.2rem;list-style:none}
+.howto>summary::before{content:"+ ";color:var(--gold)}
+.howto[open]>summary::before{content:"− "}
+.howto-body{padding:0 22px 20px}
+#signup{scroll-margin-top:90px}
+.tf{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.tfq{background:var(--bg);border-radius:12px;border:1px solid var(--line)}
+.tfq>summary{cursor:pointer;padding:16px 18px;font-weight:700;list-style:none;display:grid;gap:4px}
+.tfq>summary::-webkit-details-marker,.howto>summary::-webkit-details-marker,.opt>summary::-webkit-details-marker{display:none}
+.tf-hint{font-weight:400;font-size:.9rem;color:var(--accent);text-decoration:underline}
+.tfq[open] .tf-hint{display:none}
+.tfq>p{padding:0 18px 16px;margin:0}
+.tfq.t .tf-ans{color:#1d6b3a}
+.tfq.f .tf-ans{color:#a3261c}
+.card.opt{padding:0;gap:0}
+.opt>summary{cursor:pointer;list-style:none;padding:20px 22px}
+.opt-title{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;flex:1}
+.opt-more{font-weight:700;color:var(--accent);white-space:nowrap}
+.opt-more::after{content:" ▾"}
+.opt[open] .opt-more{font-size:0}
+.opt[open] .opt-more::after{content:"Hide ▴";font-size:1rem}
+.opt-body{padding:0 22px 22px;display:grid;gap:14px}
