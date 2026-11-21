@@ -48,13 +48,11 @@ ${say("Something personal", "Help me write a short note to my granddaughter for 
 <span class="eyebrow">See it work, start to finish</span>
 <h2>Example: when to thaw the turkey</h2>
 <ol class="steps">
-<li><b>Copy the question.</b> Tap "Copy" on the box below.</li>
-<li><b>Open a free AI helper.</b> Tap <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a>, <a href="https://claude.ai" target="_blank" rel="noopener">Claude</a> or <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a>. It opens in a new tab. (First time? <a href="/start/#signup">Make a free account</a>.)</li>
-<li><b>Paste it.</b> Tap the message box at the bottom. Press and hold, then tap <b>Paste</b>.</li>
+<li><b>Tap the green "Ask ChatGPT" button</b> below. ChatGPT opens in a new tab with the question already typed in. No account needed.</li>
 <li><b>Change the details to fit you.</b> Your turkey's weight, your dinner time.</li>
 <li><b>Send it.</b> Tap the arrow, or press Enter. Wait a few seconds.</li>
 </ol>
-${say("Copy this", "I have a 16-pound frozen turkey and we eat Thursday at 3 p.m. When do I move it to the fridge, and what if I forgot?")}
+${say("Your question", "I have a 16-pound frozen turkey and we eat Thursday at 3 p.m. When do I move it to the fridge, and what if I forgot?")}
 <div class="sample">
 <p><b>What you'll get back (a sample; yours will be worded a little differently):</b></p>
 <p><b>Move it to the fridge by Sunday morning.</b> A 16-pound turkey needs about 4 days in the refrigerator, about 1 day for every 4 to 5 pounds. Leave it in its wrapper, on a tray, on the bottom shelf. Starting a day early is fine: a thawed turkey keeps 1 to 2 days in the fridge.</p>

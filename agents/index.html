@@ -423,6 +423,12 @@ input[type=text]{background:#fff;border-color:#C9D3E0;border-radius:10px}
 .example .sample p{margin:.35em 0}
 .howget{background:var(--surface);border:2px solid var(--gold);border-radius:var(--radius);padding:18px 20px;display:grid;gap:8px}
 .howget ol{margin:0;padding-left:1.3em;display:grid;gap:8px}
+
+.ask{display:grid;gap:8px;margin:10px 0 4px;grid-column:1/-1;background:none!important;box-shadow:none!important;border:0!important;padding:0!important}
+.askbtn{display:block;background:#10a37f;color:#fff!important;text-decoration:none;font-weight:800;font-size:1.15rem;padding:14px 18px;border-radius:12px;text-align:center;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.askbtn small{display:block;font-weight:500;font-size:.9rem;opacity:.95;margin-top:2px}
+.askalt{font-size:.95rem}
+.copy.copy-sm{background:transparent;color:var(--navy);border:1.5px solid var(--navy);font-size:.9rem;padding:6px 12px;justify-self:start}
 </style>
 </head>
 <body>
@@ -965,9 +971,9 @@ function general(typed){
   try { navigator.clipboard && navigator.clipboard.writeText(ask); } catch(e) {}
   answerEl.innerHTML = `<div class="answer-head"><h2>Good question. An AI helper will answer it in seconds.</h2><p class="note">This site doesn't answer questions itself. It shows you where to ask and what to type. Here's how to get your answer for “${esc(typed)}”:</p></div>
   <div class="howget"><ol>
-    <li><b>Your question is copied</b> (if not, tap "Copy these words" below).</li>
-    <li><b>Tap "Open ChatGPT"</b> below (or Claude or Gemini). It opens in a new tab.</li>
-    <li><b>Paste it.</b> Tap the message box at the bottom, press and hold, then tap <b>Paste</b>. Tap the arrow to send.</li>
+    <li><b>Tap "Ask ChatGPT" below.</b> It opens in a new tab with your question already typed in. No account needed.</li>
+    <li><b>Check the words</b> and add any details that fit you.</li>
+    <li><b>Tap the arrow</b> (or press Enter). Your answer appears in a few seconds.</li>
   </ol><p class="note">First time? <a href="/start/#signup">Make a free account</a> first. It takes about 3 minutes.</p></div>` +
   ["chatgpt","claude","gemini"].map((k,i)=>{const t=T[k];return `<details class="card opt ${i===0?"top":""}" ${i===0?"open":""}>
     <summary class="card-head"><span class="rank">${i+1}</span><span class="opt-title"><h3>${t.name}</h3></span><span class="opt-more">Show how</span></summary>
@@ -1038,5 +1044,6 @@ $id("starters").innerHTML = STARTERS.map(s =>
 
 </script>
 <script>document.addEventListener("click",function(e){document.querySelectorAll("details.dd[open],details.mobilenav[open]").forEach(function(d){if(!d.contains(e.target))d.removeAttribute("open");});});document.querySelectorAll("details.dd").forEach(function(d){d.addEventListener("toggle",function(){if(d.open)document.querySelectorAll("details.dd[open]").forEach(function(o){if(o!==d)o.removeAttribute("open");});});});document.addEventListener("keydown",function(e){if(e.key==="Escape")document.querySelectorAll("details.dd[open],details.mobilenav[open]").forEach(function(d){d.removeAttribute("open");});});</script>
+<script>(function(){var AQ=function(t){return "https://chatgpt.com/?q="+encodeURIComponent(t)},CQ=function(t){return "https://claude.ai/new?q="+encodeURIComponent(t)};function cp(t){try{navigator.clipboard&&navigator.clipboard.writeText(t)}catch(e){}}function dec(){document.querySelectorAll(".copy:not([data-ask])").forEach(function(c){c.setAttribute("data-ask","1");var t=c.getAttribute("data-say");if(!t)return;var card=c.closest(".card.opt");if(card){card.querySelectorAll('a[href^="https://chatgpt.com"]').forEach(function(a){a.href=AQ(t);a.textContent="Ask ChatGPT (words already typed in) ›"});card.querySelectorAll('a[href^="https://claude.ai"]').forEach(function(a){a.href=CQ(t);a.textContent="Ask Claude (words already typed in) ›";a.addEventListener("click",function(){cp(t)})});return}c.classList.add("copy-sm");var d=document.createElement("div");d.className="ask";d.innerHTML='<a class="askbtn" target="_blank" rel="noopener" href="'+AQ(t)+'">Ask ChatGPT ›<small>No account needed. Your question is already typed in.</small></a><span class="askalt">Or ask <a target="_blank" rel="noopener" href="'+CQ(t)+'" data-cp="1">Claude</a> or <a target="_blank" rel="noopener" href="https://gemini.google.com" data-cp="1">Gemini</a>. We copy your question so you can paste it.</span>';d.querySelectorAll("[data-cp]").forEach(function(a){a.addEventListener("click",function(){cp(t)})});c.parentNode.insertBefore(d,c)})}dec();new MutationObserver(dec).observe(document.body,{childList:true,subtree:true})})();</script>
 </body>
 </html>
